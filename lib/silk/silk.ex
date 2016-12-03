@@ -12,32 +12,6 @@ defmodule SilkCommon do
 
       def url, do: System.get_env "YS_URL"
 
-      defp user, do: System.get_env "YS_LOGIN"
-
-      defp pass, do: System.get_env "YS_PASS"
-
-      defp callmap, do: [
-        login: [
-          rel: "/login",
-          expected: [~r/SIGN IN/, ~r/Username/, ~r/Password/],
-        ],
-
-        logout: [
-          rel: "/sign_out",
-          expected: [~r/SIGN IN/, ~r/Username/, ~r/Password/],
-        ],
-
-        sales: [
-          rel: "/retail/sales?q=status:3",
-          expected: [~r/Total/, ~r/Order/, ~r/Customer/, ~r/Total/],
-        ],
-
-        customers: [
-          rel: "/retail/customer?q=status:1",
-          expected: [~r/Orders/, ~r/Customer/, ~r/Total/, ~r/Created/],
-        ],
-      ]
-
 
       def go(param) when is_atom(param) do
         go param, callmap[param]
@@ -58,7 +32,14 @@ defmodule SilkCommon do
       end
 
 
-      defoverridable [url: 0, user: 0, pass: 0, callmap: 0, go: 1]
+      defp user, do: System.get_env "YS_LOGIN"
+
+      defp pass, do: System.get_env "YS_PASS"
+
+      defp callmap, do: Application.get_env :yst, :callmap
+
+      defoverridable [url: 0, user: 0, pass: 0, go: 1]
+
     end
   end
 

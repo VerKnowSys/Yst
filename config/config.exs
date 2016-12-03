@@ -2,7 +2,32 @@
 # and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
 
+
 config :hound, driver: "phantomjs"
+
+config :yst, callmap: [
+
+    login: [
+      rel: "/login",
+      expected: [~r/SIGN IN/, ~r/Username/, ~r/Password/],
+    ],
+
+    logout: [
+      rel: "/sign_out",
+      expected: [~r/SIGN IN/, ~r/Username/, ~r/Password/],
+    ],
+
+    sales: [
+      rel: "/retail/sales?q=status:3",
+      expected: [~r/Total/, ~r/Order/, ~r/Customer/, ~r/Total/],
+    ],
+
+    customers: [
+      rel: "/retail/customer?q=status:1",
+      expected: [~r/Orders/, ~r/Customer/, ~r/Total/, ~r/Created/],
+    ],
+
+]
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
