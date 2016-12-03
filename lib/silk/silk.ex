@@ -14,24 +14,28 @@ defmodule SilkCommon do
       @doc """
       Defines base url of tested site
       """
+      @spec url :: String.t
       def url, do: System.get_env "YS_URL"
 
 
       @doc """
       Defines username used on login panel
       """
+      @spec user :: String.t
       def user, do: System.get_env "YS_LOGIN"
 
 
       @doc """
       Defines password used on login panel
       """
+      @spec pass :: String.t
       def pass, do: System.get_env "YS_PASS"
 
 
       @doc """
       Defines site check callmap (loaded from "config.exs")
       """
+      @spec callmap :: Keyword.t
       def callmap, do: Application.get_env :yst, :callmap
 
 
@@ -39,6 +43,7 @@ defmodule SilkCommon do
       Defines base navigation function.
       Each action and requirements are defined in "callmap" keyword loaded from "config.exs"
       """
+      @spec go(action :: atom) :: String.t
       def go(action) when is_atom(action) do
         go action, callmap[action]
       end
@@ -47,6 +52,7 @@ defmodule SilkCommon do
       @doc """
       Defines base navigation function. Accepts "action_map" explicitly specified as second argument.
       """
+      @spec go(action :: atom, action_map :: Keyword.t) :: String.t
       def go(action, action_map) when is_atom(action) do
         navigate_to "#{url}#{action_map[:rel]}"
         if action == :login do
