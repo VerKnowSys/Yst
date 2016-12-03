@@ -12,7 +12,7 @@ defmodule Yst.Mixfile do
       escript: escript,
       # Docs
       name: "YSt",
-      source_url: "https://github.com/dmilith/yst.git",
+      source_url: "https://github.com/centrahq/yst",
       docs: [
         main: "YS integration test environment",
         extras: ["README.md"]
