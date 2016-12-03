@@ -1,6 +1,7 @@
 #!/bin/sh
 
 . bin/load_phantom
+. bin/fetch_deps
 
 # NOTE: skipping ost_test by default for now:
 env \
