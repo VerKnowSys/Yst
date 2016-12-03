@@ -5,7 +5,6 @@ defmodule YstTest do
   require Logger
 
   alias Hound.Browser.PhantomJS
-  alias Yst.Silk
 
   doctest Yst
 
@@ -26,8 +25,8 @@ defmodule YstTest do
 
 
   test "each checked page has to pass content validations" do
-    Silk.go_logout
-    Silk.go_login
+    OddMollyDemo.go :logout
+    OddMollyDemo.go :login
 
     for item <- [~r/DASHBOARD - SALES/, ~r/GENERAL/, ~r/RETAIL/, ~r/Sales for period/, ~r/Accounts\/Customers: All/, ~r/SILK VMS master/] do
       assert visible_in_page? item
@@ -36,9 +35,9 @@ defmodule YstTest do
 
 
   test "test sales elements existence" do
-    Silk.go_logout
-    Silk.go_login
-    Silk.go_sales
+    OddMollyDemo.go :logout
+    OddMollyDemo.go :login
+    OddMollyDemo.go :sales
 
     assert (visible_in_page? ~r/SILK VMS master/), "'SILK VMS master' should be visible!"
 
@@ -52,9 +51,9 @@ defmodule YstTest do
 
 
   test "test customers elements existence" do
-    Silk.go_logout
-    Silk.go_login
-    Silk.go_customers
+    OddMollyDemo.go :logout
+    OddMollyDemo.go :login
+    OddMollyDemo.go :customers
 
     assert (visible_in_page? ~r/SILK VMS master/), "'SILK VMS master' should be visible!"
     assert (visible_in_element? {:id, "retail_customer_item"}, ~r/CUSTOMERS/), "retail_customer_item with CUSTOMERS"

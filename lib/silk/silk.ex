@@ -1,53 +1,69 @@
-defmodule Yst.Silk do
-  use Hound.Helpers
+defmodule SilkCommon do
 
-  alias Hound.Helpers.Cookie
-  alias Hound.Helpers.Screenshot
-  require Logger
+  defmacro __using__(_opts) do
+    quote do
 
+      use Hound.Helpers
+      require Logger
 
-  def url, do: "https://oddmollynew.youngskilled.com/ams"
-  def demo_url, do: url
-
-
-  def go_logout do
-    navigate_to "#{demo_url}/sign_out"
-    delete_cookies
-    Logger.info "go_logout: #{current_url}"
-    Logger.info "go_logout.cookies: #{inspect Cookie.cookies}"
-    current_url
-  end
+      alias Hound.Helpers.Cookie
+      alias Hound.Helpers.Screenshot
 
 
-  def go_sales do
-    navigate_to "#{demo_url}/retail/sales?q=status:3"
-    Logger.info "go_sales: #{current_url}"
-    Logger.info "go_sales.cookies: #{inspect Cookie.cookies}"
-    current_url
-  end
+      def url, do: System.get_env "YS_URL"
+
+      defp user, do: System.get_env "YS_LOGIN"
+
+      defp pass, do: System.get_env "YS_PASS"
+
+      defp callmap, do: [
+        login: [
+          rel: "/login",
+          expected: [~r/SIGN IN/, ~r/Username/, ~r/Password/],
+          input: [
+            user: user,
+            pass: pass,
+          ],
+        ],
+
+        logout: [
+          rel: "/sign_out",
+          expected: [~r/SIGN IN/, ~r/Username/, ~r/Password/],
+        ],
+
+        sales: [
+          rel: "/retail/sales?q=status:3",
+          expected: [~r/Total/, ~r/Order/, ~r/Customer/, ~r/Total/],
+        ],
+
+        customers: [
+          rel: "/retail/customer?q=status:1",
+          expected: [~r/Orders/, ~r/Customer/, ~r/Total/, ~r/Created/],
+        ],
+      ]
 
 
-  def go_customers do
-    navigate_to "#{demo_url}/retail/customer?q=status:1"
-    Logger.info "go_customers: #{current_url}"
-    Logger.info "go_customers.cookies: #{inspect Cookie.cookies}"
-    current_url
-  end
+      def go(param) when is_atom(param) do
+        go param, callmap[param]
+      end
 
 
-  def go_login do
-    user = System.get_env "YS_LOGIN"
-    pass = System.get_env "YS_PASS"
+      def go(action, action_map) when is_atom(action) do
+        navigate_to "#{url}#{action_map[:rel]}"
+        if action == :login do
+          (find_element :name, "adm_user") |> (fill_field user)
+          (find_element :name, "adm_pass") |> (fill_field pass)
+          send_keys :enter
+        end
+        Logger.info "go: #{action} #{current_url}"
+        Logger.info "go: #{action}.cookies: #{inspect Cookie.cookies}"
+        _ = Screenshot.take_screenshot "screenshot-after:#{action}.png"
+        current_url
+      end
 
-    navigate_to demo_url
-    (find_element :name, "adm_user") |> (fill_field user)
-    (find_element :name, "adm_pass") |> (fill_field pass)
-    send_keys :enter
 
-    Logger.info "go_login: #{current_url}"
-    Logger.info "go_login.cookies: #{inspect Cookie.cookies}"
-    _ = Screenshot.take_screenshot "screenshot-go_login.png"
-    current_url
+      defoverridable [url: 0, go: 1, callmap: 0]
+    end
   end
 
 end
