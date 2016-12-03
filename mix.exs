@@ -18,7 +18,7 @@ defmodule Yst.Mixfile do
       main_module: Yst,
       embed_elixir: true,
       language: :elixir,
-      force: true,
+      force: false,
       emu_args: []
     ]
   end
@@ -27,7 +27,7 @@ defmodule Yst.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :hound, :credo]]
+    [applications: [:logger, :hound, :credo, :remix]]
   end
 
   # Dependencies can be Hex packages:
@@ -42,7 +42,8 @@ defmodule Yst.Mixfile do
   defp deps do
     [
       {:hound, "~> 1.0"},
-      {:credo, "~> 0.5", only: [:dev, :test]}
+      {:credo, "~> 0.5", only: [:dev, :test]},
+      {:remix, "~> 0.0.1", only: [:dev, :test]},
     ]
   end
 end
