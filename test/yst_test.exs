@@ -2,28 +2,13 @@ defmodule YstTest do
   use ExUnit.Case
   use Hound.Helpers
 
-  import Hound.RequestUtils
-
-  alias Hound.Element
   alias Hound.Browser.PhantomJS
-  alias Hound.Helpers.Screenshot
-  alias Hound.Helpers.Orientation
-
+  alias Yst.Silk
 
   doctest Yst
 
 
-  # hound_session
-
-  setup do
-    Hound.start_session
-
-    parent = self
-    on_exit fn ->
-      Hound.end_session parent
-    end
-    :ok
-  end
+  hound_session
 
 
   test "user_agent capabilities check" do
@@ -35,18 +20,44 @@ defmodule YstTest do
 
 
   test "each checked page has to pass content validations" do
-    _ = Hound.Browser.user_agent :iphone
-    # set_window_size current_window_handle, 2560, 2048
+    Silk.pick_demo |> Silk.go_login
 
-    url1 = "https://hexdocs.pm/hound/Hound.Helpers.Screenshot.html"
-    navigate_to url1
-
-    for item <- [~r/Functions/, ~r/Built using/, ~r/The screenshot is saved in the current working directory/] do
+    for item <- [~r/DASHBOARD - SALES/, ~r/GENERAL/, ~r/RETAIL/, ~r/Sales for period/, ~r/Accounts\/Customers: All/, ~r/SILK VMS master/] do
       assert visible_in_page? item
     end
-    assert visible_in_element? {:class, "section-heading"}, ~r/Summary/
 
-    Screenshot.take_screenshot "screenshots-url1.png"
+    Silk.pick_demo |> Silk.go_logout
+  end
+
+
+  test "test sales elements existence" do
+    Silk.pick_demo |> Silk.go_login |> Silk.go_sales
+
+    assert (visible_in_page? ~r/SILK VMS master/), "'SILK VMS master' should be visible!"
+
+    for item <- [~r/Total/, ~r/Order/, ~r/Customer/, ~r/Total/],
+        elem <- [{:class, "fieldset"}] do
+      assert (visible_in_page? item), "Item '#{inspect item}' should be visible!"
+      assert (visible_in_element? elem, ~r/ORDERS/), "fieldset with ORDERS"
+      assert (visible_in_element? elem, item), "Item #{inspect item} should be contained under element: #{inspect elem}"
+    end
+
+    Silk.pick_demo |> Silk.go_logout
+  end
+
+
+  test "test customers elements existence" do
+    Silk.pick_demo |> Silk.go_login |> Silk.go_customers
+
+    assert (visible_in_page? ~r/SILK VMS master/), "'SILK VMS master' should be visible!"
+    assert (visible_in_element? {:id, "retail_customer_item"}, ~r/CUSTOMERS/), "retail_customer_item with CUSTOMERS"
+    elem = find_element :class, "field_container"
+    for item <- [~r/Orders/, ~r/Customer/, ~r/Total/, ~r/Created/] do
+      assert (visible_in_element? elem, item), "Item #{inspect item} should be contained under element: #{inspect elem}"
+      assert (visible_in_page? item), "Item '#{inspect item}' should be visible!"
+    end
+
+    Silk.pick_demo |> Silk.go_logout
   end
 
 
