@@ -21,7 +21,7 @@ Currently the PoC code logins to OddMollyDemo and performs some read only checks
 
 ## How to run
 
-  0. By default Yst is using this environment variables to access remote demo site.
+  0. By default Yst is using these environment variables to access remote demo site.
 
     ```bash
     YS_URL    # Default url of tested site
@@ -29,7 +29,7 @@ Currently the PoC code logins to OddMollyDemo and performs some read only checks
     YS_PASS   # Password used to get to the Silk panel
     ```
 
-  1. Production version `bin/build prod` and then just `MIX_ENV=prod ./yst`
+  1. Production version `bin/build prod` and then just `env YS_LOGIN="ys" YS_PASS="*******" MIX_ENV=prod ./yst`
 
   or
 
