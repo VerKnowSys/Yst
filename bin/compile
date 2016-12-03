@@ -3,4 +3,4 @@
 env \
     MIX_ENV="${1:-dev}" \
     mix \
-    do compile, credo
+    do compile, credo --strict
