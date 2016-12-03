@@ -5,6 +5,13 @@ Integration test scenarios executor ;)
 
 ## How to run
 
+  0. By default Yst is using this environment variables to access remote demo site.
+
+    ```bash
+    YS_URL    # Default url of tested site
+    YS_LOGIN  # Login used to get to the Silk panel
+    YS_PASS   # Password used to get to the Silk panel
+    ```
 
   1. Production version `bin/build prod` and then just `MIX_ENV=prod ./yst`
 
