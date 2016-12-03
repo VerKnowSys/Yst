@@ -41,7 +41,8 @@ defmodule SilkCommon do
 
       @doc """
       Defines base navigation function.
-      Each action and requirements are defined in "callmap" keyword loaded from "config.exs"
+      Each action and requirements are defined in "callmap"
+      keyword loaded from "config.exs"
       """
       @spec go(action :: atom) :: String.t
       def go(action) when is_atom(action) do
@@ -50,15 +51,22 @@ defmodule SilkCommon do
 
 
       @doc """
-      Defines base navigation function. Accepts "action_map" explicitly specified as second argument.
+      Defines base navigation function.
+      Accepts "action_map" explicitly specified as second argument.
       """
       @spec go(action :: atom, action_map :: Keyword.t) :: String.t
       def go(action, action_map) when is_atom(action) do
+        Logger.debug "NAV: '#{url}#{action_map[:rel]}'"
         navigate_to "#{url}#{action_map[:rel]}"
         if action == :login do
-          fill_field (find_element :name, "adm_user"), user
-          fill_field (find_element :name, "adm_pass"), pass
-          send_keys :enter
+          if element? :name, "adm_user" do
+            Logger.debug "LOGGING IN!"
+            fill_field (find_element :name, "adm_user"), user
+            fill_field (find_element :name, "adm_pass"), pass
+            send_keys :enter
+          else
+            Logger.debug "ALREADY LOGGED IN!"
+          end
         end
         curr = current_url
         Logger.debug "\n\
@@ -66,6 +74,7 @@ defmodule SilkCommon do
                      page_title: #{page_title}\n\
                     current_url: #{curr}\n\
                         cookies: #{inspect Cookie.cookies}"
+
         _ = Screenshot.take_screenshot "screenshots/post-action_#{action}.png"
         curr
       end
