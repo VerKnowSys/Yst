@@ -6,6 +6,6 @@
 . bin/dialyzer
 env \
     MIX_ENV="${1:-dev}" \
-    mix \
-    escript.build
-
+    mix do \
+    escript.build, \
+    docs

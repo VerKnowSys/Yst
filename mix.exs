@@ -10,6 +10,13 @@ defmodule Yst.Mixfile do
       start_permanent: Mix.env == :prod,
       deps: deps(),
       escript: escript,
+      # Docs
+      name: "YSt",
+      source_url: "https://github.com/dmilith/yst.git",
+      docs: [
+        main: "YS integration test environment",
+        extras: ["README.md"]
+      ]
     ]
   end
 
@@ -27,7 +34,7 @@ defmodule Yst.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :hound, :credo, :remix]]
+    [applications: [:logger, :hound, :credo, :remix, :ex_doc]]
   end
 
   # Dependencies can be Hex packages:
@@ -44,6 +51,7 @@ defmodule Yst.Mixfile do
       {:hound, "~> 1.0"},
       {:credo, "~> 0.5", only: [:dev, :test]},
       {:remix, "~> 0.0.1", only: [:dev, :test]},
+      {:ex_doc, "~> 0.14", only: [:dev, :test]},
     ]
   end
 end
