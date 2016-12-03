@@ -34,7 +34,17 @@ defmodule Yst.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :hound, :credo, :remix, :ex_doc]]
+    test = []
+    prod = [:logger, :hound, :uuid]
+    dev = [:credo, :remix, :ex_doc]
+
+    apps = case Mix.env do
+      :prod -> prod
+      :dev  -> dev ++ prod
+      _     -> dev ++ prod ++ test
+    end
+
+    [applications: apps]
   end
 
   # Dependencies can be Hex packages:
