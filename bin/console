@@ -4,9 +4,11 @@
 . bin/compile
 
 env \
-    MIX_ENV="${2:-dev}" \
+    MIX_ENV="${1:-dev}" \
+    YS_LOGIN="ys" \
+    YS_PASS="***REMOVED***" \
     iex \
-    --name "${1:-yst}-${MIX_ENV}" \
-    --sname "${1:-yst}-${MIX_ENV}" \
+    --name "${2:-yst}-${MIX_ENV}" \
+    --sname "${2:-yst}-${MIX_ENV}" \
     --cookie "yst-dev-test" \
     -S mix
