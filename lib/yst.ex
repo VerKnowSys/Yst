@@ -1,4 +1,7 @@
 defmodule Yst do
+  @moduledoc "YoungSkilled OST"
+
+  require Logger
   use Hound.Helpers
 
 
@@ -11,22 +14,22 @@ defmodule Yst do
   def run do
     case Application.start :hound do
       :ok ->
-        IO.puts "Hounds unleashed."
+        Logger.info "Hounds unleashed."
 
       {:error, cause} ->
         case cause do
           {:already_started, :hound} ->
-            IO.puts "Hounds already unleased."
+            Logger.info "Hounds already unleased."
 
           {reason, :hound} ->
-            IO.puts "ERROR: Hounds were lost. Cause: #{inspect reason}"
+            Logger.error "Hounds were lost. Cause: #{inspect reason}"
         end
     end
 
     Hound.start_session
 
     navigate_to "http://akash.im"
-    IO.puts page_title()
+    Logger.info page_title()
 
     # Automatically invoked if the session owner process crashes
     Hound.end_session
