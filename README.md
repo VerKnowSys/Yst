@@ -27,6 +27,8 @@ Integration test scenarios executor ;)
     under console call `Yst.run` to run main module. By default under :dev mode
     code will be recompiled on the fly and hot swapped by BEAM VM.
 
+    ![Example console output](http://s.verknowsys.com/231f7067c0ed3f169b4b1d0992350ada.png)
+
   or
 
   3. Run with tests:
