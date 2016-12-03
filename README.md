@@ -1,24 +1,29 @@
 # Yst
 
-**TODO: Add description**
+Integration test scenarios executor ;)
 
-## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
+## How to run
 
-  1. Add `yst` to your list of dependencies in `mix.exs`:
 
-    ```elixir
-    def deps do
-      [{:yst, "~> 0.1.0"}]
-    end
+  1. Production version `bin/build prod` and then just `MIX_ENV=prod ./yst`
+
+  or
+
+  2. Run under iex REPL:
+
+    ```bash
+    bin/fetch_deps
+    bin/console
     ```
 
-  2. Ensure `yst` is started before your application:
+    under console call `Yst.run` to run main module. By default under :dev mode
+    code will be recompiled on the fly and hot swapped by BEAM VM.
 
-    ```elixir
-    def application do
-      [applications: [:yst]]
-    end
+  or
+
+  3. Run with tests:
+
+    ```bash
+    bin/test
     ```
-
