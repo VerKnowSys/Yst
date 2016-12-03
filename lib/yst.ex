@@ -30,10 +30,10 @@ defmodule Yst do
 
     Hound.start_session
 
-    OddMollyDemo.go :login
-    OddMollyDemo.go :sales
-    OddMollyDemo.go :customers
-    OddMollyDemo.go :logout
+    _ = OddMollyDemo.go :login
+    _ = OddMollyDemo.go :sales
+    _ = OddMollyDemo.go :customers
+    _ = OddMollyDemo.go :logout
 
     # Automatically invoked if the session owner process crashes
     Hound.end_session
