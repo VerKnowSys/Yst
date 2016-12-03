@@ -1,6 +1,22 @@
 # Yst
 
-Integration test scenarios executor ;)
+Integration test scenarios executor - PoC ;)
+
+
+## What am I looking at? :o
+
+Under the hood we're spawning a browser (PhantomJS 2.1+) in "WebDriver" mode.
+This way we take full control over a headless browser, to perform site integration testing.
+
+Currently the PoC code logins to OddMollyDemo and performs some read only checks (existence of text patterns or site elements).
+
+
+## Requirements
+
+  0. macOS 10.11+ (mostly because I did upload only `phantomjs` binary for Darwin)
+  1. Elixir 1.3+
+  2. Erlang OTP 19+
+  3. tmux (phantomjs is spawned under tmux session by default)
 
 
 ## How to run
