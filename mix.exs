@@ -2,12 +2,25 @@ defmodule Yst.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :yst,
-     version: "0.1.0",
-     elixir: "~> 1.3",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     deps: deps()]
+    [
+      app: :yst,
+      version: "0.1.1",
+      elixir: "~> 1.3",
+      build_embedded: Mix.env == :prod,
+      start_permanent: Mix.env == :prod,
+      deps: deps(),
+      escript: escript,
+    ]
+  end
+
+  def escript do
+    [
+      main_module: Yst,
+      embed_elixir: true,
+      language: :elixir,
+      force: true,
+      emu_args: []
+    ]
   end
 
   # Configuration for the OTP application
