@@ -1,86 +1,53 @@
 defmodule YstTest do
   use ExUnit.Case
   use Hound.Helpers
+
+  import Hound.RequestUtils
+
+  alias Hound.Element
+  alias Hound.Browser.PhantomJS
+  alias Hound.Helpers.Screenshot
+  alias Hound.Helpers.Orientation
+
+
   doctest Yst
 
-  hound_session
 
-  test "should be able to run multiple sessions" do
-    url1 = "http://localhost:9090/page1.html"
-    url2 = "http://localhost:9090/page2.html"
+  # hound_session
 
-    # Navigate to a url
-    navigate_to(url1)
+  setup do
+    Hound.start_session
 
-    # Change to another session
-    change_session_to :another_session
-    # Navigate to a url in the second session
-    navigate_to(url2)
-    # Then assert url
-    assert url2 == current_url
-
-    # Now go back to the default session
-    change_to_default_session
-    # Assert if the url is the one we visited
-    assert url1 == current_url
-  end
-
-
-  test "should be able to run multiple sessions using in_browser_session" do
-    url1 = "http://localhost:9090/page1.html"
-    url2 = "http://localhost:9090/page2.html"
-
-    # Navigate to a url
-    navigate_to(url1)
-
-    # In another session...
-    in_browser_session :another_session, fn->
-      navigate_to(url2)
-      assert url2 == current_url
+    parent = self
+    on_exit fn ->
+      Hound.end_session parent
     end
-
-    # Assert if the url is the one we visited
-    assert url1 == current_url
+    :ok
   end
 
-  test "should preserve session after using in_browser_session" do
-    url1 = "http://localhost:9090/page1.html"
-    url2 = "http://localhost:9090/page2.html"
-    url3 = "http://localhost:9090/page3.html"
 
-    # Navigate to url1 in default session
-    navigate_to(url1)
-
-    # Change to a second session and navigate to url2
-    change_session_to :session_a
-    navigate_to(url2)
-
-    # In a third session...
-    in_browser_session :session_b, fn ->
-      navigate_to(url3)
-      assert url3 == current_url
+  test "user_agent capabilities check" do
+    for user_agent <- [:iphone, :chrome, :firefox, :android] do
+      ua = Hound.Browser.user_agent user_agent
+      assert (PhantomJS.user_agent_capabilities ua) == %{"phantomjs.page.settings.userAgent" => ua}
     end
-
-    # Assert the current url is the url we visited in :session_a
-    assert url2 == current_url
-
-    # Switch back to the default session
-    change_session_to :default
-
-    # Assert the current url is the one we visited in the default session
-    assert url1 == current_url
   end
 
-  test "in_browser_session should return the result of the given function" do
-    url1 = "http://localhost:9090/page1.html"
 
-    # In another session, navigate to url1 and return the current url
-    result =
-      in_browser_session :another_session, fn ->
-        navigate_to(url1)
-        current_url
-      end
+  test "each checked page has to pass content validations" do
+    _ = Hound.Browser.user_agent :iphone
+    # set_window_size current_window_handle, 2560, 2048
 
-    assert result == url1
+    url1 = "https://hexdocs.pm/hound/Hound.Helpers.Screenshot.html"
+    navigate_to url1
+
+    for item <- [~r/Functions/, ~r/Built using/, ~r/The screenshot is saved in the current working directory/] do
+      assert visible_in_page? item
+    end
+    assert visible_in_element? {:class, "section-heading"}, ~r/Summary/
+
+    Screenshot.take_screenshot "screenshots-url1.png"
   end
+
+
 end
