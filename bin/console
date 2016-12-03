@@ -1,11 +1,12 @@
 #!/bin/sh
 
 . bin/load_phantom
+. bin/compile
 
 env \
-    MIX_ENV="${1:-dev}" \
+    MIX_ENV="${2:-dev}" \
     iex \
-    --sname "yst${MIX_ENV}" \
-    --name "yst${MIX_ENV}" \
+    --name "${1:-yst}-${MIX_ENV}" \
+    --sname "${1:-yst}-${MIX_ENV}" \
+    --cookie "yst-dev-test" \
     -S mix
-
