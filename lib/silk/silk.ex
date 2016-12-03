@@ -55,7 +55,11 @@ defmodule SilkCommon do
           send_keys :enter
         end
         curr = current_url
-        Logger.info "page_title: #{page_title}; action: #{inspect action}; current_url: #{curr}; cookies: #{inspect Cookie.cookies}"
+        Logger.debug "\n\
+                         action: #{inspect action}\n\
+                     page_title: #{page_title}\n\
+                    current_url: #{curr}\n\
+                        cookies: #{inspect Cookie.cookies}"
         _ = Screenshot.take_screenshot "screenshots/post-action_#{action}.png"
         curr
       end
