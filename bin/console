@@ -1,0 +1,11 @@
+#!/bin/sh
+
+. bin/load_phantom
+
+env \
+    MIX_ENV="${1:-dev}" \
+    iex \
+    --sname "yst${MIX_ENV}" \
+    --name "yst${MIX_ENV}" \
+    -S mix
+

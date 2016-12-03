@@ -1,0 +1,11 @@
+#!/bin/sh
+
+. bin/load_phantom
+
+if [ -z "$*" ]; then
+    # NOTE: skipping ost_test by default for now:
+    mix test "test/behaviours_test.exs" "test/checks_test.exs"
+else
+    mix test "${*}"
+fi
+

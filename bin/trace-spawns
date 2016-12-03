@@ -1,0 +1,22 @@
+#!/usr/sbin/dtrace -s
+
+BEGIN {
+  spawns = exits = 0
+}
+
+erlang*:::process-spawn { spawns++ }
+erlang*:::process-exit { exits++ }
+erlang*:::message-send {
+   @msg[copyinstr(arg0), copyinstr(arg1)] = count();
+}
+
+profile:::tick-5sec {
+    printf("Spawns %d exits %d", spawns, exits);
+    spawns = exits = 0
+}
+
+END {
+   printf("{sent,[stat");
+   printa(",{\"%s\",\"%s\",%@d}", @msg);
+   printf("]}.\n");
+}

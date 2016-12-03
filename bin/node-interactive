@@ -1,0 +1,10 @@
+#!/bin/sh
+
+node_name="${1:-yst}"
+env \
+    MIX_ENV="${2:-dev}" \
+    iex \
+    -S mix \
+    --name "${1:-yst}-${MIX_ENV}" \
+    --sname "${1:-yst}-${MIX_ENV}" \
+    --cookie "yst-dev-test"

@@ -1,0 +1,13 @@
+#!/bin/sh
+
+ps axv 2>/dev/null | egrep "\d+ bin/phantomjs --wd" >/dev/null 2>&1
+if [ "${?}" != "0" ]; then
+    tmux set-option remain-on-exit on
+    tmux new-window \
+        -n phantomjs \
+        -c "$(pwd 2>/dev/null)" \
+        "bin/phantomjs --wd" \
+        && echo "Phantomjs WebDriver started."
+else
+    echo "Phantomjs WebDriver already running."
+fi
