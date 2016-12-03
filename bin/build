@@ -1,9 +1,11 @@
 #!/bin/sh
 
+. bin/load_phantom
+. bin/fetch_deps
 . bin/compile
+. bin/dialyzer
 env \
     MIX_ENV="${1:-dev}" \
-    mix do \
+    mix \
     escript.build
 
-. bin/dialyzer
