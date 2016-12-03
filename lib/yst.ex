@@ -2,7 +2,11 @@ defmodule Yst do
   @moduledoc "YoungSkilled OST"
 
   require Logger
+
+  alias Yst.Silk
+
   use Hound.Helpers
+  alias Hound.Helpers.Screenshot
 
 
   def main, do: main []
@@ -26,10 +30,24 @@ defmodule Yst do
         end
     end
 
+
     Hound.start_session
 
-    navigate_to "http://akash.im"
-    Logger.info page_title()
+    Silk.go_login
+    Logger.info "Title go_login: #{page_title}"
+    _ = Screenshot.take_screenshot "after-login.png"
+
+    Silk.go_sales
+    Logger.info "Title go_sales: #{page_title}"
+    _ = Screenshot.take_screenshot "after-sales.png"
+
+    Silk.go_customers
+    Logger.info "Title go_customers: #{page_title}"
+    _ = Screenshot.take_screenshot "after-customers.png"
+
+    Silk.go_logout
+    Logger.info "Title go_logout: #{page_title}"
+    _ = Screenshot.take_screenshot "after-logout.png"
 
     # Automatically invoked if the session owner process crashes
     Hound.end_session

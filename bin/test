@@ -2,16 +2,9 @@
 
 . bin/load_phantom
 
-if [ -z "$*" ]; then
-    # NOTE: skipping ost_test by default for now:
-    env \
-        MIX_ENV="${1:-test}" \
-        mix \
-        test "test/yst_test.exs"
-else
-    env \
-        MIX_ENV="${1:-test}" \
-        mix \
-        test "${*}"
-fi
-
+# NOTE: skipping ost_test by default for now:
+env \
+    MIX_ENV="${1:-test}" \
+    YS_LOGIN="ys" \
+    YS_PASS="***REMOVED***" \
+    mix test test/yst_test.exs
