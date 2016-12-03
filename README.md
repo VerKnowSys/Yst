@@ -31,7 +31,7 @@ Integration test scenarios executor ;)
 
   or
 
-  3. Run with tests:
+  3. Tests also perform content checks (details in: [yst_test.exs](https://github.com/centrahq/yst/blob/master/test/yst_test.exs)):
 
     ```bash
     bin/test
