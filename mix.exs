@@ -62,6 +62,7 @@ defmodule Yst.Mixfile do
       {:credo, "~> 0.5", only: [:dev, :test]},
       {:remix, "~> 0.0.1", only: [:dev, :test]},
       {:ex_doc, "~> 0.14", only: [:dev, :test]},
+      {:uuid, "~> 1.1"},
     ]
   end
 end
