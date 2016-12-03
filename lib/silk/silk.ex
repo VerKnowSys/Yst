@@ -20,10 +20,6 @@ defmodule SilkCommon do
         login: [
           rel: "/login",
           expected: [~r/SIGN IN/, ~r/Username/, ~r/Password/],
-          input: [
-            user: user,
-            pass: pass,
-          ],
         ],
 
         logout: [
@@ -62,7 +58,7 @@ defmodule SilkCommon do
       end
 
 
-      defoverridable [url: 0, go: 1, callmap: 0]
+      defoverridable [url: 0, user: 0, pass: 0, callmap: 0, go: 1]
     end
   end
 
