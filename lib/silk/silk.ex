@@ -7,6 +7,7 @@ defmodule SilkCommon do
       use Hound.Helpers
       require Logger
 
+      alias Hound.Session
       alias Hound.Helpers.Cookie
       alias Hound.Helpers.Screenshot
 
@@ -69,11 +70,15 @@ defmodule SilkCommon do
           end
         end
         curr = current_url
+        {:ok, drver} = Hound.driver_info
         Logger.debug "\n\
                          action: #{inspect action}\n\
                      page_title: #{page_title}\n\
                     current_url: #{curr}\n\
-                        cookies: #{inspect Cookie.cookies}"
+                        cookies: #{inspect Cookie.cookies}\n\
+                     drver_info: #{inspect drver}\n\
+                   session_info: #{inspect Session.session_info Hound.current_session_id}\n\
+                   all_sessions: #{Enum.count(Session.active_sessions)}"
 
         _ = Screenshot.take_screenshot "screenshots/post-action_#{action}.png"
         curr
