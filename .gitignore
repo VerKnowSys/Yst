@@ -18,3 +18,4 @@ erl_crash.dump
 /yst
 *.png
 *.beam
+/.disk-cache
