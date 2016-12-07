@@ -1,18 +1,22 @@
 #!/bin/sh
 
+_webdrv_host="${1:-127.0.0.1:8910}" # default WebDriver port
+_webdrv_maxcachesize="${2:-512000}" # 512 MiB
 _current_dir="$(pwd 2>/dev/null)"
 _uname="$(uname 2>/dev/null)"
-mkdir -p "${_current_dir}/screenshots"
+mkdir -p "${_current_dir}/screenshots" "${_current_dir}/.disk-cache"
 
-ps axv 2>/dev/null | egrep "\d+ phantomjs --wd" >/dev/null 2>&1
+pgrep "phantomjs" >/dev/null 2>/dev/null
 if [ "${?}" != "0" ]; then
-    tmux new-session \
-        -d \
-        -s phantomjs
-    tmux new-window \
-        -n phantomjs \
-        -c "${_current_dir}" \
-        "bin/${_uname}/phantomjs --wd" \
+    tmux new-session -d -s phantomjs 2>/dev/null
+    tmux new-window -c "${_current_dir}" -n phantomjs \
+        bin/${_uname}/phantomjs \
+            --webdriver="${_webdrv_host}" \
+            --web-security=true \
+            --load-images=true \
+            --disk-cache=true \
+            --disk-cache-path="${_current_dir}/.disk-cache" \
+            --max-disk-cache-size="${_webdrv_maxcachesize}" \
         && echo "Phantomjs WebDriver started."
 else
     echo "Phantomjs WebDriver already running."
