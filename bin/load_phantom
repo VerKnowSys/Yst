@@ -1,15 +1,18 @@
 #!/bin/sh
 
 _current_dir="$(pwd 2>/dev/null)"
+_uname="$(uname 2>/dev/null)"
 mkdir -p "${_current_dir}/screenshots"
 
-ps axv 2>/dev/null | egrep "\d+ bin/phantomjs --wd" >/dev/null 2>&1
+ps axv 2>/dev/null | egrep "\d+ phantomjs --wd" >/dev/null 2>&1
 if [ "${?}" != "0" ]; then
-    tmux set-option remain-on-exit on
+    tmux new-session \
+        -d \
+        -s phantomjs
     tmux new-window \
         -n phantomjs \
         -c "${_current_dir}" \
-        "bin/phantomjs --wd" \
+        "bin/${_uname}/phantomjs --wd" \
         && echo "Phantomjs WebDriver started."
 else
     echo "Phantomjs WebDriver already running."
