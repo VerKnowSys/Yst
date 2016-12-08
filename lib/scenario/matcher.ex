@@ -10,8 +10,6 @@ defmodule Scenario.Matcher do
   @default_user_agent Hound.Browser.user_agent :chrome_desktop
   @default_session :yst_phantomjs_session
 
-  alias Option.{Some, None}
-
 
   defstruct code: (Some.v [200, 201, 202]),     # -200-202 => default success codes
 
