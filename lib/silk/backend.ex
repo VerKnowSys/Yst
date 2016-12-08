@@ -1,5 +1,8 @@
-defmodule SilkCommon do
-  @moduledoc "SilkCommon defines set of functions to be injected as features"
+defmodule Silk.Backend do
+  @moduledoc "Silk.Backend defines set of functions to be injected as features"
+
+  @callback url :: String.t
+
 
   defmacro __using__(_opts) do
     quote do
