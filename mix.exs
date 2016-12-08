@@ -34,14 +34,16 @@ defmodule Yst.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    test = []
-    prod = [:logger, :hound, :uuid]
-    dev = [:credo, :remix, :ex_doc]
+    common = [:uuid, :hound, :logger]
+
+    prod = common ++ [:ex_doc]
+    dev = common ++ [:credo, :remix, :ex_doc]
+    test = common
 
     apps = case Mix.env do
       :prod -> prod
-      :dev  -> dev ++ prod
-      _     -> dev ++ prod ++ test
+      :test -> test
+      _     -> dev
     end
 
     [applications: apps]
