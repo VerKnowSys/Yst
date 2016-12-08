@@ -19,7 +19,7 @@ defmodule Some do
   defstruct [:v, :vtype]
 
   @spec v :: (Some.t | None.t)
-  def v(), do: None.v
+  def v, do: None.v
   def v(nil), do: None.v
   def v(<<>>), do: None.v
   def v([]), do: None.v
@@ -27,7 +27,7 @@ defmodule Some do
   def v(%{}), do: None.v
   def v(%Some{}), do: None.v
   def v input do
-    in_type = Util.typeof input
+    in_type = (Util.typeof input) || :unknown
     Logger.debug "Some: #{inspect input} of type: #{in_type}"
     %Some{
       v: input,
@@ -44,16 +44,17 @@ defmodule Some do
       value
     rescue
       MatchError ->
-        Logger.error "Failed to match Some-thing!"
+        Logger.debug "Failed to match Some-thing!"
+        some
 
       value ->
-        Logger.error "caught #{value}"
-    after
+        Logger.debug "caught #{value}"
+        some
     end
   end
 
 
-  @spec unwrap_or_else(some :: Some.t, elseblock :: any) :: any
+  @spec unwrap_or_else(some :: Some.t, elseblock :: Some.t) :: any
   def unwrap_or_else some, elseblock do
     try do
       %Some{v: value} = some
@@ -62,8 +63,10 @@ defmodule Some do
     rescue
       any ->
         Logger.debug "Deliberately silenced error: #{inspect any}"
-        elseblock
-    after
+        case elseblock do
+          %Some{v: value, vtype: _} -> value
+          val -> val
+        end
     end
   end
 
