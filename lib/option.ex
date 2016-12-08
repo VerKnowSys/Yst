@@ -12,8 +12,6 @@ defmodule Option do
 
     def v(), do: None.v
     def v(nil), do: None.v
-    def v(""), do: None.v
-    def v(''), do: None.v
     def v(<<>>), do: None.v
     def v([]), do: None.v
     def v input do
