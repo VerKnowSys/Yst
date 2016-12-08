@@ -3,6 +3,8 @@ defmodule Yst do
 
   require Logger
 
+  alias Silk.PeterDemo
+
   use Hound.Helpers
 
 
@@ -30,10 +32,10 @@ defmodule Yst do
 
     Hound.start_session
 
-    _ = OddMollyDemo.go :login
-    _ = OddMollyDemo.go :sales
-    _ = OddMollyDemo.go :customers
-    _ = OddMollyDemo.go :logout
+    _ = PeterDemo.go :login
+    _ = PeterDemo.go :sales
+    _ = PeterDemo.go :customers
+    _ = PeterDemo.go :logout
 
     # Automatically invoked if the session owner process crashes
     Hound.end_session
