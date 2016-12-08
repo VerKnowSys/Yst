@@ -4,7 +4,7 @@ defmodule Scenario.Matcher do
   """
 
   @type t :: Matcher.t
-  @enforce_keys [:code]
+  @enforce_keys [:rel, :code]
 
   @default_delay_secs 0
   @default_user_agent Hound.Browser.user_agent :chrome_desktop
@@ -12,10 +12,11 @@ defmodule Scenario.Matcher do
 
 
   defstruct code: (Some.v [200, 201, 202]),     # -200-202 => default success codes
+            rel: (Some.v "/"),                  #  /some/request/and/http-params
 
             # content match
-            text: [None.v], # List of ~r// matchers expected in page text content
-            html: [None.v], # List of ~r// matchers expected in page source code
+            has_text: [None.v], # List of ~r// matches expected in page text content
+            has_src: [None.v], # List of ~r// matches expected in page source code
 
             has_id: [None.v],
             has_class: [None.v],
