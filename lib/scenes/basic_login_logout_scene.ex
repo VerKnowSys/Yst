@@ -1,5 +1,5 @@
 defmodule BasicLoginLogoutScene do
-  use Silk.Backend
+  use Yst.Core
 
   @behaviour Scenario
 

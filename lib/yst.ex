@@ -3,10 +3,6 @@ defmodule Yst do
 
   require Logger
 
-  alias Silk.PeterDemo
-
-  use Hound.Helpers
-
 
   def main, do: main []
   def main _ do
@@ -32,13 +28,11 @@ defmodule Yst do
 
     Hound.start_session
 
-    _ = PeterDemo.go :login
-    _ = PeterDemo.go :sales
-    _ = PeterDemo.go :customers
-    _ = PeterDemo.go :logout
+    scenes = BasicLoginLogoutScene.script
+    scenes |> BasicLoginLogoutScene.play
 
-    # Automatically invoked if the session owner process crashes
     Hound.end_session
+    scenes
   end
 end
 
