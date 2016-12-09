@@ -14,6 +14,7 @@ if [ "${?}" != "0" ]; then
         "bin/${_uname}/phantomjs" \
             --webdriver="${_webdrv_host}" \
             --web-security=true \
+            --ignore-ssl-errors=true \
             --load-images=true \
             --disk-cache=true \
             --disk-cache-path="${_current_dir}/.disk-cache" \
