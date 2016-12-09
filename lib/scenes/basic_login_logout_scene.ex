@@ -22,6 +22,7 @@ defmodule BasicLoginLogoutScene do
           {"adm_pass", pass},
         ],
         keys!: [:enter],
+        screenshot!: true,
 
         title?: ["SIGN IN"],
         text_not?: ["Username", "Password"],
