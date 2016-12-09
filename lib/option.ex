@@ -27,7 +27,7 @@ defmodule Some do
   def v(%{}), do: None.v
   def v(%Some{}), do: None.v
   def v input do
-    in_type = (Util.typeof input) || :unknown
+    in_type = Util.typeof input
     Logger.debug "Some: #{inspect input} of type: #{in_type}"
     %Some{
       v: input,
