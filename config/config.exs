@@ -4,30 +4,41 @@ use Mix.Config
 
 
 config :hound, driver: "phantomjs"
+config :yst, scenarios_dir: "lib/scenes"
 
-config :yst, callmap: [
+# config :yst, callmap: [
+#     login: [
+#       rel: "/login",
+#       expected: [
+#         {
+#           ~r/SIGN IN/, [
+#             parent_of: "somemore",
+#             child_of: "container",
+#             in_frame: "frame_1",
+#             class: "some",
+#             id: "uniqu3"
+#           ]
+#         },
+#         ~r/Username/,
+#         ~r/Password/
+#       ],
+#     ],
 
-    login: [
-      rel: "/login",
-      expected: [~r/SIGN IN/, ~r/Username/, ~r/Password/],
-    ],
+#     logout: [
+#       rel: "/sign_out",
+#       expected: [~r/SIGN IN/, ~r/Username/, ~r/Password/],
+#     ],
 
-    logout: [
-      rel: "/sign_out",
-      expected: [~r/SIGN IN/, ~r/Username/, ~r/Password/],
-    ],
+#     sales: [
+#       rel: "/retail/sales?q=status:3",
+#       expected: [~r/Total/, ~r/Order/, ~r/Customer/, ~r/Total/],
+#     ],
 
-    sales: [
-      rel: "/retail/sales?q=status:3",
-      expected: [~r/Total/, ~r/Order/, ~r/Customer/, ~r/Total/],
-    ],
-
-    customers: [
-      rel: "/retail/customer?q=status:1",
-      expected: [~r/Orders/, ~r/Customer/, ~r/Total/, ~r/Created/],
-    ],
-
-]
+#     customers: [
+#       rel: "/retail/customer?q=status:1",
+#       expected: [~r/Orders/, ~r/Customer/, ~r/Total/, ~r/Created/],
+#     ],
+# ]
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
