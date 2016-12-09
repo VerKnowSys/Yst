@@ -81,6 +81,7 @@ defmodule Yst.Core do
 
           Logger.info "After Scene( #{act+1}/#{acts} ) Session( #{current_session_name} ) Url( #{url}#{request} )"
           Logger.debug "A\n\
+                         scene_id: #{scene_id}\n\
                           request: #{inspect request}\n\
                        page_title: #{page_title}\n\
                       current_url: #{current_url}\n\
@@ -109,8 +110,8 @@ defmodule Yst.Core do
 
           # Good time to make a shot!
           if scene.screenshot! do
-            out = Screenshot.take_screenshot "screenshots/post-action_#{request}.png"
-            Logger.debug "Screenshot: req:'#{request}' #{inspect out}"
+            Logger.debug "Screenshot: scene_id: #{scene_id}"
+            Screenshot.take_screenshot "screenshots/sceneid-#{scene_id}.png"
           end
 
           # keys!
