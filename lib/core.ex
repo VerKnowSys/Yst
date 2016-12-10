@@ -106,6 +106,10 @@ defmodule Yst.Core do
           #            all_sessions: #{Enum.count(Session.active_sessions)}"
 
           navigate_to "#{url}#{request}"
+          if scene.wait_after! > 0 do
+            Logger.debug "Sleeping for: #{scene.wait_after!} seconds."
+            :timer.sleep scene.wait_after!
+          end
 
           Logger.info "After Scene( #{act+1}/#{acts} ) Session( #{current_session_name} ) Url( #{url}#{request} )"
           Logger.debug "A\n\
