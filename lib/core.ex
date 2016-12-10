@@ -165,6 +165,26 @@ defmodule Yst.Core do
             Logger.debug "JavaScript disabled for scene: #{scene_id}"
           end
 
+
+          # accept! > dismiss!
+          if scene.accept! do
+            try do
+              accept_dialog
+              Logger.debug "Dialog accepted."
+            rescue
+              _ ->
+                Logger.warn "Accepting dialog failed."
+            end
+          else
+            if scene.dismiss! do
+              try do
+                dismiss_dialog
+                Logger.debug "Dialog dismissed."
+              rescue
+                _ ->
+                  Logger.warn "Dismissing dialog failed."
+              end
+            end
           end
 
           # keys!
