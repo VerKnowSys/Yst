@@ -213,6 +213,16 @@ defmodule Yst.Core do
             Logger.debug "CheckTitleNot:(#{title})"
             expect_failure title == page_title
           end
+
+          for scrpt <- scene.script? do
+            Logger.debug "CheckScript:(#{inspect scrpt})"
+            expect_success (execute_script "#{scrpt}")
+          end
+          for scrpt <- scene.script_not? do
+            Logger.debug "CheckScriptNot:(#{inspect scrpt})"
+            expect_failure (execute_script "#{scrpt}")
+          end
+
         end
 
 
