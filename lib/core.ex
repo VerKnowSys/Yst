@@ -136,10 +136,6 @@ defmodule Yst.Core do
             end
           end
 
-          # Good time to make a shot!
-          if scene.screenshot! do
-            Logger.debug "Screenshot: scene_id: #{scene_id}"
-            Screenshot.take_screenshot "screenshots/sceneid-#{scene_id}.png"
           end
 
           # keys!
@@ -148,7 +144,12 @@ defmodule Yst.Core do
             send_keys symbol
           end
 
-          {page_title, visible_page_text, page_source}
+          # Good time to make a shot!
+          if scene.screenshot! do
+            Logger.debug "Screenshot: scene_id: #{scene_id}"
+            Screenshot.take_screenshot "screenshots/sceneid-#{scene_id}.png"
+          end
+
         end
 
 
@@ -161,7 +162,6 @@ defmodule Yst.Core do
 
         # NOTE: Return tripple with useful data:
         # Hound.end_session
-        {page_title, visible_page_text, page_source}
       end
 
 
