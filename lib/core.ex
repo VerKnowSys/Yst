@@ -233,16 +233,16 @@ defmodule Yst.Core do
           end
           for src <- scene.src_not? do
             Logger.debug "CheckSrcNot:(#{inspect src})"
-            expect_failure (String.contains? page_source, src)
+            expect_failure String.contains? page_source, src
           end
 
           for text <- scene.text? do
             Logger.debug "CheckText:(#{inspect text})"
-            expect_success (String.contains? visible_page_text, text)
+            expect_success String.contains? visible_page_text, text
           end
           for text <- scene.text_not? do
             Logger.debug "CheckTextNot:(#{inspect text})"
-            expect_failure (String.contains? visible_page_text, text)
+            expect_failure String.contains? visible_page_text, text
           end
 
           for an_id <- scene.id? do
@@ -292,16 +292,7 @@ defmodule Yst.Core do
 
         end
 
-
-        # Available:
-        # TODO: page_source
-        # TODO: page_title
-        # TODO: visible_page_text
-
         # TODO: it should return Result.t site data like html, text, fields DOM & stuff
-
-        # NOTE: Return tripple with useful data:
-        # Hound.end_session
       end
 
 
