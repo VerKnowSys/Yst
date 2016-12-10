@@ -39,6 +39,34 @@ defmodule Yst.Core do
       def pass, do: System.get_env "YS_PASS"
 
 
+
+      def expect_success statement do
+        case statement do
+          true ->
+            Logger.info "Pass:(#{statement})"
+
+          false ->
+            Logger.error "Fail:(#{statement})"
+
+          any ->
+            Logger.warn "WrongArgument:(#{statement})"
+        end
+      end
+
+
+      def expect_failure statement do
+        case statement do
+          true ->
+            Logger.error "Fail:(#{statement})"
+
+          false ->
+            Logger.info "Pass:(#{statement})"
+
+          any ->
+            Logger.warn "WrongArgument:(#{statement})"
+        end
+      end
+
       @doc """
       Play scripted scenarios
       """
