@@ -245,6 +245,50 @@ defmodule Yst.Core do
             expect_failure (String.contains? visible_page_text, text)
           end
 
+          for an_id <- scene.id? do
+            Logger.debug "CheckId:(#{inspect an_id})"
+            expect_success element? :id, an_id
+          end
+          for an_id <- scene.id_not? do
+            Logger.debug "CheckIdNot:(#{inspect an_id})"
+            expect_failure element? :id, an_id
+          end
+
+          for a_class <- scene.class? do
+            Logger.debug "CheckClass:(#{inspect a_class})"
+            expect_success element? :class, a_class
+          end
+          for a_class <- scene.class_not? do
+            Logger.debug "CheckClassNot:(#{inspect a_class})"
+            expect_failure element? :class, a_class
+          end
+
+          for a_name <- scene.name? do
+            Logger.debug "CheckName:(#{inspect a_name})"
+            expect_success element? :name, a_name
+          end
+          for a_name <- scene.name_not? do
+            Logger.debug "CheckNameNot:(#{inspect a_name})"
+            expect_failure element? :name, a_name
+          end
+
+          for a_css <- scene.css? do
+            Logger.debug "CheckCSS:(#{inspect a_css})"
+            expect_success element? :css, a_css
+          end
+          for a_css <- scene.css_not? do
+            Logger.debug "CheckCSSNot:(#{inspect a_css})"
+            expect_failure element? :css, a_css
+          end
+
+          for a_tag <- scene.tag? do
+            Logger.debug "CheckTag:(#{inspect a_tag})"
+            expect_success element? :tag, a_tag
+          end
+          for a_tag <- scene.tag_not? do
+            Logger.debug "CheckTagNot:(#{inspect a_tag})"
+            expect_failure element? :tag, a_tag
+          end
 
         end
 
