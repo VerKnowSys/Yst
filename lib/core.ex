@@ -223,6 +223,25 @@ defmodule Yst.Core do
             expect_failure (execute_script "#{scrpt}")
           end
 
+          for src <- scene.src? do
+            Logger.debug "CheckSrc:(#{inspect src})"
+            expect_success (String.contains? page_source, src)
+          end
+          for src <- scene.src_not? do
+            Logger.debug "CheckSrcNot:(#{inspect src})"
+            expect_failure (String.contains? page_source, src)
+          end
+
+          for text <- scene.text? do
+            Logger.debug "CheckText:(#{inspect text})"
+            expect_success (String.contains? visible_page_text, text)
+          end
+          for text <- scene.text_not? do
+            Logger.debug "CheckTextNot:(#{inspect text})"
+            expect_failure (String.contains? visible_page_text, text)
+          end
+
+
         end
 
 
