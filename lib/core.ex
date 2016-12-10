@@ -136,6 +136,24 @@ defmodule Yst.Core do
             end
           end
 
+
+          for {html_entity, contents} <- scene.click! do
+            Logger.debug "Looking for entity: #{html_entity} to click"
+            for try_html_hook <- [:name, :id, :class, :tag, :css] do
+              if element? try_html_hook, html_entity do
+                case search_element try_html_hook, html_entity do
+                  {:ok, element} ->
+                    Logger.debug "Found entity: #{try_html_hook} => #{html_entity}. Click-Element: #{inspect element}"
+                    click element
+
+                  {:error, e} ->
+                    Logger.error e
+
+                end
+              end
+            end
+          end
+
           end
 
           # keys!
