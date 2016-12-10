@@ -154,6 +154,17 @@ defmodule Yst.Core do
             end
           end
 
+
+          #js!
+          if scene.js? do
+            for code <- scene.js! do
+              Logger.debug "Executing JavaScript code: #{inspect code}"
+              execute_script "#{code}"
+            end
+          else
+            Logger.debug "JavaScript disabled for scene: #{scene_id}"
+          end
+
           end
 
           # keys!
