@@ -199,6 +199,20 @@ defmodule Yst.Core do
             Screenshot.take_screenshot "screenshots/sceneid-#{scene_id}.png"
           end
 
+
+          ###########
+          #   Checks!
+          ###############
+
+
+          for title <- scene.title? do
+            Logger.debug "CheckTitle:(#{title})"
+            expect_success title == page_title
+          end
+          for title <- scene.title_not? do
+            Logger.debug "CheckTitleNot:(#{title})"
+            expect_failure title == page_title
+          end
         end
 
 
