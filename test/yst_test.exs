@@ -5,7 +5,6 @@ defmodule YstTest do
   require Logger
 
   alias Hound.Browser.PhantomJS
-  alias Hound.Helpers.Cookie
 
   doctest Yst
 
@@ -28,32 +27,35 @@ defmodule YstTest do
 
 
   test "each checked page has to pass content validations" do
-    in_browser_session "#{UUID.uuid4}", fn ->
+    scenes = HeadlessScene.script
 
-      scenes = HeadlessScene.script
-
-      res = scenes |> BasicLoginLogoutScene.play
-      assert res == {:ok, scenes}
-      assert (length scenes) == 2
-    end
+    res = scenes |> Scenarios.play
+    assert res == {:ok, scenes}
+    assert (length scenes) == 2
   end
 
 
-  # test "test sales elements existence" do
-  #   in_browser_session "#{UUID.uuid4}", fn ->
-  #     PeterDemo.go :login
-  #     PeterDemo.go :sales
+  test "test if results queue is filled" do
+    case Results.start_link do
+      {:ok, pid} ->
+        Logger.info "Results queue started (#{inspect pid})"
 
-  #     assert (visible_in_page? ~r/SILK VMS master/), "'SILK VMS master' should be visible!"
+      {:error, {:already_started, pid}} ->
+        Logger.debug "Results queue already started with pid: #{inspect pid}"
 
-  #     for item <- [~r/Total/, ~r/Order/, ~r/Customer/, ~r/Total/],
-  #         elem <- [{:class, "fieldset"}] do
-  #       assert (visible_in_page? item), "Item '#{inspect item}' should be visible!"
-  #       assert (visible_in_element? elem, ~r/ORDERS/), "fieldset with ORDERS"
-  #       assert (visible_in_element? elem, item), "Item #{inspect item} should be contained under element: #{inspect elem}"
-  #     end
-  #   end
-  # end
+      {:error, er} ->
+        Logger.error "Error happened: #{inspect er}"
+    end
+
+    scenes = HeadlessScene.script ++ BasicLoginLogoutScene.script
+
+    res = scenes |> Scenarios.play
+    assert res == {:ok, scenes}
+    assert (length scenes) >= 5
+    assert (length Results.show) >= 5
+
+    GenServer.stop Results
+  end
 
 
   # test "test customers elements existence" do
