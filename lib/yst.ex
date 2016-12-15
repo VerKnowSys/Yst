@@ -27,8 +27,7 @@ defmodule Yst do
 
     children = [
       worker(Results, []),
-      worker(Director, []),
-      supervisor(Yst, [])
+      worker(Director, [])
     ]
 
     Logger.info "Starting Yst-Supervisor"
