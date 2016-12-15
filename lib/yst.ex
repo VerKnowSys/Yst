@@ -1,16 +1,16 @@
 defmodule Yst do
   @moduledoc "YoungSkilled OST"
 
+  use Supervisor
   require Logger
 
 
-  def main, do: main []
-  def main _ do
-    run
+  def start_link do
+    Supervisor.start_link __MODULE__, [], name: __MODULE__
   end
 
 
-  def run do
+  def init [] do
     case Application.start :hound do
       :ok ->
         Logger.info "Hounds unleashed."
@@ -25,38 +25,26 @@ defmodule Yst do
         end
     end
 
-    case Results.start_link do
-      {:ok, pid} ->
-        Logger.info "Results queue started (#{inspect pid})"
+    children = [
+      worker(Results, []),
+      worker(Director, []),
+      supervisor(Yst, [])
+    ]
 
-      {:error, {:already_started, pid}} ->
-        Logger.debug "Results queue already started with pid: #{inspect pid}"
-
-      {:error, er} ->
-        Logger.error "Error happened: #{inspect er}"
-    end
-
-
-    Hound.start_session
-
-    scenes = BasicLoginLogoutScene.script ++ HeadlessScene.script
-    scenes |> Scenarios.play
-
-    Logger.info "Scenario results:"
-    for res <- Results.show do
-      case res do
-        {:passed, msg, where} ->
-          Logger.info "Passed: #{msg} Under: #{where}"
-
-        {:failed, msg, where} ->
-          Logger.error "Failed: #{msg} Under: #{where}"
-      end
-    end
-
-    GenServer.stop Results
-    Hound.end_session
-    scenes
+    Logger.info "Starting Yst-Supervisor"
+    supervise(children, strategy: :one_for_one)
   end
+
+
+  def run, do: Yst.start_link
+
+
+  def main, do: main []
+  def main _ do
+    # Start supervisor. Director supervisor will start it's work synchronously
+    run
+  end
+
 end
 
 # Yst.run
