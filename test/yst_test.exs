@@ -7,8 +7,6 @@ defmodule YstTest do
   alias Hound.Browser.PhantomJS
   alias Hound.Helpers.Cookie
 
-  alias Silk.PeterDemo
-
   doctest Yst
 
 
@@ -31,71 +29,72 @@ defmodule YstTest do
 
   test "each checked page has to pass content validations" do
     in_browser_session "#{UUID.uuid4}", fn ->
-      PeterDemo.go :login
 
-      for item <- [~r/DASHBOARD - SALES/, ~r/GENERAL/, ~r/RETAIL/, ~r/Sales for period/, ~r/Accounts\/Customers: All/, ~r/SILK VMS master/] do
-        assert visible_in_page? item
-      end
+      scenes = HeadlessScene.script
+
+      res = scenes |> BasicLoginLogoutScene.play
+      assert res == {:ok, scenes}
+      assert (length scenes) == 2
     end
   end
 
 
-  test "test sales elements existence" do
-    in_browser_session "#{UUID.uuid4}", fn ->
-      PeterDemo.go :login
-      PeterDemo.go :sales
+  # test "test sales elements existence" do
+  #   in_browser_session "#{UUID.uuid4}", fn ->
+  #     PeterDemo.go :login
+  #     PeterDemo.go :sales
 
-      assert (visible_in_page? ~r/SILK VMS master/), "'SILK VMS master' should be visible!"
+  #     assert (visible_in_page? ~r/SILK VMS master/), "'SILK VMS master' should be visible!"
 
-      for item <- [~r/Total/, ~r/Order/, ~r/Customer/, ~r/Total/],
-          elem <- [{:class, "fieldset"}] do
-        assert (visible_in_page? item), "Item '#{inspect item}' should be visible!"
-        assert (visible_in_element? elem, ~r/ORDERS/), "fieldset with ORDERS"
-        assert (visible_in_element? elem, item), "Item #{inspect item} should be contained under element: #{inspect elem}"
-      end
-    end
-  end
-
-
-  test "test customers elements existence" do
-    in_browser_session "#{UUID.uuid4}", fn ->
-      PeterDemo.go :login
-      PeterDemo.go :customers
-
-      assert (visible_in_page? ~r/SILK VMS master/), "'SILK VMS master' should be visible!"
-      assert (visible_in_element? {:id, "retail_customer_item"}, ~r/CUSTOMERS/), "retail_customer_item with CUSTOMERS"
-      elem = find_element :class, "field_container"
-      for item <- [~r/Orders/, ~r/Customer/, ~r/Total/, ~r/Created/] do
-        assert (visible_in_element? elem, item), "Item #{inspect item} should be contained under element: #{inspect elem}"
-        assert (visible_in_page? item), "Item '#{inspect item}' should be visible!"
-      end
-    end
-  end
+  #     for item <- [~r/Total/, ~r/Order/, ~r/Customer/, ~r/Total/],
+  #         elem <- [{:class, "fieldset"}] do
+  #       assert (visible_in_page? item), "Item '#{inspect item}' should be visible!"
+  #       assert (visible_in_element? elem, ~r/ORDERS/), "fieldset with ORDERS"
+  #       assert (visible_in_element? elem, item), "Item #{inspect item} should be contained under element: #{inspect elem}"
+  #     end
+  #   end
+  # end
 
 
-  test "cookie value should be shared across several logins/logouts" do
-    in_browser_session "#{UUID.uuid4}", fn ->
-      PeterDemo.go :logout
+  # test "test customers elements existence" do
+  #   in_browser_session "#{UUID.uuid4}", fn ->
+  #     PeterDemo.go :login
+  #     PeterDemo.go :customers
 
-      PeterDemo.go :login
-      PeterDemo.go :customers
-      cookie_1 = (List.first Cookie.cookies)["value"]
-      PeterDemo.go :logout
+  #     assert (visible_in_page? ~r/SILK VMS master/), "'SILK VMS master' should be visible!"
+  #     assert (visible_in_element? {:id, "retail_customer_item"}, ~r/CUSTOMERS/), "retail_customer_item with CUSTOMERS"
+  #     elem = find_element :class, "field_container"
+  #     for item <- [~r/Orders/, ~r/Customer/, ~r/Total/, ~r/Created/] do
+  #       assert (visible_in_element? elem, item), "Item #{inspect item} should be contained under element: #{inspect elem}"
+  #       assert (visible_in_page? item), "Item '#{inspect item}' should be visible!"
+  #     end
+  #   end
+  # end
 
-      PeterDemo.go :login
-      PeterDemo.go :sales
-      cookie_2 = (List.first Cookie.cookies)["value"]
-      PeterDemo.go :logout
 
-      PeterDemo.go :login
-      PeterDemo.go :customers
-      cookie_3 = (List.first Cookie.cookies)["value"]
-      PeterDemo.go :logout
+  # test "cookie value should be shared across several logins/logouts" do
+  #   in_browser_session "#{UUID.uuid4}", fn ->
+  #     PeterDemo.go :logout
 
-      Logger.debug "C1: #{cookie_1}, C2: #{cookie_2}, C3: #{cookie_3}, C*: #{inspect Cookie.cookies}"
-      assert cookie_1 == cookie_2
-      assert cookie_1 == cookie_3
-    end
-  end
+  #     PeterDemo.go :login
+  #     PeterDemo.go :customers
+  #     cookie_1 = (List.first Cookie.cookies)["value"]
+  #     PeterDemo.go :logout
+
+  #     PeterDemo.go :login
+  #     PeterDemo.go :sales
+  #     cookie_2 = (List.first Cookie.cookies)["value"]
+  #     PeterDemo.go :logout
+
+  #     PeterDemo.go :login
+  #     PeterDemo.go :customers
+  #     cookie_3 = (List.first Cookie.cookies)["value"]
+  #     PeterDemo.go :logout
+
+  #     Logger.debug "C1: #{cookie_1}, C2: #{cookie_2}, C3: #{cookie_3}, C*: #{inspect Cookie.cookies}"
+  #     assert cookie_1 == cookie_2
+  #     assert cookie_1 == cookie_3
+  #   end
+  # end
 
 end
