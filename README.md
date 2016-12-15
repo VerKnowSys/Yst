@@ -8,7 +8,7 @@ Integration test scenarios executor - PoC ;)
 Under the hood we're spawning a browser (PhantomJS 2.1+) in "WebDriver" mode.
 This way we take full control over a headless browser, to perform site integration testing.
 
-Currently the PoC code logins to OddMollyDemo and performs some read only checks (existence of text patterns or site elements).
+Currently the PoC code logins to Silk backend playground and performs some read only checks (existence of text patterns or site elements).
 
 
 ## Requirements
