@@ -17,6 +17,7 @@ defmodule Scene do
 
   Each check should be specified only once.
   """
+  @behaviour Access
 
   @type t :: Scene.t
 
@@ -75,6 +76,25 @@ defmodule Scene do
 
             cookies?: true,                         # Enabled cookies?
             js?: true                               # Enabled javascript?
+
+  @doc false
+  def get keywords, key, default do
+    res = Map.get keywords, key, []
+    case res do
+      {'EXIT', {:badarg, _}} -> default
+      _ -> res
+    end
+  end
+
+
+  @doc false
+  def fetch keywords, key do
+    res = Map.get keywords, key, []
+    case res do
+      {'EXIT', {:badarg, _}} -> :error
+      _ -> {:ok, res}
+    end
+  end
 
 
 end
