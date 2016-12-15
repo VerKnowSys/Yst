@@ -13,7 +13,7 @@ Currently the PoC code logins to OddMollyDemo and performs some read only checks
 
 ## Requirements
 
-  0. macOS 10.11+ (mostly because I did upload only `phantomjs` binary for Darwin)
+  0. macOS 10.11+ or Linux
   1. Elixir 1.3+
   2. Erlang OTP 19+
   3. tmux (phantomjs is spawned under tmux session by default)
@@ -29,7 +29,7 @@ Currently the PoC code logins to OddMollyDemo and performs some read only checks
     YS_PASS   # Password used to get to the Silk panel
     ```
 
-  1. Production version `bin/build prod` and then just `env YS_LOGIN="ys" YS_PASS="*******" MIX_ENV=prod ./yst`
+  1. Production version `bin/build prod` and then just `env YS_URL="myshiny.site.com" YS_LOGIN="ys" YS_PASS="*******" MIX_ENV=prod ./yst`
 
   or
 
@@ -43,7 +43,7 @@ Currently the PoC code logins to OddMollyDemo and performs some read only checks
     under console call `Yst.run` to run main module. By default under :dev mode
     code will be recompiled on the fly and hot swapped by BEAM VM.
 
-    ![Example console output](http://s.verknowsys.com/231f7067c0ed3f169b4b1d0992350ada.png)
+    ![Example console output](http://s.verknowsys.com/d3abbc036b823cd78d1007b5cc007367.png)
 
   or
 
