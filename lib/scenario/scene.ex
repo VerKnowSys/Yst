@@ -26,56 +26,7 @@ defmodule Scene do
   @default_delay_secs 0
   @default_user_agent :chrome_desktop
   @default_browser :chrome
-
-
-  defstruct code: [200..210],     # -200-202 => default success codes
-            # window: [x: 100, y: 100, w: 1920, h: 1080],
-
-            # ui_actions:
-            req!: "/",                  #  /some/request/and/http-params
-            click!: [],                             # Click elements
-            # focus!: [],                             # Set focus on element
-            fill!: [],                              # fill focused field with content
-            keys!: [],                         # send keystroke or key event
-            js!: [],
-            accept!: false,                           # Accept dialog or other js window
-            dismiss!: false,                         # Dismiss dialog or other js window
-            session!: false,                         # NO new session for each scene
-            screenshot!: false,
-            cookies_reset!: false,
-            wait_after!: @default_delay_secs,        # delay in seconds
-
-            # browser!: @default_browser,
-            # agent!: @default_user_agent,
-            # wait_before!: @default_delay_secs,       # delay in seconds
-
-            # After all sync tasks are done => perform expectations check
-            title?: [],
-            title_not?: [],
-            text?: [], # List of ~r// matches expected in page text content
-            text_not?: [],
-            src?: [], # List of ~r// matches expected in page source code
-            src_not?: [],
-            # frame?: [],                             # scene has content in these frames
-            # frame_not?: [],
-            script?: [],                            # JavaScript routines that have to return true
-            script_not?: [],
-
-            id?: [],
-            id_not?: [],
-            css?: [],
-            css_not?: [],
-            class?: [],
-            class_not?: [],
-            tag?: [],
-            tag_not?: [],
-            name?: [],                              # expect to find element name(s)
-            name_not?: [],                              # expect to find element name(s)
-            # cookie?: [],                            # expect cookies
-            # cookie_not?: [],                            # expect cookies
-
-            cookies?: true,                         # Enabled cookies?
-            js?: true                               # Enabled javascript?
+  @default_window [width: 1920, height: 1080]
 
   @doc false
   def get keywords, key, default do
@@ -96,5 +47,54 @@ defmodule Scene do
     end
   end
 
+
+  defstruct [
+
+    req!: "/",                              #  /some/request/and/http-params
+    cookies_reset!: false,                  # reset cookies before request
+    click!: [],                             # click on elements
+    # focus!: [],                             # Set focus on element
+    fill!: [],                              # fill focused field with content
+    keys!: [],                              # send keystroke or key event
+    js!: [],
+    accept!: false,                         # Accept dialog or other js window
+    dismiss!: false,                        # Dismiss dialog or other js window
+    session!: false,                        # NO new session for each scene
+    screenshot!: false,                     # make screenshot before first check
+    wait_after!: @default_delay_secs,       # delay in seconds
+    window!: @default_window,
+
+    # browser!: @default_browser,
+    # agent!: @default_user_agent,
+    # wait_before!: @default_delay_secs,       # delay in seconds
+
+    # After all sync tasks are done => perform expectations check
+    title?: [],
+    title_not?: [],
+    text?: [],
+    text_not?: [],
+    src?: [],
+    src_not?: [],
+    # frame?: [],                             # scene has content in these frames
+    # frame_not?: [],
+    script?: [],                            # JavaScript routines that have to return true
+    script_not?: [],
+
+    id?: [],
+    id_not?: [],
+    css?: [],
+    css_not?: [],
+    class?: [],
+    class_not?: [],
+    tag?: [],
+    tag_not?: [],
+    name?: [],
+    name_not?: [],
+    # cookie?: [],                            # expect to find listed cookies
+    # cookie_not?: [],                        # expect not to find listed cookies
+
+    cookies?: true,                         # Enabled cookies?
+    js?: true                               # Enabled javascript?
+  ]
 
 end
