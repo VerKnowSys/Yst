@@ -12,6 +12,12 @@ defmodule HeadlessScene do
         script_not?: ["return window.isItReal"],
       },
 
+      %Scene {
+        req!: "/",
+        js!: ["return alert('Is it true?')"],
+        dismiss!: true,
+      },
+
   ]
 
 end
