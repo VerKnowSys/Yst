@@ -12,3 +12,13 @@ defmodule Scenario do
 
 
 end
+
+
+
+defmodule Scenarios do
+  @moduledoc """
+  Helper module as syntax sugar for __MODULE_NAME__.play
+  """
+  use Core
+
+end
