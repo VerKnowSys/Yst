@@ -1,8 +1,21 @@
 defmodule Scene do
   @moduledoc """
-  Defines main Scene structure.
+  This structure provides definition of "Scene".
 
-  This struct is used to define scene expectations
+  Each scene contains multiple actions and checks.
+  Action is a field that ends with "!".
+  Check is a field that ends with "?".
+
+  Actions that may be defined once per scene:
+  req!, window!, screenshot!, wait_after!,
+  session!, dismiss!, accept!, cookies_reset!
+
+  Some actions can be specified multiple times:
+  fill!, click!, keys!, js!,
+
+  All scene actions will be executed in given order.
+
+  Each check should be specified only once.
   """
 
   @type t :: Scene.t
