@@ -5,7 +5,7 @@
 
 env \
     MIX_ENV="${1:-dev}" \
-    YS_URL="http://playground.silkvms.com/amspeter123/" \
+    YS_URL="http://playground.silkvms.com/amspeter123" \
     YS_LOGIN="ys" \
     YS_PASS="***REMOVED***" \
     iex \
