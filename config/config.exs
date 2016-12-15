@@ -4,7 +4,8 @@ use Mix.Config
 
 
 config :hound, driver: "phantomjs"
-config :yst, scenarios_dir: "lib/scenes"
+config :yst, scene_timeout: 360000
+config :yst, result_timeout: 30000
 
 # config :yst, callmap: [
 #     login: [
