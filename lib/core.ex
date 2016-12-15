@@ -111,6 +111,11 @@ defmodule Yst.Core do
           scene_id = UUID.uuid4
           request = scene.req!
 
+          if scene.window! do
+            Logger.debug "Setting window size to: #{inspect scene.window!}"
+            set_window_size current_window_handle, scene.window![:width], scene.window![:height]
+          end
+
           # Process pre-request options
           if scene.session! do
             change_session_to scene_id
