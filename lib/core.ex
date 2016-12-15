@@ -52,19 +52,19 @@ defmodule Core do
       @doc """
       Check expected values
       """
-      def expect statement, desc \\ "" do
+      def expect request, statement, description \\ "" do
         case statement do
           true ->
-            Logger.info "Pass:(#{statement}): #{inspect desc}"
-            :passed
+            Logger.info "Pass:(#{statement}): #{inspect description}"
+            Results.push {:passed, description, "Caught on: #{url}#{request}"}
 
           false ->
-            Logger.error "Fail:(#{statement}): #{inspect desc}"
-            :failed
+            Logger.error "Fail:(#{statement}): #{inspect description}"
+            Results.push {:failed, description, "Caught on: #{url}#{request}"}
 
           any ->
             Logger.warn "WrongArgument:(#{statement}): #{inspect any}"
-            :failed
+            Results.push {:failed, description, "Caught on: #{url}#{request}"}
         end
       end
 
@@ -246,87 +246,87 @@ defmodule Core do
           #   Checks
           ###############
 
-          expect (at_least_one_defined scene), "At least one check should be defined for each scene."
+          expect request, (at_least_one_defined scene), "At least one check should be defined for each scene."
 
           for title <- scene.title? do
             Logger.debug "CheckTitle:(#{title})"
-            expect (title == page_title), "Title must contain: '#{title}'"
+            expect request, (title == page_title), "Title must contain: '#{title}'"
           end
           for title <- scene.title_not? do
             Logger.debug "CheckTitleNot:(#{title})"
-            expect not (title == page_title), "Title mustn't contain: '#{title}'"
+            expect request, not (title == page_title), "Title mustn't contain: '#{title}'"
           end
 
           for scrpt <- scene.script? do
             Logger.debug "CheckScript:(#{inspect scrpt})"
-            expect (execute_script "#{scrpt}"), "Script must return true"
+            expect request, (execute_script "#{scrpt}"), "Script must return true"
           end
           for scrpt <- scene.script_not? do
             Logger.debug "CheckScriptNot:(#{inspect scrpt})"
-            expect not (execute_script "#{scrpt}"), "Script mustn't return true"
+            expect request, not (execute_script "#{scrpt}"), "Script mustn't return true"
           end
 
           for src <- scene.src? do
             Logger.debug "CheckSrc:(#{inspect src})"
-            expect (String.contains? page_source, src), "Page source must contain '#{src}'"
+            expect request, (String.contains? page_source, src), "Page source must contain '#{src}'"
           end
           for src <- scene.src_not? do
             Logger.debug "CheckSrcNot:(#{inspect src})"
-            expect not (String.contains? page_source, src), "Page source mustn't contain '#{src}'"
+            expect request, not (String.contains? page_source, src), "Page source mustn't contain '#{src}'"
           end
 
           for text <- scene.text? do
             Logger.debug "CheckText:(#{inspect text})"
-            expect (String.contains? visible_page_text, text), "Page text must contain '#{text}'"
+            expect request, (String.contains? visible_page_text, text), "Page text must contain '#{text}'"
           end
           for text <- scene.text_not? do
             Logger.debug "CheckTextNot:(#{inspect text})"
-            expect not (String.contains? visible_page_text, text), "Page text mustn't contain '#{text}'"
+            expect request, not (String.contains? visible_page_text, text), "Page text mustn't contain '#{text}'"
           end
 
           for an_id <- scene.id? do
             Logger.debug "CheckId:(#{inspect an_id})"
-            expect (element? :id, an_id), "Page ID element must exist: '#{an_id}'"
+            expect request, (element? :id, an_id), "Page ID element must exist: '#{an_id}'"
           end
           for an_id <- scene.id_not? do
             Logger.debug "CheckIdNot:(#{inspect an_id})"
-            expect not (element? :id, an_id), "Page ID element mustn't exist: '#{an_id}'"
+            expect request, not (element? :id, an_id), "Page ID element mustn't exist: '#{an_id}'"
           end
 
           for a_class <- scene.class? do
             Logger.debug "CheckClass:(#{inspect a_class})"
-            expect (element? :class, a_class), "Page CLASS element must exist: '#{a_class}'"
+            expect request, (element? :class, a_class), "Page CLASS element must exist: '#{a_class}'"
           end
           for a_class <- scene.class_not? do
             Logger.debug "CheckClassNot:(#{inspect a_class})"
-            expect not (element? :class, a_class), "Page CLASS element mustn't exist: '#{a_class}'"
+            expect request, not (element? :class, a_class), "Page CLASS element mustn't exist: '#{a_class}'"
           end
 
           for a_name <- scene.name? do
             Logger.debug "CheckName:(#{inspect a_name})"
-            expect (element? :name, a_name), "Page NAME element must exist: '#{a_name}'"
+            expect request, (element? :name, a_name), "Page NAME element must exist: '#{a_name}'"
           end
           for a_name <- scene.name_not? do
             Logger.debug "CheckNameNot:(#{inspect a_name})"
-            expect not (element? :name, a_name), "Page NAME element mustn't exist: '#{a_name}'"
+            expect request, not (element? :name, a_name), "Page NAME element mustn't exist: '#{a_name}'"
           end
 
           for a_css <- scene.css? do
             Logger.debug "CheckCSS:(#{inspect a_css})"
-            expect (element? :css, a_css), "Page CSS element must exist: '#{a_css}'"
+            expect request, (element? :css, a_css), "Page CSS element must exist: '#{a_css}'"
           end
           for a_css <- scene.css_not? do
             Logger.debug "CheckCSSNot:(#{inspect a_css})"
-            expect not (element? :css, a_css), "Page CSS element mustn't exist: '#{a_css}'"
+            expect request, not (element? :css, a_css), "Page CSS element mustn't exist: '#{a_css}'"
           end
 
           for a_tag <- scene.tag? do
             Logger.debug "CheckTag:(#{inspect a_tag})"
-            expect (element? :tag, a_tag), "Page TAG element must exist: '#{a_tag}'"
+            expect request, (element? :tag, a_tag), "Page TAG element must exist: '#{a_tag}'"
           end
           for a_tag <- scene.tag_not? do
             Logger.debug "CheckTagNot:(#{inspect a_tag})"
-            expect not (element? :tag, a_tag), "Page TAG element mustn't exist: '#{a_tag}'"
+            expect request, not (element? :tag, a_tag), "Page TAG element mustn't exist: '#{a_tag}'"
           end
 
         end
