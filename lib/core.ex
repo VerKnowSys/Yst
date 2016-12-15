@@ -56,15 +56,15 @@ defmodule Core do
         case statement do
           true ->
             Logger.info "Pass:(#{statement}): #{inspect description}"
-            Results.push {:passed, description, "Caught on: #{url}#{request}"}
+            Results.push {:passed, description, "@: #{url}#{request}"}
 
           false ->
             Logger.error "Fail:(#{statement}): #{inspect description}"
-            Results.push {:failed, description, "Caught on: #{url}#{request}"}
+            Results.push {:failed, description, "@: #{url}#{request}"}
 
           any ->
             Logger.warn "WrongArgument:(#{statement}): #{inspect any}"
-            Results.push {:failed, description, "Caught on: #{url}#{request}"}
+            Results.push {:failed, description, "@: #{url}#{request}"}
         end
       end
 
