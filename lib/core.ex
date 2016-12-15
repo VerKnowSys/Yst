@@ -49,31 +49,22 @@ defmodule Core do
       def pass, do: System.get_env "YS_PASS"
 
 
-
-      def expect_success statement do
+      @doc """
+      Check expected values
+      """
+      def expect statement, desc \\ "" do
         case statement do
           true ->
-            Logger.info "Pass:(#{statement})"
+            Logger.info "Pass:(#{statement}): #{inspect desc}"
+            :passed
 
           false ->
-            Logger.error "Fail:(#{statement})"
+            Logger.error "Fail:(#{statement}): #{inspect desc}"
+            :failed
 
           any ->
-            Logger.warn "WrongArgument:(#{statement})"
-        end
-      end
-
-
-      def expect_failure statement do
-        case statement do
-          true ->
-            Logger.error "Fail:(#{statement})"
-
-          false ->
-            Logger.info "Pass:(#{statement})"
-
-          any ->
-            Logger.warn "WrongArgument:(#{statement})"
+            Logger.warn "WrongArgument:(#{statement}): #{inspect any}"
+            :failed
         end
       end
 
@@ -81,7 +72,7 @@ defmodule Core do
       @doc """
       Checks if at least one check is defined
       """
-      defp at_least_one_defined scene, list \\ @checks_list do
+      def at_least_one_defined scene, list \\ @checks_list do
         case list do
           [] ->
             Logger.warn "No checks defined for scene: #{inspect scene}!"
@@ -255,87 +246,87 @@ defmodule Core do
           #   Checks
           ###############
 
-          expect_success at_least_one_defined scene
+          expect (at_least_one_defined scene), "At least one check should be defined for each scene."
 
           for title <- scene.title? do
             Logger.debug "CheckTitle:(#{title})"
-            expect_success title == page_title
+            expect (title == page_title), "Title must contain: '#{title}'"
           end
           for title <- scene.title_not? do
             Logger.debug "CheckTitleNot:(#{title})"
-            expect_failure title == page_title
+            expect not (title == page_title), "Title mustn't contain: '#{title}'"
           end
 
           for scrpt <- scene.script? do
             Logger.debug "CheckScript:(#{inspect scrpt})"
-            expect_success (execute_script "#{scrpt}")
+            expect (execute_script "#{scrpt}"), "Script must return true"
           end
           for scrpt <- scene.script_not? do
             Logger.debug "CheckScriptNot:(#{inspect scrpt})"
-            expect_failure (execute_script "#{scrpt}")
+            expect not (execute_script "#{scrpt}"), "Script mustn't return true"
           end
 
           for src <- scene.src? do
             Logger.debug "CheckSrc:(#{inspect src})"
-            expect_success (String.contains? page_source, src)
+            expect (String.contains? page_source, src), "Page source must contain '#{src}'"
           end
           for src <- scene.src_not? do
             Logger.debug "CheckSrcNot:(#{inspect src})"
-            expect_failure String.contains? page_source, src
+            expect not (String.contains? page_source, src), "Page source mustn't contain '#{src}'"
           end
 
           for text <- scene.text? do
             Logger.debug "CheckText:(#{inspect text})"
-            expect_success String.contains? visible_page_text, text
+            expect (String.contains? visible_page_text, text), "Page text must contain '#{text}'"
           end
           for text <- scene.text_not? do
             Logger.debug "CheckTextNot:(#{inspect text})"
-            expect_failure String.contains? visible_page_text, text
+            expect not (String.contains? visible_page_text, text), "Page text mustn't contain '#{text}'"
           end
 
           for an_id <- scene.id? do
             Logger.debug "CheckId:(#{inspect an_id})"
-            expect_success element? :id, an_id
+            expect (element? :id, an_id), "Page ID element must exist: '#{an_id}'"
           end
           for an_id <- scene.id_not? do
             Logger.debug "CheckIdNot:(#{inspect an_id})"
-            expect_failure element? :id, an_id
+            expect not (element? :id, an_id), "Page ID element mustn't exist: '#{an_id}'"
           end
 
           for a_class <- scene.class? do
             Logger.debug "CheckClass:(#{inspect a_class})"
-            expect_success element? :class, a_class
+            expect (element? :class, a_class), "Page CLASS element must exist: '#{a_class}'"
           end
           for a_class <- scene.class_not? do
             Logger.debug "CheckClassNot:(#{inspect a_class})"
-            expect_failure element? :class, a_class
+            expect not (element? :class, a_class), "Page CLASS element mustn't exist: '#{a_class}'"
           end
 
           for a_name <- scene.name? do
             Logger.debug "CheckName:(#{inspect a_name})"
-            expect_success element? :name, a_name
+            expect (element? :name, a_name), "Page NAME element must exist: '#{a_name}'"
           end
           for a_name <- scene.name_not? do
             Logger.debug "CheckNameNot:(#{inspect a_name})"
-            expect_failure element? :name, a_name
+            expect not (element? :name, a_name), "Page NAME element mustn't exist: '#{a_name}'"
           end
 
           for a_css <- scene.css? do
             Logger.debug "CheckCSS:(#{inspect a_css})"
-            expect_success element? :css, a_css
+            expect (element? :css, a_css), "Page CSS element must exist: '#{a_css}'"
           end
           for a_css <- scene.css_not? do
             Logger.debug "CheckCSSNot:(#{inspect a_css})"
-            expect_failure element? :css, a_css
+            expect not (element? :css, a_css), "Page CSS element mustn't exist: '#{a_css}'"
           end
 
           for a_tag <- scene.tag? do
             Logger.debug "CheckTag:(#{inspect a_tag})"
-            expect_success element? :tag, a_tag
+            expect (element? :tag, a_tag), "Page TAG element must exist: '#{a_tag}'"
           end
           for a_tag <- scene.tag_not? do
             Logger.debug "CheckTagNot:(#{inspect a_tag})"
-            expect_failure element? :tag, a_tag
+            expect not (element? :tag, a_tag), "Page TAG element mustn't exist: '#{a_tag}'"
           end
 
         end
