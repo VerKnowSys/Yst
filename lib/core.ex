@@ -149,6 +149,8 @@ defmodule Yst.Core do
             :timer.sleep scene.wait_after!
           end
 
+          session_info = Session.session_info Hound.current_session_id
+
           Logger.info "After Scene( #{act+1}/#{acts} ) Session( #{current_session_name} ) Url( #{url}#{request} )"
           Logger.debug "A\n\
                          scene_id: #{scene_id}\n\
@@ -157,10 +159,10 @@ defmodule Yst.Core do
                       current_url: #{current_url}\n\
                           cookies: #{inspect Cookie.cookies}\n\
                        drver_info: #{inspect drver}\n\
-                     session_info: #{inspect Session.session_info Hound.current_session_id}\n\
+                     session_info: #{inspect session_info}\n\
                      all_sessions: #{Enum.count(Session.active_sessions)}"
 
-          # Fill
+          # fill!
           for {html_entity, contents} <- scene.fill! do
             Logger.debug "Looking for entity: #{html_entity} to fill"
             for try_html_hook <- [:name, :id, :class] do # , :tag, :css
@@ -179,6 +181,7 @@ defmodule Yst.Core do
           end
 
 
+          # click!
           for {html_entity, contents} <- scene.click! do
             Logger.debug "Looking for entity: #{html_entity} to click"
             for try_html_hook <- [:name, :id, :class, :tag, :css] do
@@ -197,7 +200,7 @@ defmodule Yst.Core do
           end
 
 
-          #js!
+          # js!
           if scene.js? do
             for code <- scene.js! do
               Logger.debug "Executing JavaScript code: #{inspect code}"
@@ -208,25 +211,29 @@ defmodule Yst.Core do
           end
 
 
-          # accept! > dismiss!
-          if scene.accept! do
-            try do
-              accept_dialog
-              Logger.debug "Dialog accepted."
-            rescue
-              _ ->
-                Logger.warn "Accepting dialog failed."
-            end
-          else
-            if scene.dismiss! do
+          if session_info[:handlesAlerts] do
+            # accept! > dismiss!
+            if scene.accept! do
               try do
-                dismiss_dialog
-                Logger.debug "Dialog dismissed."
+                accept_dialog
+                Logger.debug "Dialog accepted."
               rescue
                 _ ->
-                  Logger.warn "Dismissing dialog failed."
+                  Logger.warn "Accepting dialog failed."
+              end
+            else
+              if scene.dismiss! do
+                try do
+                  dismiss_dialog
+                  Logger.debug "Dialog dismissed."
+                rescue
+                  _ ->
+                    Logger.warn "Dismissing dialog failed."
+                end
               end
             end
+          else
+            Logger.debug "handlesAlerts property is disabled with this browser session."
           end
 
           # keys!
