@@ -29,7 +29,7 @@ defmodule Yst do
     Hound.start_session
 
     scenes = BasicLoginLogoutScene.script ++ HeadlessScene.script
-    scenes |> BasicLoginLogoutScene.play
+    scenes |> Scenarios.play
 
     Hound.end_session
     scenes

@@ -1,6 +1,6 @@
-defmodule Yst.Core do
+defmodule Core do
   @moduledoc """
-  Yst.Core defines set of functions and features
+  Core defines set of functions and features
   to be injected to modules with Scenario behaviour
   """
 
@@ -106,6 +106,8 @@ defmodule Yst.Core do
       @spec play(script :: [Scene.t]) :: any
       def play script do
         acts = length script
+        Logger.info "Playing script of #{acts} acts."
+
 
         for {scene, act} <- script |> Enum.with_index do
           scene_id = UUID.uuid4
@@ -250,7 +252,7 @@ defmodule Yst.Core do
 
 
           ###########
-          #   Checks!
+          #   Checks
           ###############
 
           expect_success at_least_one_defined scene
@@ -339,6 +341,7 @@ defmodule Yst.Core do
         end
 
         # TODO: it should return Result.t site data like html, text, fields DOM & stuff
+        {:ok, script}
       end
 
 

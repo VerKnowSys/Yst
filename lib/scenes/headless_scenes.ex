@@ -1,5 +1,5 @@
 defmodule HeadlessScene do
-  use Yst.Core
+  use Core
 
   @behaviour Scenario
 
