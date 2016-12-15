@@ -18,6 +18,16 @@ defmodule Yst.Core do
       alias Hound.Helpers.Screenshot
 
 
+      @checks_list [
+        :title?, :title_not?, :text?, :text_not?,
+        :src?, :src_not?, :frame?, :frame_not?,
+        :script?, :script_not?, :id?, :id_not?,
+        :css?, :css_not?, :class?, :class_not?,
+        :tag?, :tag_not?, :name?, :name_not?,
+        :cookie?, :cookie_not?
+      ]
+
+
       @doc """
       Defines base url of tested site
       """
@@ -66,6 +76,29 @@ defmodule Yst.Core do
             Logger.warn "WrongArgument:(#{statement})"
         end
       end
+
+
+      @doc """
+      Checks if at least one check is defined
+      """
+      defp at_least_one_defined scene, list \\ @checks_list do
+        case list do
+          [] ->
+            Logger.warn "No checks defined for scene: #{inspect scene}!"
+            false
+
+          [head | tail] ->
+            case scene[head] do
+              [] ->
+                at_least_one_defined scene, tail
+
+              checks ->
+                Logger.debug "At least some check: #{inspect head}, defined with: #{inspect checks}"
+                true
+            end
+        end
+      end
+
 
       @doc """
       Play scripted scenarios
@@ -208,6 +241,7 @@ defmodule Yst.Core do
           #   Checks!
           ###############
 
+          expect_success at_least_one_defined scene
 
           for title <- scene.title? do
             Logger.debug "CheckTitle:(#{title})"
