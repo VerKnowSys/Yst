@@ -17,7 +17,7 @@ end
 
 defmodule Scenarios do
   @moduledoc """
-  Helper module as syntax sugar for __MODULE_NAME__.play
+  Helper module as syntax sugar: Scenarios.play/1
   """
   use Core
 
