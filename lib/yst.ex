@@ -30,18 +30,22 @@ defmodule Yst do
       worker(Director, [])
     ]
 
-    Logger.info "Starting Yst-Supervisor"
     supervise(children, strategy: :one_for_one)
   end
 
 
-  def run, do: Yst.start_link
 
 
+  def run, do: main []
   def main, do: main []
   def main _ do
     # Start supervisor. Director supervisor will start it's work synchronously
-    run
+    case Yst.start_link do
+      {:error, {:already_started, _}} ->
+        Director.claps
+      {:ok, _} ->
+        Logger.info "Starting Yst-Supervisor"
+    end
   end
 
 end
