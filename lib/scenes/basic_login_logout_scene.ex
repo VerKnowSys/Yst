@@ -10,6 +10,7 @@ defmodule BasicLoginLogoutScene do
         req!: "/logout",
         cookies_reset!: true,
 
+        text?: ["Username", "Password"],
         id?: ["LoginForm", "Login"],
         tag?: ["fieldset", "input"],
         name_not?: ["fieldset", "input"],
