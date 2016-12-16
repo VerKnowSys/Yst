@@ -1,6 +1,0 @@
-#!/bin/sh
-
-env \
-    MIX_ENV="${1:-dev}" \
-    mix \
-    do compile, credo --strict
