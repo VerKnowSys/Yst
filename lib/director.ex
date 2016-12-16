@@ -8,9 +8,7 @@ defmodule Director do
   Stat synchronous Director supervisor that will process Scenes-script
   """
   def start_link do
-    any = GenServer.start_link __MODULE__, [], name: __MODULE__
-    claps
-    any
+    GenServer.start_link __MODULE__, [], name: __MODULE__
   end
 
 
