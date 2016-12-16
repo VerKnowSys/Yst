@@ -11,20 +11,6 @@ defmodule Yst do
 
 
   def init [] do
-    case Application.start :hound do
-      :ok ->
-        Logger.info "Hounds unleashed."
-
-      {:error, cause} ->
-        case cause do
-          {:already_started, :hound} ->
-            Logger.info "Hounds already unleased."
-
-          {reason, :hound} ->
-            Logger.error "Hounds were lost. Cause: #{inspect reason}"
-        end
-    end
-
     children = [
       worker(Results, []),
       worker(Director, [])
