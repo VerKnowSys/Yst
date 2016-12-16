@@ -250,11 +250,11 @@ defmodule Core do
 
           for title <- scene.title? do
             Logger.debug "CheckTitle:(#{title})"
-            expect request, (String.contains page_title, title), "Title must contain: '#{title}'"
+            expect request, (String.contains? page_title, title), "Title must contain: '#{title}'"
           end
           for title <- scene.title_not? do
             Logger.debug "CheckTitleNot:(#{title})"
-            expect request, not (String.contains page_title, title), "Title mustn't contain: '#{title}'"
+            expect request, not (String.contains? page_title, title), "Title mustn't contain: '#{title}'"
           end
 
           for scrpt <- scene.script? do
