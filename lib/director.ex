@@ -25,19 +25,24 @@ defmodule Director do
   end
 
 
-  def claps do
-    GenServer.call __MODULE__, :run, (Application.get_env :yst, :scene_timeout)
-    GenServer.call __MODULE__, :result, (Application.get_env :yst, :result_timeout)
-  end
-
   defp process_scenarios do
     Hound.start_session
 
-    scenes = BasicLoginLogoutScene.script ++ HeadlessScene.script
-    scenes |> Scenarios.play
+    scscripts = ScenesList.scripts
+    scscripts |> Scenarios.play
 
     Hound.end_session
-    scenes
+    scscripts
+  end
+
+
+  @doc """
+  Director "claps" - starts scenario script and reports results.
+  Works synchronously.
+  """
+  def claps do
+    GenServer.call __MODULE__, :run, (Application.get_env :yst, :scene_timeout)
+    GenServer.call __MODULE__, :result, (Application.get_env :yst, :result_timeout)
   end
 
 
