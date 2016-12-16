@@ -3,22 +3,34 @@ defmodule Results do
   Simple immutable Results queue genserver
   """
   use GenServer
+  @name __MODULE__
 
 
+  @doc false
   def start_link do
-    GenServer.start_link __MODULE__, [], name: __MODULE__
+    GenServer.start_link @name, [], name: @name
   end
 
 
-  # Callbacks
-  def handle_call :pop, _from, [h|t] do
-    {:reply, h, t}
-  end
-
+  @doc """
+  Handle synchronous :show which returns Results state
+  """
   def handle_call :show, _from, state do
     {:reply, state, state}
   end
 
+
+  @doc """
+  Handle asynchronous :reset which clears Results state
+  """
+  def handle_cast :reset, _state do
+    {:noreply, []}
+  end
+
+
+  @doc """
+  Handle asynchronous :push which adds new result to Results state
+  """
   def handle_cast {:push, item}, state do
     {:noreply, [item | state]}
   end
@@ -28,7 +40,7 @@ defmodule Results do
   Push new result to queue
   """
   def push sth do
-    GenServer.cast __MODULE__, {:push, sth}
+    GenServer.cast @name, {:push, sth}
   end
 
 
@@ -36,7 +48,15 @@ defmodule Results do
   Show all results
   """
   def show do
-    GenServer.call __MODULE__, :show
+    GenServer.call @name, :show
+  end
+
+
+  @doc """
+  Reset results
+  """
+  def reset do
+    GenServer.cast @name, :reset
   end
 
 end
