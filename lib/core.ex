@@ -177,7 +177,7 @@ defmodule Core do
           # click!
           for {html_entity, contents} <- scene.click! do
             Logger.debug "Looking for entity: #{html_entity} to click"
-            for try_html_hook <- [:name, :id, :class, :tag, :css] do
+            for try_html_hook <- [:link_text, :name, :id, :class, :tag, :css] do
               if element? try_html_hook, html_entity do
                 case search_element try_html_hook, html_entity do
                   {:ok, element} ->
