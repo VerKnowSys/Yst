@@ -41,13 +41,12 @@ defmodule Yst do
   def main _ do
     # Start supervisor. Director supervisor will start it's work synchronously
     case Yst.start_link do
+      {:ok, _} ->
+        Logger.info "Yst-Supervisor started. Claps!"
+        Director.claps
       {:error, {:already_started, _}} ->
         Director.claps
-      {:ok, _} ->
-        Logger.info "Starting Yst-Supervisor"
     end
   end
 
 end
-
-# Yst.run
