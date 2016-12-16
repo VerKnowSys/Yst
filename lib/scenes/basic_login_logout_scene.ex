@@ -12,7 +12,7 @@ defmodule BasicLoginLogoutScene do
 
         id?: ["LoginForm", "Login"],
         tag?: ["fieldset", "input"],
-        name?: ["fieldset", "input"],
+        name_not?: ["fieldset", "input"],
       },
 
       %Scene {
@@ -29,7 +29,7 @@ defmodule BasicLoginLogoutScene do
         class?: ["title", "fieldset"],
         id_not?: ["LoginForm", "Login"],
         tag?: ["fieldset", "input"],
-        name?: ["fieldset", "input"],
+        name_not?: ["fieldset", "input"],
       },
 
       %Scene {
@@ -40,7 +40,7 @@ defmodule BasicLoginLogoutScene do
         class?: ["title", "fieldset"],
         id_not?: ["LoginForm", "Login"],
         tag?: ["fieldset", "input"],
-        name?: ["fieldset", "input"],
+        name_not?: ["fieldset", "input"],
       },
 
   ]
