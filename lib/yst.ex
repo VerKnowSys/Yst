@@ -16,7 +16,7 @@ defmodule Yst do
       worker(Director, [])
     ]
 
-    supervise(children, strategy: :one_for_one)
+    supervise children, strategy: :one_for_one
   end
 
 
