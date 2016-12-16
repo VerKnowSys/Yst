@@ -135,6 +135,24 @@ defmodule Core do
       end
 
 
+
+
+      def action_keys! matchers do
+        for symbol <- matchers do
+          Logger.debug "Sending keys: #{inspect symbol}"
+          send_keys symbol
+        end
+      end
+
+
+      def action_js! matchers do
+        for code <- matchers do
+          Logger.debug "Executing JavaScript code: #{inspect code}"
+          execute_script "#{code}"
+        end
+      end
+
+
       Play scripted scenarios
       """
       @spec play(script :: [Scene.t]) :: any
