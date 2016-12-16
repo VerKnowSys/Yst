@@ -1,4 +1,4 @@
 #!/bin/sh
 
-rm -rf deps _build mix.lock
+rm -rf deps _build mix.lock doc
 
