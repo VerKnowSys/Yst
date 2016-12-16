@@ -1,7 +1,9 @@
 #!/bin/sh
 
-env \
-    MIX_ENV="${1:-dev}" \
-    mix do compile, dialyzer | \
+export MIX_ENV="${1:-dev}"
+
+. .env
+
+mix do compile, dialyzer | \
     perl -p0e 's/.*?Proceeding with analysis...//s' | \
     perl -p0e 's/Unknown functions:.*//s'

@@ -1,11 +1,18 @@
 #!/bin/sh
 
-. bin/load_phantom
-. bin/fetch_deps
-. bin/compile
+. bin/loader
+
+mix do \
+    deps.compile, \
+    compile, \
+    escript.build
+
+if [ ! -d "doc" ]; then
+    mix docs
+fi
+
+echo
+echo "Launching Dialyzer checks:"
+echo
+
 . bin/dialyzer
-env \
-    MIX_ENV="${1:-dev}" \
-    mix do \
-    escript.build, \
-    docs
