@@ -112,6 +112,29 @@ defmodule Core do
         end
       end
 
+
+      @doc """
+      Fills any element matching criteria
+      """
+      def action_fill! matchers, html_elems \\ [:name, :id, :class, :tag, :css] do
+        for {html_entity, contents} <- matchers do
+          Logger.debug "Looking for entity: #{html_entity} to fill"
+          for try_html_hook <- html_elems do
+            if element? try_html_hook, html_entity do
+              case search_element try_html_hook, html_entity do
+                {:ok, element} ->
+                  Logger.debug "Fill! entity: #{try_html_hook} => #{html_entity}. Element: #{inspect element}"
+                  fill_field element, contents
+
+                {:error, e} ->
+                  Logger.error e
+              end
+            end
+          end
+        end
+      end
+
+
       Play scripted scenarios
       """
       @spec play(script :: [Scene.t]) :: any
