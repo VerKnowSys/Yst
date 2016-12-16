@@ -37,7 +37,7 @@ defmodule Yst.Mixfile do
     common = [:uuid, :hound, :logger]
 
     prod = common ++ [:ex_doc]
-    dev = common ++ [:credo, :remix, :ex_doc]
+    dev = common ++ [:credo, :remix, :ex_doc, :dialyxir]
     test = common
 
     apps = case Mix.env do
@@ -65,6 +65,7 @@ defmodule Yst.Mixfile do
       {:remix, "~> 0.0.1", only: [:dev, :test]},
       {:ex_doc, "~> 0.14", only: [:dev, :test]},
       {:uuid, "~> 1.1"},
+      {:dialyxir, "~> 0.4", only: [:dev], runtime: false},
     ]
   end
 end
