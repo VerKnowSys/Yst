@@ -423,7 +423,7 @@ defmodule Core do
 
         for {scene, act} <- script |> Enum.with_index do
           # NOTE: fill act number
-          scene = %Scene{ scene | :act => act + 1 }
+          scene = %Scene{scene | act: act + 1}
 
           # NOTE: count time spent on actions:
           {scene_actions_process_time, _} = Timer.tc fn ->
@@ -522,7 +522,7 @@ defmodule Core do
 
           # NOTE: set value of actions_ms field of Scene struct.
           us_to_ms = div scene_actions_process_time, 1000
-          scene = %Scene{ scene | actions_ms: us_to_ms}
+          scene = %Scene{scene | actions_ms: us_to_ms}
 
           ###########
           #   Fill Results queue

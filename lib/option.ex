@@ -1,5 +1,8 @@
 
 defmodule None do
+  @moduledoc """
+  Option None
+  """
   @type t :: None.t
 
   defstruct [:v, :vtype]
@@ -11,6 +14,9 @@ end
 
 
 defmodule Some do
+  @moduledoc """
+  Option Some
+  """
   require Logger
 
   @type t :: Some.t
