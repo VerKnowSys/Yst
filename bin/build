@@ -1,8 +1,6 @@
 #!/bin/sh
 
-export MIX_ENV="${1:-dev}"
 
-clear
 . bin/loader
 
 mix do \
@@ -10,6 +8,7 @@ mix do \
     compile, \
     escript.build
 
-if [ ! -d "doc" ]; then
+if [ ! -d "doc" ] && [ "${MIX_ENV}" = "prod" ]; then
+    printf "%s\n" "Building doc/"
     mix docs
 fi
