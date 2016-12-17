@@ -21,4 +21,5 @@ defmodule Scenarios do
   """
   use Core
 
+  def script, do: []
 end
