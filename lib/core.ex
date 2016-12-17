@@ -50,21 +50,197 @@ defmodule Core do
 
 
       @doc """
-      Check expected values
+      Check expectations
       """
-      def expect request, statement, description \\ "" do
-        case statement do
-          true ->
-            Logger.info "Pass:(#{statement}): #{inspect description}"
-            Results.push {:passed, description, "@: #{url}#{request}"}
+      def expect request, scene, expectations do
+        for expectation <- expectations do
+          case expectation do
 
-          false ->
-            Logger.error "Fail:(#{statement}): #{inspect description}"
-            Results.push {:failed, description, "@: #{url}#{request}"}
+            {:uuid, uuid} ->
+              Logger.debug "Checking expectations of Scene ID: #{uuid}"
+              Results.push {:uuid, "#{uuid}"}
 
-          any ->
-            Logger.warn "WrongArgument:(#{statement}): #{inspect any}"
-            Results.push {:failed, description, "@: #{url}#{request}"}
+
+            {t, []} ->
+              Logger.debug "Empty expectation: #{inspect expectation}. Ignored"
+
+
+            {:at_least_single_action, true} ->
+              Results.push {:success, "#{request} | Scene defines at least a single check!"}
+
+
+            {:at_least_single_action, false} ->
+              Results.push {:failure, "#{request} | Scene lacks any checks!"}
+
+
+            {:title, entity_or_entities} ->
+              if String.contains? page_title, entity_or_entities do
+                Results.push {:success, "#{request} | Title contains element: #{inspect entity_or_entities}!"}
+              else
+                Results.push {:failure, "#{request} | Title lacks element: #{inspect entity_or_entities}!"}
+              end
+
+
+            {:title_not, entity_or_entities} ->
+              unless String.contains? page_title, entity_or_entities do
+                Results.push {:success, "#{request} | Title lacks element: #{inspect entity_or_entities}!"}
+              else
+                Results.push {:failure, "#{request} | Title contains element: #{inspect entity_or_entities}!"}
+              end
+
+
+            {:src, entity_or_entities} ->
+              if String.contains? page_source, entity_or_entities do
+                Results.push {:success, "#{request} | Elements present in page source: #{inspect entity_or_entities}!"}
+              else
+                Results.push {:failure, "#{request} | Elements absent in page source: #{inspect entity_or_entities}!"}
+              end
+
+
+            {:src_not, entity_or_entities} ->
+              unless String.contains? page_source, entity_or_entities do
+                Results.push {:success, "#{request} | Elements absent in page source: #{inspect entity_or_entities}!"}
+              else
+                Results.push {:failure, "#{request} | Elements present in page source: #{inspect entity_or_entities}!"}
+              end
+
+
+            {:text, entity_or_entities} ->
+              if String.contains? visible_page_text, entity_or_entities do
+                Results.push {:success, "#{request} | Elements present in page text: #{inspect entity_or_entities}!"}
+              else
+                Results.push {:failure, "#{request} | Elements absent in page text: #{inspect entity_or_entities}!"}
+              end
+
+
+            {:text_not, entity_or_entities} ->
+              unless String.contains? visible_page_text, entity_or_entities do
+                Results.push {:success, "#{request} | Elements absent in page text: #{inspect entity_or_entities}!"}
+              else
+                Results.push {:failure, "#{request} | Elements present in page text: #{inspect entity_or_entities}!"}
+              end
+
+
+            {:id, entity_list} ->
+              for entity <- entity_list do
+                if element? :id, entity do
+                  Results.push {:success, "#{request} | Present element with ID: #{inspect entity}!"}
+                else
+                  Results.push {:failure, "#{request} | Absent element with ID: #{inspect entity}!"}
+                end
+              end
+
+            {:id_not, entity_list} ->
+              for entity <- entity_list do
+                unless element? :id, entity do
+                  Results.push {:success, "#{request} | Absent element with ID: #{inspect entity}!"}
+                else
+                  Results.push {:failure, "#{request} | Present element with ID: #{inspect entity}!"}
+                end
+              end
+
+
+            {:class, entity_list} ->
+              for entity <- entity_list do
+                if element? :class, entity do
+                  Results.push {:success, "#{request} | Present element with CLASS: #{inspect entity}!"}
+                else
+                  Results.push {:failure, "#{request} | Absent element with CLASS: #{inspect entity}!"}
+                end
+              end
+
+            {:class_not, entity_list} ->
+              for entity <- entity_list do
+                unless element? :class, entity do
+                  Results.push {:success, "#{request} | Absent element with CLASS: #{inspect entity}!"}
+                else
+                  Results.push {:failure, "#{request} | Present element with CLASS: #{inspect entity}!"}
+                end
+              end
+
+
+            {:css, entity_list} ->
+              for entity <- entity_list do
+                if element? :css, entity do
+                  Results.push {:success, "#{request} | Present element with CSS: #{inspect entity}!"}
+                else
+                  Results.push {:failure, "#{request} | Absent element with CSS: #{inspect entity}!"}
+                end
+              end
+
+            {:css_not, entity_list} ->
+              for entity <- entity_list do
+                unless element? :css, entity do
+                  Results.push {:success, "#{request} | Absent element with CSS: #{inspect entity}!"}
+                else
+                  Results.push {:failure, "#{request} | Present element with CSS: #{inspect entity}!"}
+                end
+              end
+
+
+            {:name, entity_list} ->
+              for entity <- entity_list do
+                if element? :name, entity do
+                  Results.push {:success, "#{request} | Present element with NAME: #{inspect entity}!"}
+                else
+                  Results.push {:failure, "#{request} | Absent element with NAME: #{inspect entity}!"}
+                end
+              end
+
+            {:name_not, entity_list} ->
+              for entity <- entity_list do
+                unless element? :name, entity do
+                  Results.push {:success, "#{request} | Absent element with NAME: #{inspect entity}!"}
+                else
+                  Results.push {:failure, "#{request} | Present element with NAME: #{inspect entity}!"}
+                end
+              end
+
+
+            {:tag, entity_list} ->
+              for entity <- entity_list do
+                if element? :tag, entity do
+                  Results.push {:success, "#{request} | Present TAG: #{inspect entity}!"}
+                else
+                  Results.push {:failure, "#{request} | Absent TAG: #{inspect entity}!"}
+                end
+              end
+
+            {:tag_not, entity_list} ->
+              for entity <- entity_list do
+                unless element? :tag, entity do
+                  Results.push {:success, "#{request} | Absent TAG: #{inspect entity}!"}
+                else
+                  Results.push {:failure, "#{request} | Present TAG: #{inspect entity}!"}
+                end
+              end
+
+
+            {:script, entity_list} ->
+              for entity <- entity_list do
+                case execute_script entity do
+                  true ->
+                    Results.push {:success, "#{request} | SCRIPT succeeded: #{inspect entity}!"}
+                  false ->
+                    Results.push {:failure, "#{request} | SCRIPT failed: #{inspect entity}!"}
+                end
+              end
+
+            {:script_not, entity_list} ->
+              for entity <- entity_list do
+                case execute_script entity do
+                  true ->
+                    Results.push {:failure, "#{request} | SCRIPT succeeded yet failure expected: #{inspect entity}!"}
+                  false ->
+                    Results.push {:success, "#{request} | SCRIPT failed as expected: #{inspect entity}!"}
+                end
+              end
+
+
+            undefined ->
+              Logger.warn "Undefined expectation: #{inspect expectation}"
+
+          end
         end
       end
 
@@ -72,7 +248,7 @@ defmodule Core do
       @doc """
       Checks if at least one check is defined
       """
-      def at_least_one_defined scene, list \\ @checks_list do
+      def at_least_single_action scene, list \\ @checks_list do
         case list do
           [] ->
             Logger.warn "No checks defined for scene: #{inspect scene}!"
@@ -81,7 +257,7 @@ defmodule Core do
           [head | tail] ->
             case scene[head] do
               [] ->
-                at_least_one_defined scene, tail
+                at_least_single_action scene, tail
 
               checks ->
                 Logger.debug "At least some check: #{inspect head}, defined with: #{inspect checks}"
@@ -298,7 +474,7 @@ defmodule Core do
           ###########
           #   Checks
           ###############
-          check_expectations? request, scene
+          check_expectations? request, scene, scene_id
         end
 
         # TODO: it should return Result.t site data like html, text, fields DOM & stuff
