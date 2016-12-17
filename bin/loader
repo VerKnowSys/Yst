@@ -15,6 +15,16 @@ case "${0}" in
         fi
         ;;
 
+    "bin/run")
+        export MIX_ENV="${1:-prod}"
+        printf "%s\n" "Environment set: ${MIX_ENV}"
+        ;;
+
+    "bin/test")
+        export MIX_ENV="${1:-test}"
+        printf "%s\n" "Environment set: ${MIX_ENV}"
+        ;;
+
     *)
         printf "%s\n" "Environment: ${MIX_ENV}"
         ;;
