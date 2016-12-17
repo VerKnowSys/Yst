@@ -52,6 +52,9 @@ defmodule Scene do
   defstruct [
 
     name: UUID.uuid4,                       # by default set some unique name
+    act: 0,                                 # act number
+    actions_ms: 0,                          # time spent performing scene actions
+
     req!: "/",                              #  /some/request/and/http-params
     cookies_reset!: false,                  # reset cookies before request
     click!: [],                             # click on elements
