@@ -16,6 +16,7 @@ defmodule Core do
       alias Hound.Session
       alias Hound.Helpers.Cookie
       alias Hound.Helpers.Screenshot
+      alias :timer, as: Timer
 
 
       @checks_list [
@@ -52,9 +53,7 @@ defmodule Core do
       @doc """
       Check expectations
       """
-      def expect request, scene, expectations do
-        Results.push {:uuid, "#{scene.uuid}"}
-
+      def expect scene, expectations do
         for expectation <- expectations do
           case expectation do
 
@@ -63,76 +62,76 @@ defmodule Core do
 
 
             {:at_least_single_action, true} ->
-              Results.push {:success, "#{request} | Scene defines at least a single check!"}
+              Results.push {:success, scene, "Scene defines at least a single check!"}
 
 
             {:at_least_single_action, false} ->
-              Results.push {:failure, "#{request} | Scene lacks any checks!"}
+              Results.push {:failure, scene, "Scene lacks any checks!"}
 
 
             {:title, entity_or_entities} ->
               if String.contains? page_title, entity_or_entities do
-                Results.push {:success, "#{request} | Title contains element: #{inspect entity_or_entities}!"}
+                Results.push {:success, scene, "Title contains element: #{inspect entity_or_entities}!"}
               else
-                Results.push {:failure, "#{request} | Title lacks element: #{inspect entity_or_entities}!"}
+                Results.push {:failure, scene, "Title lacks element: #{inspect entity_or_entities}!"}
               end
 
 
             {:title_not, entity_or_entities} ->
               unless String.contains? page_title, entity_or_entities do
-                Results.push {:success, "#{request} | Title lacks element: #{inspect entity_or_entities}!"}
+                Results.push {:success, scene, "Title lacks element: #{inspect entity_or_entities}!"}
               else
-                Results.push {:failure, "#{request} | Title contains element: #{inspect entity_or_entities}!"}
+                Results.push {:failure, scene, "Title contains element: #{inspect entity_or_entities}!"}
               end
 
 
             {:src, entity_or_entities} ->
               if String.contains? page_source, entity_or_entities do
-                Results.push {:success, "#{request} | Elements present in page source: #{inspect entity_or_entities}!"}
+                Results.push {:success, scene, "Elements present in page source: #{inspect entity_or_entities}!"}
               else
-                Results.push {:failure, "#{request} | Elements absent in page source: #{inspect entity_or_entities}!"}
+                Results.push {:failure, scene, "Elements absent in page source: #{inspect entity_or_entities}!"}
               end
 
 
             {:src_not, entity_or_entities} ->
               unless String.contains? page_source, entity_or_entities do
-                Results.push {:success, "#{request} | Elements absent in page source: #{inspect entity_or_entities}!"}
+                Results.push {:success, scene, "Elements absent in page source: #{inspect entity_or_entities}!"}
               else
-                Results.push {:failure, "#{request} | Elements present in page source: #{inspect entity_or_entities}!"}
+                Results.push {:failure, scene, "Elements present in page source: #{inspect entity_or_entities}!"}
               end
 
 
             {:text, entity_or_entities} ->
               if String.contains? visible_page_text, entity_or_entities do
-                Results.push {:success, "#{request} | Elements present in page text: #{inspect entity_or_entities}!"}
+                Results.push {:success, scene, "Elements present in page text: #{inspect entity_or_entities}!"}
               else
-                Results.push {:failure, "#{request} | Elements absent in page text: #{inspect entity_or_entities}!"}
+                Results.push {:failure, scene, "Elements absent in page text: #{inspect entity_or_entities}!"}
               end
 
 
             {:text_not, entity_or_entities} ->
               unless String.contains? visible_page_text, entity_or_entities do
-                Results.push {:success, "#{request} | Elements absent in page text: #{inspect entity_or_entities}!"}
+                Results.push {:success, scene, "Elements absent in page text: #{inspect entity_or_entities}!"}
               else
-                Results.push {:failure, "#{request} | Elements present in page text: #{inspect entity_or_entities}!"}
+                Results.push {:failure, scene, "Elements present in page text: #{inspect entity_or_entities}!"}
               end
 
 
             {:id, entity_list} ->
               for entity <- entity_list do
                 if element? :id, entity do
-                  Results.push {:success, "#{request} | Present element with ID: #{inspect entity}!"}
+                  Results.push {:success, scene, "Present element with ID: #{inspect entity}!"}
                 else
-                  Results.push {:failure, "#{request} | Absent element with ID: #{inspect entity}!"}
+                  Results.push {:failure, scene, "Absent element with ID: #{inspect entity}!"}
                 end
               end
 
             {:id_not, entity_list} ->
               for entity <- entity_list do
                 unless element? :id, entity do
-                  Results.push {:success, "#{request} | Absent element with ID: #{inspect entity}!"}
+                  Results.push {:success, scene, "Absent element with ID: #{inspect entity}!"}
                 else
-                  Results.push {:failure, "#{request} | Present element with ID: #{inspect entity}!"}
+                  Results.push {:failure, scene, "Present element with ID: #{inspect entity}!"}
                 end
               end
 
@@ -140,18 +139,18 @@ defmodule Core do
             {:class, entity_list} ->
               for entity <- entity_list do
                 if element? :class, entity do
-                  Results.push {:success, "#{request} | Present element with CLASS: #{inspect entity}!"}
+                  Results.push {:success, scene, "Present element with CLASS: #{inspect entity}!"}
                 else
-                  Results.push {:failure, "#{request} | Absent element with CLASS: #{inspect entity}!"}
+                  Results.push {:failure, scene, "Absent element with CLASS: #{inspect entity}!"}
                 end
               end
 
             {:class_not, entity_list} ->
               for entity <- entity_list do
                 unless element? :class, entity do
-                  Results.push {:success, "#{request} | Absent element with CLASS: #{inspect entity}!"}
+                  Results.push {:success, scene, "Absent element with CLASS: #{inspect entity}!"}
                 else
-                  Results.push {:failure, "#{request} | Present element with CLASS: #{inspect entity}!"}
+                  Results.push {:failure, scene, "Present element with CLASS: #{inspect entity}!"}
                 end
               end
 
@@ -159,18 +158,18 @@ defmodule Core do
             {:css, entity_list} ->
               for entity <- entity_list do
                 if element? :css, entity do
-                  Results.push {:success, "#{request} | Present element with CSS: #{inspect entity}!"}
+                  Results.push {:success, scene, "Present element with CSS: #{inspect entity}!"}
                 else
-                  Results.push {:failure, "#{request} | Absent element with CSS: #{inspect entity}!"}
+                  Results.push {:failure, scene, "Absent element with CSS: #{inspect entity}!"}
                 end
               end
 
             {:css_not, entity_list} ->
               for entity <- entity_list do
                 unless element? :css, entity do
-                  Results.push {:success, "#{request} | Absent element with CSS: #{inspect entity}!"}
+                  Results.push {:success, scene, "Absent element with CSS: #{inspect entity}!"}
                 else
-                  Results.push {:failure, "#{request} | Present element with CSS: #{inspect entity}!"}
+                  Results.push {:failure, scene, "Present element with CSS: #{inspect entity}!"}
                 end
               end
 
@@ -178,18 +177,18 @@ defmodule Core do
             {:name, entity_list} ->
               for entity <- entity_list do
                 if element? :name, entity do
-                  Results.push {:success, "#{request} | Present element with NAME: #{inspect entity}!"}
+                  Results.push {:success, scene, "Present element with NAME: #{inspect entity}!"}
                 else
-                  Results.push {:failure, "#{request} | Absent element with NAME: #{inspect entity}!"}
+                  Results.push {:failure, scene, "Absent element with NAME: #{inspect entity}!"}
                 end
               end
 
             {:name_not, entity_list} ->
               for entity <- entity_list do
                 unless element? :name, entity do
-                  Results.push {:success, "#{request} | Absent element with NAME: #{inspect entity}!"}
+                  Results.push {:success, scene, "Absent element with NAME: #{inspect entity}!"}
                 else
-                  Results.push {:failure, "#{request} | Present element with NAME: #{inspect entity}!"}
+                  Results.push {:failure, scene, "Present element with NAME: #{inspect entity}!"}
                 end
               end
 
@@ -197,18 +196,18 @@ defmodule Core do
             {:tag, entity_list} ->
               for entity <- entity_list do
                 if element? :tag, entity do
-                  Results.push {:success, "#{request} | Present TAG: #{inspect entity}!"}
+                  Results.push {:success, scene, "Present TAG: #{inspect entity}!"}
                 else
-                  Results.push {:failure, "#{request} | Absent TAG: #{inspect entity}!"}
+                  Results.push {:failure, scene, "Absent TAG: #{inspect entity}!"}
                 end
               end
 
             {:tag_not, entity_list} ->
               for entity <- entity_list do
                 unless element? :tag, entity do
-                  Results.push {:success, "#{request} | Absent TAG: #{inspect entity}!"}
+                  Results.push {:success, scene, "Absent TAG: #{inspect entity}!"}
                 else
-                  Results.push {:failure, "#{request} | Present TAG: #{inspect entity}!"}
+                  Results.push {:failure, scene, "Present TAG: #{inspect entity}!"}
                 end
               end
 
@@ -217,9 +216,9 @@ defmodule Core do
               for entity <- entity_list do
                 case execute_script entity do
                   true ->
-                    Results.push {:success, "#{request} | SCRIPT succeeded: #{inspect entity}!"}
+                    Results.push {:success, scene, "SCRIPT succeeded: #{inspect entity}!"}
                   false ->
-                    Results.push {:failure, "#{request} | SCRIPT failed: #{inspect entity}!"}
+                    Results.push {:failure, scene, "SCRIPT failed: #{inspect entity}!"}
                 end
               end
 
@@ -227,9 +226,9 @@ defmodule Core do
               for entity <- entity_list do
                 case execute_script entity do
                   true ->
-                    Results.push {:failure, "#{request} | SCRIPT succeeded yet failure expected: #{inspect entity}!"}
+                    Results.push {:failure, scene, "SCRIPT succeeded yet failure expected: #{inspect entity}!"}
                   false ->
-                    Results.push {:success, "#{request} | SCRIPT failed as expected: #{inspect entity}!"}
+                    Results.push {:success, scene, "SCRIPT failed as expected: #{inspect entity}!"}
                 end
               end
 
@@ -335,7 +334,7 @@ defmodule Core do
       @doc """
       Pipes defined scene expectations to expect() to produce Results
       """
-      def check_expectations? request, scene do
+      def check_expectations? scene do
         with  title <- scene.title?,    title_not <- scene.title_not?,
               scrpt <- scene.script?,   scrpt_not <- scene.script_not?,
               src <- scene.src?,        src_not <- scene.src_not?,
@@ -346,7 +345,7 @@ defmodule Core do
               a_css <- scene.css?,      a_css_not <- scene.css_not?,
               a_tag <- scene.tag?,      a_tag_not <- scene.tag_not?
           do
-            expect request, scene, [
+            expect scene, [
               at_least_single_action: (at_least_single_action scene),
               title: title, title_not: title_not,
               script: scrpt, script_not: scrpt_not,
@@ -371,106 +370,111 @@ defmodule Core do
         Logger.info "Playing script of #{acts} acts."
 
         for {scene, act} <- script |> Enum.with_index do
-          scene_id = scene.uuid
-          request = scene.req!
+          # NOTE: fill act number
+          scene = %Scene{ scene | :act => act + 1 }
 
-          if scene.window! do
-            Logger.debug "Setting window size to: #{inspect scene.window!}"
-            set_window_size current_window_handle, scene.window![:width], scene.window![:height]
-          end
+          # NOTE: count time spent on actions:
+          {scene_actions_process_time, _} = Timer.tc fn ->
+            if scene.window! do
+              Logger.debug "Setting window size to: #{inspect scene.window!}"
+              set_window_size current_window_handle, scene.window![:width], scene.window![:height]
+            end
 
-          # Process pre-request options
-          if scene.session! do
-            change_session_to scene_id
-            Logger.debug "Using session: #{scene_id}"
-          else
-            change_to_default_session
-            Logger.debug "Using default session"
-          end
-
-          if scene.cookies_reset! do
-            delete_cookies
-            Logger.debug "Done cookies reset"
-          end
-
-          # Get driver info
-          {:ok, drver} = Hound.driver_info
-
-          navigate_to "#{url}#{request}"
-
-          if scene.wait_after! > 0 do
-            Logger.debug "Sleeping for: #{scene.wait_after!} seconds."
-            :timer.sleep scene.wait_after!
-          end
-
-          session_info = Session.session_info Hound.current_session_id
-
-          Logger.info "After Scene( #{act+1}/#{acts} ) Session( #{current_session_name} ) Url( #{url}#{request} )"
-          Logger.debug "A\n\
-                         scene_id: #{scene_id}\n\
-                          request: #{inspect request}\n\
-                       page_title: #{page_title}\n\
-                      current_url: #{current_url}\n\
-                          cookies: #{inspect Cookie.cookies}\n\
-                       drver_info: #{inspect drver}\n\
-                     session_info: #{inspect session_info}\n\
-                     all_sessions: #{Enum.count(Session.active_sessions)}"
-
-          # fill!
-          action_fill! scene.fill!
-
-          # click!
-          action_click! scene.click!
-
-          # select! / pick!
-          action_pick! scene.pick!
-
-          # js!
-          if scene.js? do
-            action_js! scene.js!
-          else
-            Logger.debug "JavaScript disabled for scene: #{scene_id}"
-          end
-
-          if session_info[:handlesAlerts] do
-            # accept! > dismiss!
-            if scene.accept! do
-              try do
-                accept_dialog
-                Logger.debug "Dialog accepted."
-              rescue
-                _ ->
-                  Logger.warn "Accepting dialog failed."
-              end
+            # Process pre-request options
+            if scene.session! do
+              change_session_to scene.name
+              Logger.debug "Using session: #{scene.name}"
             else
-              if scene.dismiss! do
+              change_to_default_session
+              Logger.debug "Using default session"
+            end
+
+            if scene.cookies_reset! do
+              delete_cookies
+              Logger.debug "Done cookies reset"
+            end
+
+            # Get driver info
+            {:ok, drver} = Hound.driver_info
+
+            navigate_to "#{url}#{scene.req!}"
+
+            if scene.wait_after! > 0 do
+              Logger.debug "Sleeping for: #{scene.wait_after!} seconds."
+              :timer.sleep scene.wait_after!
+            end
+
+            session_info = Session.session_info Hound.current_session_id
+
+            Logger.info "After Scene( #{scene.act}/#{acts} ) Session( #{current_session_name} ) Url( #{url}#{scene.req!} )"
+            Logger.debug "A\n\
+                           scene.name: #{scene.name}\n\
+                            request: #{inspect scene.req!}\n\
+                         page_title: #{page_title}\n\
+                        current_url: #{current_url}\n\
+                            cookies: #{inspect Cookie.cookies}\n\
+                         drver_info: #{inspect drver}\n\
+                       session_info: #{inspect session_info}\n\
+                       all_sessions: #{Enum.count(Session.active_sessions)}"
+
+            # fill!
+            action_fill! scene.fill!
+
+            # click!
+            action_click! scene.click!
+
+            # select! / pick!
+            action_pick! scene.pick!
+
+            # js!
+            if scene.js? do
+              action_js! scene.js!
+            else
+              Logger.debug "JavaScript disabled for scene: #{scene.name}"
+            end
+
+            if session_info[:handlesAlerts] do
+              # accept! > dismiss!
+              if scene.accept! do
                 try do
-                  dismiss_dialog
-                  Logger.debug "Dialog dismissed."
+                  accept_dialog
+                  Logger.debug "Dialog accepted."
                 rescue
                   _ ->
-                    Logger.warn "Dismissing dialog failed."
+                    Logger.warn "Accepting dialog failed."
+                end
+              else
+                if scene.dismiss! do
+                  try do
+                    dismiss_dialog
+                    Logger.debug "Dialog dismissed."
+                  rescue
+                    _ ->
+                      Logger.warn "Dismissing dialog failed."
+                  end
                 end
               end
+            else
+              Logger.debug "handlesAlerts property is disabled with this browser session."
             end
-          else
-            Logger.debug "handlesAlerts property is disabled with this browser session."
+
+            # keys!
+            action_keys! scene.keys!
+
+            # Good time to make a shot!
+            if scene.screenshot! do
+              Logger.debug "Screenshot: scene.name: #{scene.name}"
+              Screenshot.take_screenshot "screenshots/sceneid-#{scene.name}.png"
+            end
           end
 
-          # keys!
-          action_keys! scene.keys!
-
-          # Good time to make a shot!
-          if scene.screenshot! do
-            Logger.debug "Screenshot: scene_id: #{scene_id}"
-            Screenshot.take_screenshot "screenshots/sceneid-#{scene_id}.png"
-          end
-
+          # NOTE: set value of actions_ms field of Scene struct.
+          scene = %Scene{ scene | :actions_ms => (scene_actions_process_time |> div 1000) }
 
           ###########
-          #   Checks
-          ###############
-          check_expectations? request, scene
+          #   Fill Results queue
+          #########################
+          check_expectations? scene
         end
 
         # TODO: it should return Result.t site data like html, text, fields DOM & stuff
