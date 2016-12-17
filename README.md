@@ -29,14 +29,11 @@ Currently the PoC code logins to Silk backend playground and performs some read 
     YS_PASS   # Password used to get to the Silk panel
     ```
 
-  1. Production version `bin/build prod` and then just `env YS_URL="myshiny.site.com" YS_LOGIN="ys" YS_PASS="*******" MIX_ENV=prod ./yst`
-
-  or
+  1. Edit .env file and put YS_URL="myshiny.site.com" YS_LOGIN="mylogin" YS_PASS="*******"
 
   2. Run under iex REPL:
 
     ```bash
-    bin/fetch_deps
     bin/console
     ```
 
