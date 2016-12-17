@@ -20,18 +20,23 @@ defmodule Yst do
   end
 
 
+  defp environment do
+    case System.get_env "MIX_ENV" do
+      "" -> "dev"
+      any -> any
+    end
+  end
 
 
   def run, do: main []
   def main, do: main []
   def main _ do
-    # Start supervisor. Director supervisor will start it's work synchronously
     case Yst.start_link do
       {:ok, _} ->
-        Logger.info "Yst-Supervisor started."
+        Logger.info "Yst-Supervisor started (env: #{environment})"
 
       {:error, {:already_started, _}} ->
-        Logger.debug "Yst-Supervisor already started."
+        Logger.debug "Yst-Supervisor already started (env: #{environment})"
     end
     Results.reset
     Director.claps
