@@ -159,63 +159,33 @@ defmodule Core do
       end
 
 
-      def check_expectations? request, scene do
-        expect request, (at_least_one_defined scene), "At least one check per scene should be defined."
-
-        for title <- scene.title?,
-            title_not <- scene.title_not?,
-
-            scrpt <- scene.script?,
-            scrpt_not <- scene.script_not?,
-
-            src <- scene.src?,
-            src_not <- scene.src_not?,
-
-            text <- scene.text?,
-            text_not <- scene.text_not?,
-
-            an_id <- scene.id?,
-            an_id_not <- scene.id_not?,
-
-            a_class <- scene.class?,
-            a_class_not <- scene.class_not?,
-
-            a_name <- scene.name?,
-            a_name_not <- scene.name_not?,
-
-            a_css <- scene.css?,
-            a_css_not <- scene.css_not?,
-
-            a_tag <- scene.tag?,
-            a_tag_not <- scene.tag_not?
-
+      @doc """
+      Pipes defined scene expectations to expect() to produce Results
+      """
+      def check_expectations? request, scene, scene_id do
+        with  title <- scene.title?,    title_not <- scene.title_not?,
+              scrpt <- scene.script?,   scrpt_not <- scene.script_not?,
+              src <- scene.src?,        src_not <- scene.src_not?,
+              text <- scene.text?,      text_not <- scene.text_not?,
+              an_id <- scene.id?,       an_id_not <- scene.id_not?,
+              a_class <- scene.class?,  a_class_not <- scene.class_not?,
+              a_name <- scene.name?,    a_name_not <- scene.name_not?,
+              a_css <- scene.css?,      a_css_not <- scene.css_not?,
+              a_tag <- scene.tag?,      a_tag_not <- scene.tag_not?
           do
-              expect request, (String.contains? page_title, title), "Title must contain: '#{title}'"
-              expect request, not (String.contains? page_title, title_not), "Title mustn't contain: '#{title_not}'"
-
-              expect request, (execute_script "#{scrpt}"), "Script must return true"
-              expect request, not (execute_script "#{scrpt_not}"), "Script mustn't return true"
-
-              expect request, (String.contains? page_source, src), "Page source must contain '#{src}'"
-              expect request, not (String.contains? page_source, src_not), "Page source mustn't contain '#{src_not}'"
-
-              expect request, (String.contains? visible_page_text, text), "Page text must contain '#{text}'"
-              expect request, not (String.contains? visible_page_text, text_not), "Page text mustn't contain '#{text_not}'"
-
-              expect request, (element? :id, an_id), "Page ID element must exist: '#{an_id}'"
-              expect request, not (element? :id, an_id_not), "Page ID element mustn't exist: '#{an_id_not}'"
-
-              expect request, (element? :class, a_class), "Page CLASS element must exist: '#{a_class}'"
-              expect request, not (element? :class, a_class_not), "Page CLASS element mustn't exist: '#{a_class_not}'"
-
-              expect request, (element? :name, a_name), "Page NAME element must exist: '#{a_name}'"
-              expect request, not (element? :name, a_name_not), "Page NAME element mustn't exist: '#{a_name_not}'"
-
-              expect request, (element? :css, a_css), "Page CSS element must exist: '#{a_css}'"
-              expect request, not (element? :css, a_css_not), "Page CSS element mustn't exist: '#{a_css_not}'"
-
-              expect request, (element? :tag, a_tag), "Page TAG element must exist: '#{a_tag}'"
-              expect request, not (element? :tag, a_tag_not), "Page TAG element mustn't exist: '#{a_tag_not}'"
+            expect request, scene, [
+              uuid: scene_id,
+              at_least_single_action: (at_least_single_action scene),
+              title: title, title_not: title_not,
+              script: scrpt, script_not: scrpt_not,
+              src: src, src_not: src_not,
+              text: text, text_not: text_not,
+              id: an_id, id_not: an_id_not,
+              class: a_class, class_not: a_class_not,
+              name: a_name, name_not: a_name_not,
+              css: a_css, css_not: a_css_not,
+              tag: a_tag, tag_not: a_tag_not
+            ]
         end
       end
 
