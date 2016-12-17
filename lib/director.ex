@@ -45,6 +45,7 @@ defmodule Director do
 
 
   defp process_results do
+    Logger.info "--------------------------------------------------------------"
     Logger.info "Scenario results:"
     for res <- Results.show do
       case res do
@@ -61,6 +62,7 @@ defmodule Director do
           Logger.warn "Unknown result: #{inspect res}"
       end
     end
+    Logger.info "--------------------------------------------------------------"
   end
 
 end

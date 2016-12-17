@@ -28,6 +28,7 @@ defmodule Scene do
   @default_browser :chrome
   @default_window [width: 1920, height: 1080]
 
+
   @doc false
   def get keywords, key, default do
     res = Map.get keywords, key, []
@@ -50,6 +51,7 @@ defmodule Scene do
 
   defstruct [
 
+    uuid: "#{UUID.uuid4}",
     req!: "/",                              #  /some/request/and/http-params
     cookies_reset!: false,                  # reset cookies before request
     click!: [],                             # click on elements

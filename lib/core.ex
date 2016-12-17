@@ -53,13 +53,10 @@ defmodule Core do
       Check expectations
       """
       def expect request, scene, expectations do
+        Results.push {:uuid, "#{scene.uuid}"}
+
         for expectation <- expectations do
           case expectation do
-
-            {:uuid, uuid} ->
-              Logger.debug "Checking expectations of Scene ID: #{uuid}"
-              Results.push {:uuid, "#{uuid}"}
-
 
             {t, []} ->
               Logger.debug "Empty expectation: #{inspect expectation}. Ignored"
@@ -338,7 +335,7 @@ defmodule Core do
       @doc """
       Pipes defined scene expectations to expect() to produce Results
       """
-      def check_expectations? request, scene, scene_id do
+      def check_expectations? request, scene do
         with  title <- scene.title?,    title_not <- scene.title_not?,
               scrpt <- scene.script?,   scrpt_not <- scene.script_not?,
               src <- scene.src?,        src_not <- scene.src_not?,
@@ -350,7 +347,6 @@ defmodule Core do
               a_tag <- scene.tag?,      a_tag_not <- scene.tag_not?
           do
             expect request, scene, [
-              uuid: scene_id,
               at_least_single_action: (at_least_single_action scene),
               title: title, title_not: title_not,
               script: scrpt, script_not: scrpt_not,
@@ -375,7 +371,7 @@ defmodule Core do
         Logger.info "Playing script of #{acts} acts."
 
         for {scene, act} <- script |> Enum.with_index do
-          scene_id = UUID.uuid4
+          scene_id = scene.uuid
           request = scene.req!
 
           if scene.window! do
@@ -474,7 +470,7 @@ defmodule Core do
           ###########
           #   Checks
           ###############
-          check_expectations? request, scene, scene_id
+          check_expectations? request, scene
         end
 
         # TODO: it should return Result.t site data like html, text, fields DOM & stuff
