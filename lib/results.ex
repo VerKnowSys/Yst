@@ -16,7 +16,8 @@ defmodule Results do
   Handle synchronous :show which returns Results state
   """
   def handle_call :show, _from, state do
-    {:reply, state, state}
+    rev = Enum.reverse state
+    {:reply, rev, rev}
   end
 
 
