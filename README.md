@@ -21,7 +21,7 @@ Currently the PoC code logins to Silk backend playground and performs some read 
 
 ## How to run
 
-  0. By default Yst is using these environment variables to access remote demo site.
+  0. Yst reads environment variables from .env file located in this repository.
 
     ```bash
     YS_URL    # Default url of tested site
@@ -29,23 +29,40 @@ Currently the PoC code logins to Silk backend playground and performs some read 
     YS_PASS   # Password used to get to the Silk panel
     ```
 
-  1. Edit .env file and put YS_URL="myshiny.site.com" YS_LOGIN="mylogin" YS_PASS="*******"
+  1. Edit your .env file and put missing value of `YS_PASS` there.
 
-  2. Run under iex REPL:
+  2. Run production escript (:prod env):
+
+    ```bash
+    bin/run
+    ```
+
+  3. Run under iex REPL (:dev env:
 
     ```bash
     bin/console
     ```
 
-    under console call `Yst.run` to run main module. By default under :dev mode
-    code will be recompiled on the fly and hot swapped by BEAM VM.
+    Then just:
 
-    ![Example output - case when YS_PASS is defined](http://s.verknowsys.com/2a5c38a111b63ce6ac7c182f56c447dc.png)
-    ![Example output - case when YS_PASS is undefined](http://s.verknowsys.com/8a9c5864e49f3fb68f3bf848648887d1.png)
+    ```elixir
+    Yst.run
+    ```
 
-  or
+    to start main supervisor and launch checks.
 
-  3. Tests also perform content checks (details in: [yst_test.exs](https://github.com/centrahq/yst/blob/master/test/yst_test.exs)):
+
+    Example results (YS_PASS is NOT set):
+
+    ![output1](http://s.verknowsys.com/5784efcc180134f5b1399027b5dd356e.png)
+
+
+    Example results (YS_PASS is set):
+
+    ![output2](http://s.verknowsys.com/ce0552cde39f3f9baad91ed788c7413e.png)
+
+
+  4. Currently tests do internal testing. To test scenarios, go back to `Yst.run` part. (For details about internal tests look here: [yst_test.exs](https://github.com/centrahq/yst/blob/master/test/yst_test.exs)):
 
     ```bash
     bin/test
