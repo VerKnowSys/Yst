@@ -52,24 +52,35 @@ defmodule Director do
 
 
   defp process_results do
-    Logger.info "--------------------------------------------------------------"
+    Logger.info "-----------------------------------------------------------------------------------------------------------------------------------------------------------------"
+
     Logger.info "Scenario results:"
     for res <- Results.show do
       case res do
-        {:uuid, uuid} ->
-          Logger.debug "Scene id:\t#{uuid}"
 
-        {:success, msg} ->
-          Logger.info "Success:\t#{msg}"
+        {:success, scene, message} ->
+          name = String.rjust scene.name, 25
+          msg = String.rjust message, 61
+          request = String.rjust scene.req!, 15
+          time_ms = String.rjust "#{scene.actions_ms}ms ⌛", 9
+          act = String.rjust "#{IO.ANSI.green}#{scene.act}#{IO.ANSI.default_color}", 2
+          garrow = "#{IO.ANSI.cyan} ⇒#{IO.ANSI.default_color}"
+          Logger.info "#{IO.ANSI.green}✓#{IO.ANSI.default_color} Act#{garrow} #{act}, Name#{garrow} #{IO.ANSI.green}#{name}#{IO.ANSI.default_color},\t Msg#{garrow} #{IO.ANSI.green}#{msg}#{IO.ANSI.default_color},\tReq#{garrow} #{IO.ANSI.yellow}#{request}#{IO.ANSI.default_color},\tTime#{garrow} #{IO.ANSI.magenta}#{time_ms}#{IO.ANSI.default_color}"
 
-        {:failure, msg} ->
-          Logger.error "Failure:\t#{msg}"
+        {:failure, scene, message} ->
+          name = String.rjust scene.name, 25
+          msg = String.rjust message, 61
+          request = String.rjust scene.req!, 15
+          time_ms = String.rjust "#{scene.actions_ms}ms ⌛", 9
+          act = String.rjust "#{IO.ANSI.red}#{scene.act}#{IO.ANSI.default_color}", 2
+          garrow = "#{IO.ANSI.cyan} ⇒#{IO.ANSI.default_color}"
+          Logger.error "#{IO.ANSI.red} λ#{IO.ANSI.default_color} Act#{garrow} #{act}, Name#{garrow} #{IO.ANSI.red}#{name}#{IO.ANSI.default_color},\t Msg#{garrow} #{IO.ANSI.red}#{msg}#{IO.ANSI.default_color},\tReq#{garrow} #{IO.ANSI.yellow}#{request}#{IO.ANSI.default_color},\tTime#{garrow} #{IO.ANSI.magenta}#{time_ms}#{IO.ANSI.default_color}"
 
         res ->
-          Logger.warn "Unknown result: #{inspect res}"
+          Logger.warn "Error: Unknown entry: #{inspect res}"
       end
     end
-    Logger.info "--------------------------------------------------------------"
+    Logger.info "-----------------------------------------------------------------------------------------------------------------------------------------------------------------"
   end
 
 end
