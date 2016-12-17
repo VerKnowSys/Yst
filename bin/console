@@ -1,15 +1,14 @@
 #!/bin/sh
 
-. bin/load_phantom
-. bin/compile
+export MIX_ENV="${1:-dev}"
 
-env \
-    MIX_ENV="${1:-dev}" \
-    YS_URL="http://playground.silkvms.com/amspeter123" \
-    YS_LOGIN="ys" \
-    YS_PASS="***REMOVED***" \
-    iex \
-    --name "${2:-yst}-${MIX_ENV}" \
-    --sname "${2:-yst}-${MIX_ENV}" \
-    --cookie "yst-dev-test" \
+. .env
+. bin/load_phantom
+
+
+mix compile && \
+iex \
+    --name "Yst-${MIX_ENV}-${UUID}" \
+    --sname "Yst-${MIX_ENV}-${UUID}" \
+    --cookie "Yst-${MIX_ENV}-${UUID}" \
     -S mix
