@@ -40,6 +40,18 @@ defmodule Scene do
 
 
   @doc false
+  def get_and_update list, key, fun do
+    Map.get_and_update list, key, fun
+  end
+
+
+  @doc false
+  def pop keywords, key do
+    Map.pop keywords, key
+  end
+
+
+  @doc false
   def fetch keywords, key do
     res = Map.get keywords, key, []
     case res do
