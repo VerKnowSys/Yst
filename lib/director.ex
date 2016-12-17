@@ -48,11 +48,17 @@ defmodule Director do
     Logger.info "Scenario results:"
     for res <- Results.show do
       case res do
-        {:passed, msg, where} ->
-          Logger.info "Passed: #{msg}\t-=> #{where}"
+        {:uuid, uuid} ->
+          Logger.debug "Scene id:\t#{uuid}"
 
-        {:failed, msg, where} ->
-          Logger.error "Failed: #{msg}\t-=> #{where}"
+        {:success, msg} ->
+          Logger.info "Success:\t#{msg}"
+
+        {:failure, msg} ->
+          Logger.error "Failure:\t#{msg}"
+
+        res ->
+          Logger.warn "Unknown result: #{inspect res}"
       end
     end
   end
