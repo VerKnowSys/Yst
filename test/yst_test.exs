@@ -55,50 +55,34 @@ defmodule YstTest do
     assert res == {:ok, scenes}
     assert (length scenes) >= 5
     assert (length Results.show) >= 5
-
-    GenServer.stop Results
   end
 
 
-  # test "test customers elements existence" do
-  #   in_browser_session "#{UUID.uuid4}", fn ->
-  #     PeterDemo.go :login
-  #     PeterDemo.go :customers
+  test "Director results after run may not be empty!" do
+    _ = Results.start_link
+    scenes = BasicLoginLogoutScene.script
+    res = scenes |> Scenarios.play
+    assert res == {:ok, scenes}, "Response with :ok and scenes"
 
-  #     assert (visible_in_page? ~r/SILK VMS master/), "'SILK VMS master' should be visible!"
-  #     assert (visible_in_element? {:id, "retail_customer_item"}, ~r/CUSTOMERS/), "retail_customer_item with CUSTOMERS"
-  #     elem = find_element :class, "field_container"
-  #     for item <- [~r/Orders/, ~r/Customer/, ~r/Total/, ~r/Created/] do
-  #       assert (visible_in_element? elem, item), "Item #{inspect item} should be contained under element: #{inspect elem}"
-  #       assert (visible_in_page? item), "Item '#{inspect item}' should be visible!"
-  #     end
-  #   end
-  # end
+    for {res, scene, message} <- Results.show do
+      case message do
+        "" ->
+          assert false, "Results message can't be empty!"
 
+        any ->
+          assert (String.length any) > 0, "Results message can't have zero length!"
+      end
 
-  # test "cookie value should be shared across several logins/logouts" do
-  #   in_browser_session "#{UUID.uuid4}", fn ->
-  #     PeterDemo.go :logout
+      at_least_same_name = Enum.find scenes, fn scn -> scn[:name] == scene[:name] end
+      assert at_least_same_name, "Each processed scene should be present in Results"
 
-  #     PeterDemo.go :login
-  #     PeterDemo.go :customers
-  #     cookie_1 = (List.first Cookie.cookies)["value"]
-  #     PeterDemo.go :logout
+      # NOTE: Initial actions_ms => 0. We fill that value to time spent on "clicking actions"
+      non_zero_action_time = Enum.find scenes, fn scn ->
+        scene[:actions_ms] > 50 and scn[:actions_ms] == 0
+      end
+      assert non_zero_action_time, "Each processed scene should always have :actions_ms field set > 0"
+    end
+  end
 
-  #     PeterDemo.go :login
-  #     PeterDemo.go :sales
-  #     cookie_2 = (List.first Cookie.cookies)["value"]
-  #     PeterDemo.go :logout
-
-  #     PeterDemo.go :login
-  #     PeterDemo.go :customers
-  #     cookie_3 = (List.first Cookie.cookies)["value"]
-  #     PeterDemo.go :logout
-
-  #     Logger.debug "C1: #{cookie_1}, C2: #{cookie_2}, C3: #{cookie_3}, C*: #{inspect Cookie.cookies}"
-  #     assert cookie_1 == cookie_2
-  #     assert cookie_1 == cookie_3
-  #   end
-  # end
 
 end
