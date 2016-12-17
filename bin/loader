@@ -5,3 +5,5 @@
 if [ ! -d "deps" ]; then
     mix do deps.get
 fi
+
+printf "%s\n" "Environment set: ${MIX_ENV}"
