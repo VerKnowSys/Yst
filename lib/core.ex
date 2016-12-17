@@ -222,7 +222,6 @@ defmodule Core do
         acts = length script
         Logger.info "Playing script of #{acts} acts."
 
-
         for {scene, act} <- script |> Enum.with_index do
           scene_id = UUID.uuid4
           request = scene.req!
@@ -249,17 +248,8 @@ defmodule Core do
           # Get driver info
           {:ok, drver} = Hound.driver_info
 
-          # Logger.info "Before Scene( #{act+1}/#{acts} ) Session( #{current_session_name} ) Url( #{url}#{request} )"
-          # Logger.debug "B\n\
-          #                 request: #{inspect request}\n\
-          #              page_title: #{page_title}\n\
-          #             current_url: #{current_url}\n\
-          #                 cookies: #{inspect Cookie.cookies}\n\
-          #              drver_info: #{inspect drver}\n\
-          #            session_info: #{inspect Session.session_info Hound.current_session_id}\n\
-          #            all_sessions: #{Enum.count(Session.active_sessions)}"
-
           navigate_to "#{url}#{request}"
+
           if scene.wait_after! > 0 do
             Logger.debug "Sleeping for: #{scene.wait_after!} seconds."
             :timer.sleep scene.wait_after!
@@ -279,53 +269,20 @@ defmodule Core do
                      all_sessions: #{Enum.count(Session.active_sessions)}"
 
           # fill!
-          for {html_entity, contents} <- scene.fill! do
-            Logger.debug "Looking for entity: #{html_entity} to fill"
-            for try_html_hook <- [:name, :id, :class] do # , :tag, :css
-              if element? try_html_hook, html_entity do
-                case search_element try_html_hook, html_entity do
-                  {:ok, element} ->
-                    Logger.debug "Found entity: #{try_html_hook} => #{html_entity}. Element: #{inspect element}"
-                    fill_field element, contents
-
-                  {:error, e} ->
-                    Logger.error e
-
-                end
-              end
-            end
-          end
-
+          action_fill! scene.fill!
 
           # click!
-          for {html_entity, contents} <- scene.click! do
-            Logger.debug "Looking for entity: #{html_entity} to click"
-            for try_html_hook <- [:partial_link_text, :name, :id, :class, :tag, :css] do
-              if element? try_html_hook, html_entity do
-                case search_element try_html_hook, html_entity do
-                  {:ok, element} ->
-                    Logger.debug "Found entity: #{try_html_hook} => #{html_entity}. Click-Element: #{inspect element}"
-                    click element
+          action_click! scene.click!
 
-                  {:error, e} ->
-                    Logger.error e
-
-                end
-              end
-            end
-          end
-
+          # select! / pick!
+          action_pick! scene.pick!
 
           # js!
           if scene.js? do
-            for code <- scene.js! do
-              Logger.debug "Executing JavaScript code: #{inspect code}"
-              execute_script "#{code}"
-            end
+            action_js! scene.js!
           else
             Logger.debug "JavaScript disabled for scene: #{scene_id}"
           end
-
 
           if session_info[:handlesAlerts] do
             # accept! > dismiss!
@@ -353,10 +310,7 @@ defmodule Core do
           end
 
           # keys!
-          for symbol <- scene.keys! do
-            Logger.debug "Sending keys: #{inspect symbol}"
-            send_keys symbol
-          end
+          action_keys! scene.keys!
 
           # Good time to make a shot!
           if scene.screenshot! do
@@ -368,90 +322,7 @@ defmodule Core do
           ###########
           #   Checks
           ###############
-
-          expect request, (at_least_one_defined scene), "At least one check should be defined for each scene."
-
-          for title <- scene.title? do
-            Logger.debug "CheckTitle:(#{title})"
-            expect request, (String.contains? page_title, title), "Title must contain: '#{title}'"
-          end
-          for title <- scene.title_not? do
-            Logger.debug "CheckTitleNot:(#{title})"
-            expect request, not (String.contains? page_title, title), "Title mustn't contain: '#{title}'"
-          end
-
-          for scrpt <- scene.script? do
-            Logger.debug "CheckScript:(#{inspect scrpt})"
-            expect request, (execute_script "#{scrpt}"), "Script must return true"
-          end
-          for scrpt <- scene.script_not? do
-            Logger.debug "CheckScriptNot:(#{inspect scrpt})"
-            expect request, not (execute_script "#{scrpt}"), "Script mustn't return true"
-          end
-
-          for src <- scene.src? do
-            Logger.debug "CheckSrc:(#{inspect src})"
-            expect request, (String.contains? page_source, src), "Page source must contain '#{src}'"
-          end
-          for src <- scene.src_not? do
-            Logger.debug "CheckSrcNot:(#{inspect src})"
-            expect request, not (String.contains? page_source, src), "Page source mustn't contain '#{src}'"
-          end
-
-          for text <- scene.text? do
-            Logger.debug "CheckText:(#{inspect text})"
-            expect request, (String.contains? visible_page_text, text), "Page text must contain '#{text}'"
-          end
-          for text <- scene.text_not? do
-            Logger.debug "CheckTextNot:(#{inspect text})"
-            expect request, not (String.contains? visible_page_text, text), "Page text mustn't contain '#{text}'"
-          end
-
-          for an_id <- scene.id? do
-            Logger.debug "CheckId:(#{inspect an_id})"
-            expect request, (element? :id, an_id), "Page ID element must exist: '#{an_id}'"
-          end
-          for an_id <- scene.id_not? do
-            Logger.debug "CheckIdNot:(#{inspect an_id})"
-            expect request, not (element? :id, an_id), "Page ID element mustn't exist: '#{an_id}'"
-          end
-
-          for a_class <- scene.class? do
-            Logger.debug "CheckClass:(#{inspect a_class})"
-            expect request, (element? :class, a_class), "Page CLASS element must exist: '#{a_class}'"
-          end
-          for a_class <- scene.class_not? do
-            Logger.debug "CheckClassNot:(#{inspect a_class})"
-            expect request, not (element? :class, a_class), "Page CLASS element mustn't exist: '#{a_class}'"
-          end
-
-          for a_name <- scene.name? do
-            Logger.debug "CheckName:(#{inspect a_name})"
-            expect request, (element? :name, a_name), "Page NAME element must exist: '#{a_name}'"
-          end
-          for a_name <- scene.name_not? do
-            Logger.debug "CheckNameNot:(#{inspect a_name})"
-            expect request, not (element? :name, a_name), "Page NAME element mustn't exist: '#{a_name}'"
-          end
-
-          for a_css <- scene.css? do
-            Logger.debug "CheckCSS:(#{inspect a_css})"
-            expect request, (element? :css, a_css), "Page CSS element must exist: '#{a_css}'"
-          end
-          for a_css <- scene.css_not? do
-            Logger.debug "CheckCSSNot:(#{inspect a_css})"
-            expect request, not (element? :css, a_css), "Page CSS element mustn't exist: '#{a_css}'"
-          end
-
-          for a_tag <- scene.tag? do
-            Logger.debug "CheckTag:(#{inspect a_tag})"
-            expect request, (element? :tag, a_tag), "Page TAG element must exist: '#{a_tag}'"
-          end
-          for a_tag <- scene.tag_not? do
-            Logger.debug "CheckTagNot:(#{inspect a_tag})"
-            expect request, not (element? :tag, a_tag), "Page TAG element mustn't exist: '#{a_tag}'"
-          end
-
+          check_expectations? request, scene
         end
 
         # TODO: it should return Result.t site data like html, text, fields DOM & stuff
