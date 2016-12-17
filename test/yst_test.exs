@@ -7,6 +7,8 @@ defmodule YstTest do
   alias Hound.Browser.PhantomJS
 
   doctest Yst
+  doctest Scenarios
+  doctest ScenesList
 
 
   hound_session
