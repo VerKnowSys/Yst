@@ -53,7 +53,7 @@ defmodule Scene do
     req!: "/",                              #  /some/request/and/http-params
     cookies_reset!: false,                  # reset cookies before request
     click!: [],                             # click on elements
-    pick!: [],                              # pick an element from list of elements
+    # pick!: [],                              # pick an element from list of elements
     # focus!: [],                             # Set focus on element
     fill!: [],                              # fill focused field with content
     keys!: [],                              # send keystroke or key event
@@ -91,6 +91,8 @@ defmodule Scene do
     tag_not?: [],
     name?: [],
     name_not?: [],
+    # attr?: [],                                # Tuple of argument and expected argument value content
+    # attr_not?: [],
     # cookie?: [],                            # expect to find listed cookies
     # cookie_not?: [],                        # expect not to find listed cookies
 
