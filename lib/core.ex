@@ -110,10 +110,10 @@ defmodule Core do
 
             {:title_not, entity_list} ->
               for entity <- entity_list do
-                unless content_matches? page_title, entity do
-                  Results.push {:success, scene, "Title lacks element: #{inspect entity}!"}
-                else
+                if content_matches? page_title, entity do
                   Results.push {:failure, scene, "Title contains element: #{inspect entity}!"}
+                else
+                  Results.push {:success, scene, "Title lacks element: #{inspect entity}!"}
                 end
               end
 
@@ -129,10 +129,10 @@ defmodule Core do
 
             {:src_not, entity_list} ->
               for entity <- entity_list do
-                unless content_matches? page_source, entity do
-                  Results.push {:success, scene, "Elements absent in page source: #{inspect entity}!"}
-                else
+                if content_matches? page_source, entity do
                   Results.push {:failure, scene, "Elements present in page source: #{inspect entity}!"}
+                else
+                  Results.push {:success, scene, "Elements absent in page source: #{inspect entity}!"}
                 end
               end
 
@@ -149,10 +149,10 @@ defmodule Core do
 
             {:text_not, entity_list} ->
               for entity <- entity_list do
-                unless content_matches? visible_page_text, entity do
-                  Results.push {:success, scene, "Elements absent in page text: #{inspect entity}!"}
-                else
+                if content_matches? visible_page_text, entity do
                   Results.push {:failure, scene, "Elements present in page text: #{inspect entity}!"}
+                else
+                  Results.push {:success, scene, "Elements absent in page text: #{inspect entity}!"}
                 end
               end
 
@@ -168,10 +168,10 @@ defmodule Core do
 
             {:id_not, entity_list} ->
               for entity <- entity_list do
-                unless element? :id, entity do
-                  Results.push {:success, scene, "Absent element with ID: #{inspect entity}!"}
-                else
+                if element? :id, entity do
                   Results.push {:failure, scene, "Present element with ID: #{inspect entity}!"}
+                else
+                  Results.push {:success, scene, "Absent element with ID: #{inspect entity}!"}
                 end
               end
 
@@ -187,10 +187,10 @@ defmodule Core do
 
             {:class_not, entity_list} ->
               for entity <- entity_list do
-                unless element? :class, entity do
-                  Results.push {:success, scene, "Absent element with CLASS: #{inspect entity}!"}
-                else
+                if element? :class, entity do
                   Results.push {:failure, scene, "Present element with CLASS: #{inspect entity}!"}
+                else
+                  Results.push {:success, scene, "Absent element with CLASS: #{inspect entity}!"}
                 end
               end
 
@@ -206,10 +206,10 @@ defmodule Core do
 
             {:css_not, entity_list} ->
               for entity <- entity_list do
-                unless element? :css, entity do
-                  Results.push {:success, scene, "Absent element with CSS: #{inspect entity}!"}
-                else
+                if element? :css, entity do
                   Results.push {:failure, scene, "Present element with CSS: #{inspect entity}!"}
+                else
+                  Results.push {:success, scene, "Absent element with CSS: #{inspect entity}!"}
                 end
               end
 
@@ -225,10 +225,10 @@ defmodule Core do
 
             {:name_not, entity_list} ->
               for entity <- entity_list do
-                unless element? :name, entity do
-                  Results.push {:success, scene, "Absent element with NAME: #{inspect entity}!"}
-                else
+                if element? :name, entity do
                   Results.push {:failure, scene, "Present element with NAME: #{inspect entity}!"}
+                else
+                  Results.push {:success, scene, "Absent element with NAME: #{inspect entity}!"}
                 end
               end
 
@@ -244,10 +244,10 @@ defmodule Core do
 
             {:tag_not, entity_list} ->
               for entity <- entity_list do
-                unless element? :tag, entity do
-                  Results.push {:success, scene, "Absent TAG: #{inspect entity}!"}
-                else
+                if element? :tag, entity do
                   Results.push {:failure, scene, "Present TAG: #{inspect entity}!"}
+                else
+                  Results.push {:success, scene, "Absent TAG: #{inspect entity}!"}
                 end
               end
 
