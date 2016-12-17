@@ -64,7 +64,9 @@ defmodule YstTest do
     res = scenes |> Scenarios.play
     assert res == {:ok, scenes}, "Response with :ok and scenes"
 
-    for {res, scene, message} <- Results.show do
+    for {result, scene, message} <- Results.show do
+      assert result == :success, "Each test result has to be successful!"
+
       case message do
         "" ->
           assert false, "Results message can't be empty!"
