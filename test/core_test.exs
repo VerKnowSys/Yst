@@ -6,6 +6,7 @@ defmodule CoreTest do
   require Util
 
   doctest Scenarios
+  doctest ScenesList
 
 
   test "Option should work correctly with some types" do
