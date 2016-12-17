@@ -1,6 +1,11 @@
 defmodule Scenario do
   @moduledoc """
-  Scenario module describes basic logic over user "scenes-script"
+  Describes basic Scenario behaviour.
+
+  Each tested Scenario-module has to implement
+  "script" callback - that contains ordered list
+  of Scenes to play by Director.
+
   """
   use Behaviour
 
