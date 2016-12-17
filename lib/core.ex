@@ -135,6 +135,12 @@ defmodule Core do
       end
 
 
+      def action_pick! matchers do
+        # TODO:
+
+        # selected?(element)
+
+      end
 
 
       def action_keys! matchers do
