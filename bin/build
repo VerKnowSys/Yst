@@ -1,5 +1,7 @@
 #!/bin/sh
 
+export MIX_ENV="${1:-dev}"
+
 clear
 . bin/loader
 
