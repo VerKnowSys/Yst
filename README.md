@@ -40,7 +40,8 @@ Currently the PoC code logins to Silk backend playground and performs some read 
     under console call `Yst.run` to run main module. By default under :dev mode
     code will be recompiled on the fly and hot swapped by BEAM VM.
 
-    ![Example console output](http://s.verknowsys.com/d3abbc036b823cd78d1007b5cc007367.png)
+    ![Example output - case when YS_PASS is defined](http://s.verknowsys.com/2a5c38a111b63ce6ac7c182f56c447dc.png)
+    ![Example output - case when YS_PASS is undefined](http://s.verknowsys.com/8a9c5864e49f3fb68f3bf848648887d1.png)
 
   or
 
