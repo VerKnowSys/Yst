@@ -4,7 +4,7 @@
 . bin/load_phantom
 
 
-mix compile && \
+eval "mix compile" && \
 iex \
     --name "Yst-${MIX_ENV}-${UUID}" \
     --sname "Yst-${MIX_ENV}-${UUID}" \
