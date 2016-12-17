@@ -8,7 +8,7 @@ defmodule Yst.Mixfile do
       elixir: "~> 1.3",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
-      deps: deps(),
+      deps: deps,
       escript: escript,
       # Docs
       name: "YSt",
@@ -25,7 +25,7 @@ defmodule Yst.Mixfile do
       main_module: Yst,
       embed_elixir: true,
       language: :elixir,
-      force: false,
+      force: true,
       emu_args: []
     ]
   end
@@ -34,7 +34,7 @@ defmodule Yst.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    common = [:uuid, :hound, :logger]
+    common = [:logger, :uuid, :hound]
 
     prod = common ++ [:ex_doc]
     dev = common ++ [:credo, :remix, :ex_doc, :dialyxir]
