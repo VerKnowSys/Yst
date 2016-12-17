@@ -18,6 +18,7 @@ defmodule HeadlessScene do
         req!: "/",
         js!: ["return alert('Is it true?')"],
         dismiss!: true,
+        script?: ["return true"]
       },
 
   ]
