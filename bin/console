@@ -2,7 +2,7 @@
 
 export MIX_ENV="${1:-dev}"
 
-. .env
+. bin/loader
 . bin/load_phantom
 
 
