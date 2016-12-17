@@ -1,9 +1,31 @@
 #!/bin/sh
 
-. .env
+clear
+export MIX_ENV="${MIX_ENV:-dev}"
 
-if [ ! -d "deps" ]; then
-    mix do deps.get
+
+case "${0}" in
+
+    # NOTE: Accept first param as MIX_ENV,
+    #       Only if invoked from "bin/build" or "bin/console.
+    "bin/build"|"bin/console")
+        if [ -n "${1}" ]; then
+            export MIX_ENV="${1:-${MIX_ENV}}"
+            printf "%s\n" "Environment set: ${MIX_ENV}"
+        fi
+        ;;
+
+    *)
+        printf "%s\n" "Environment: ${MIX_ENV}"
+        ;;
+
+esac
+
+if [ ! -d "./deps/hound/lib" ]; then
+    printf "%s\n" "Fetching deps.."
+    mix deps.get
 fi
 
-printf "%s\n" "Environment set: ${MIX_ENV}"
+. ./.env
+
+

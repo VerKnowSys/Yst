@@ -1,8 +1,6 @@
 #!/bin/sh
 
-export MIX_ENV="${1:-dev}"
-
-. .env
+. bin/loader
 
 mix do compile, dialyzer | \
     perl -p0e 's/.*?Proceeding with analysis...//s' | \
