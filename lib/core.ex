@@ -54,12 +54,9 @@ defmodule Core do
       Check expectations
       """
       def expect scene, expectations do
-        for expectation <- expectations do
+        filtered = Enum.filter expectations, fn {_, value} -> value != [] end
+        for expectation <- filtered do
           case expectation do
-
-            {t, []} ->
-              Logger.debug "Empty expectation: #{inspect expectation}. Ignored"
-
 
             {:at_least_single_action, true} ->
               Results.push {:success, scene, "Scene defines at least a single check!"}
