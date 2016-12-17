@@ -28,8 +28,10 @@ defmodule Yst do
     # Start supervisor. Director supervisor will start it's work synchronously
     case Yst.start_link do
       {:ok, _} ->
-        Logger.info "Yst-Supervisor started. Claps!"
+        Logger.info "Yst-Supervisor started."
+
       {:error, {:already_started, _}} ->
+        Logger.debug "Yst-Supervisor already started."
     end
     Results.reset
     Director.claps
