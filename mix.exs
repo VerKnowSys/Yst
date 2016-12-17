@@ -61,11 +61,11 @@ defmodule Yst.Mixfile do
   defp deps do
     [
       {:hound, "~> 1.0"},
-      {:credo, "~> 0.5", only: [:dev, :test]},
-      {:remix, "~> 0.0.1", only: [:dev, :test]},
-      {:ex_doc, "~> 0.14", only: [:dev, :test]},
+      {:credo, "~> 0.5"},
+      {:remix, "~> 0.0.1"},
+      {:ex_doc, "~> 0.14"},
       {:uuid, "~> 1.1"},
-      {:dialyxir, "~> 0.4", only: [:dev], runtime: false},
+      {:dialyxir, "~> 0.4"},
     ]
   end
 end
