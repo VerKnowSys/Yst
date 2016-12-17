@@ -50,9 +50,24 @@ defmodule Core do
       def pass, do: System.get_env "YS_PASS"
 
 
-      @doc """
+      @doc ~S"""
       Performs match on given content. Accepted values are:
       "String" and ~/Regexp/
+
+      ## Examples
+
+          iex> "abc123 a123 AaBbCc123" |> Scenarios.content_matches? ~r/abc123/
+          true
+
+          iex> "a123 AaBbCc123" |> Scenarios.content_matches? "AaBbCc"
+          true
+
+          iex> "a123 AaBbCc123" |> Scenarios.content_matches? "aAbBcC"
+          false
+
+          iex> "a123 AaBbCc123" |> Scenarios.content_matches? ~r/.*Cc\d+/
+          true
+
       """
       @spec content_matches?(contents :: list, matcher :: String.t | Regex.t) :: boolean
       def content_matches? contents, matcher do
