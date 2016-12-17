@@ -12,6 +12,8 @@ case "${0}" in
         if [ -n "${1}" ]; then
             export MIX_ENV="${1:-${MIX_ENV}}"
             printf "%s\n" "Environment set: ${MIX_ENV}"
+        else
+            printf "%s\n" "Environment: ${MIX_ENV}"
         fi
         ;;
 
@@ -31,8 +33,11 @@ case "${0}" in
 
 esac
 
-if [ ! -d "./deps/hound/lib" ]; then
-    printf "%s\n" "Fetching deps.."
+if [ -f "./deps/hound/lib/hound.ex" ] && \
+   [ -f "./deps/uuid/lib/uuid.ex" ] ; then
+    printf "%s\n" "Core dependencies found under deps/"
+else
+    printf "%s\n" "Fetching and compiling project dependencies"
     eval "mix do deps.get, deps.compile"
 fi
 
