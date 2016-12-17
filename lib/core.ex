@@ -266,9 +266,16 @@ defmodule Core do
       end
 
 
-      @doc """
-      Checks if at least one check is defined
+      @doc ~S"""
+      Checks if at least one check is defined in scene struct
+
+      ## Examples
+
+          iex> BasicLoginLogoutScene.script |> (Enum.take 1) |> List.first |>Scenarios.at_least_single_action
+          true
+
       """
+      @spec at_least_single_action(scene :: Scene.t, list :: list) :: boolean
       def at_least_single_action scene, list \\ @checks_list do
         case list do
           [] ->
