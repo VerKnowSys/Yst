@@ -35,11 +35,18 @@ defmodule Director do
 
 
   @doc """
-  Director "claps" - starts scenario script and reports results.
+  Director "claps" - starts scenario script and fill Results queue
   Works synchronously.
   """
   def claps do
     GenServer.call __MODULE__, :run, (Application.get_env :yst, :scene_timeout)
+  end
+
+
+  @doc """
+  Director "results" - renders Results queue
+  """
+  def results do
     GenServer.call __MODULE__, :result, (Application.get_env :yst, :result_timeout)
   end
 
