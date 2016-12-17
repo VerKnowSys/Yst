@@ -83,51 +83,62 @@ defmodule Core do
               Results.push {:failure, scene, "Scene lacks any checks!"}
 
 
-            {:title, entity_or_entities} ->
-              if String.contains? page_title, entity_or_entities do
-                Results.push {:success, scene, "Title contains element: #{inspect entity_or_entities}!"}
-              else
-                Results.push {:failure, scene, "Title lacks element: #{inspect entity_or_entities}!"}
+            {:title, entity_list} ->
+              for entity <- entity_list do
+                if content_matches? page_title, entity do
+                  Results.push {:success, scene, "Title contains element: #{inspect entity}!"}
+                else
+                  Results.push {:failure, scene, "Title lacks element: #{inspect entity}!"}
+                end
               end
 
 
-            {:title_not, entity_or_entities} ->
-              unless String.contains? page_title, entity_or_entities do
-                Results.push {:success, scene, "Title lacks element: #{inspect entity_or_entities}!"}
-              else
-                Results.push {:failure, scene, "Title contains element: #{inspect entity_or_entities}!"}
+            {:title_not, entity_list} ->
+              for entity <- entity_list do
+                unless content_matches? page_title, entity do
+                  Results.push {:success, scene, "Title lacks element: #{inspect entity}!"}
+                else
+                  Results.push {:failure, scene, "Title contains element: #{inspect entity}!"}
+                end
+              end
+
+            {:src, entity_list} ->
+              for entity <- entity_list do
+                if content_matches? page_source, entity do
+                  Results.push {:success, scene, "Elements present in page source: #{inspect entity}!"}
+                else
+                  Results.push {:failure, scene, "Elements absent in page source: #{inspect entity}!"}
+                end
               end
 
 
-            {:src, entity_or_entities} ->
-              if String.contains? page_source, entity_or_entities do
-                Results.push {:success, scene, "Elements present in page source: #{inspect entity_or_entities}!"}
-              else
-                Results.push {:failure, scene, "Elements absent in page source: #{inspect entity_or_entities}!"}
+            {:src_not, entity_list} ->
+              for entity <- entity_list do
+                unless content_matches? page_source, entity do
+                  Results.push {:success, scene, "Elements absent in page source: #{inspect entity}!"}
+                else
+                  Results.push {:failure, scene, "Elements present in page source: #{inspect entity}!"}
+                end
               end
 
 
-            {:src_not, entity_or_entities} ->
-              unless String.contains? page_source, entity_or_entities do
-                Results.push {:success, scene, "Elements absent in page source: #{inspect entity_or_entities}!"}
-              else
-                Results.push {:failure, scene, "Elements present in page source: #{inspect entity_or_entities}!"}
+            {:text, entity_list} ->
+              for entity <- entity_list do
+                if content_matches? visible_page_text, entity do
+                  Results.push {:success, scene, "Elements present in page text: #{inspect entity}!"}
+                else
+                  Results.push {:failure, scene, "Elements absent in page text: #{inspect entity}!"}
+                end
               end
 
 
-            {:text, entity_or_entities} ->
-              if String.contains? visible_page_text, entity_or_entities do
-                Results.push {:success, scene, "Elements present in page text: #{inspect entity_or_entities}!"}
-              else
-                Results.push {:failure, scene, "Elements absent in page text: #{inspect entity_or_entities}!"}
-              end
-
-
-            {:text_not, entity_or_entities} ->
-              unless String.contains? visible_page_text, entity_or_entities do
-                Results.push {:success, scene, "Elements absent in page text: #{inspect entity_or_entities}!"}
-              else
-                Results.push {:failure, scene, "Elements present in page text: #{inspect entity_or_entities}!"}
+            {:text_not, entity_list} ->
+              for entity <- entity_list do
+                unless content_matches? visible_page_text, entity do
+                  Results.push {:success, scene, "Elements absent in page text: #{inspect entity}!"}
+                else
+                  Results.push {:failure, scene, "Elements present in page text: #{inspect entity}!"}
+                end
               end
 
 
