@@ -33,6 +33,7 @@ defmodule Yst do
       {:error, {:already_started, _}} ->
         Director.claps
     end
+    Results.reset
   end
 
 end
