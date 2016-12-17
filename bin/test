@@ -1,12 +1,10 @@
 #!/bin/sh
 
-. bin/load_phantom
-. bin/fetch_deps
+export MIX_ENV="${1:-test}"
 
-# NOTE: skipping ost_test by default for now:
-env \
-    MIX_ENV="${1:-test}" \
-    YS_URL="http://playground.silkvms.com/amspeter123" \
-    YS_LOGIN="ys" \
-    YS_PASS="***REMOVED***" \
-    mix test test/yst_test.exs
+. .env
+. bin/load_phantom
+
+mix test \
+    test/core_test.exs \
+    test/yst_test.exs
