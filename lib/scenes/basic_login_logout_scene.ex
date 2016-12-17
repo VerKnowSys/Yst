@@ -25,7 +25,8 @@ defmodule BasicLoginLogoutScene do
         keys!: [:enter],
         screenshot!: true,
 
-        title?: ["Dashboard - SilkVMS"],
+        title?: ["Dashboard", "SilkVMS"],
+        title_not?: ["Belzebub", "Zdzisio"],
         text_not?: ["Username", "Password"],
         class?: ["title", "fieldset"],
         id_not?: ["LoginForm", "Login"],
@@ -36,7 +37,7 @@ defmodule BasicLoginLogoutScene do
       %Scene {
         req!: "/",
 
-        title?: ["Dashboard - SilkVMS"],
+        title?: ["Dashboard", "SilkVMS"],
         text_not?: ["Username", "Password"],
         class?: ["title", "fieldset"],
         id_not?: ["LoginForm", "Login"],
