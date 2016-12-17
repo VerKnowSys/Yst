@@ -29,11 +29,11 @@ defmodule Yst do
     case Yst.start_link do
       {:ok, _} ->
         Logger.info "Yst-Supervisor started. Claps!"
-        Director.claps
       {:error, {:already_started, _}} ->
-        Director.claps
     end
     Results.reset
+    Director.claps
+    Director.results
   end
 
 end
