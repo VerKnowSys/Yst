@@ -20,12 +20,7 @@ defmodule Yst do
   end
 
 
-  defp environment do
-    case System.get_env "MIX_ENV" do
-      "" -> "dev"
-      any -> any
-    end
-  end
+  def environment, do: System.get_env "MIX_ENV"
 
 
   def run, do: main []
