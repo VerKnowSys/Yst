@@ -51,6 +51,23 @@ defmodule Core do
 
 
       @doc """
+      Performs match on given content. Accepted values are:
+      "String" and ~/Regexp/
+      """
+      @spec content_matches?(contents :: list, matcher :: String.t | Regex.t) :: boolean
+      def content_matches? contents, matcher do
+        cond do
+          # NOTE: String is a binary
+          is_binary matcher ->
+            String.contains? contents, matcher
+
+          Regex.regex? matcher ->
+            Regex.match? matcher, contents
+        end
+      end
+
+
+      @doc """
       Check expectations
       """
       def expect scene, expectations do
