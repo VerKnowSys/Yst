@@ -494,7 +494,8 @@ defmodule Core do
           end
 
           # NOTE: set value of actions_ms field of Scene struct.
-          scene = %Scene{ scene | :actions_ms => (scene_actions_process_time |> div 1000) }
+          us_to_ms = div scene_actions_process_time, 1000
+          scene = %Scene{ scene | actions_ms: us_to_ms}
 
           ###########
           #   Fill Results queue
