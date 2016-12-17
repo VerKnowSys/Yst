@@ -33,7 +33,7 @@ esac
 
 if [ ! -d "./deps/hound/lib" ]; then
     printf "%s\n" "Fetching deps.."
-    mix deps.get
+    eval "mix do deps.get, deps.compile"
 fi
 
 . ./.env

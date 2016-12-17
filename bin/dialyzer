@@ -2,6 +2,6 @@
 
 . bin/loader
 
-mix do compile, dialyzer | \
+eval "mix do compile, dialyzer" | \
     perl -p0e 's/.*?Proceeding with analysis...//s' | \
     perl -p0e 's/Unknown functions:.*//s'

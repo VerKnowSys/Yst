@@ -3,12 +3,9 @@
 
 . bin/loader
 
-mix do \
-    deps.compile, \
-    compile, \
-    escript.build
+eval "mix do compile, escript.build"
 
 if [ ! -d "doc" ] && [ "${MIX_ENV}" = "prod" ]; then
     printf "%s\n" "Building doc/"
-    mix docs
+    eval "mix docs"
 fi

@@ -3,7 +3,7 @@
 . bin/loader
 . bin/load_phantom
 
-mix test \
+eval "mix do compile, test \
     test/core_test.exs \
-    test/yst_test.exs
+    test/yst_test.exs"
 
