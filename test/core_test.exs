@@ -36,7 +36,7 @@ defmodule CoreTest do
     value_wrong = [even: "now"]
     assert 1 == value_wrong |> Some.unwrap_or_else 1
     assert 3 == {:anything, :else} |> Some.unwrap_or_else 3
-    assert {:anything, :else} == (Some.v {:anything, :else}) |> Some.unwrap_or_else 3
+    assert {:anything, :else} == (Some.v {:anything, :else}) |> (Some.unwrap_or_else 3)
     assert [some: "more", time: "for"] == value |> Some.unwrap
     assert [some: "more", time: "for"] == value |> Some.unwrap_or_else :NOWAI
   end
