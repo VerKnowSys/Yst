@@ -7,6 +7,7 @@ defmodule BasicLoginLogoutScene do
   def script, do: [
 
       %Scene {
+        uuid: "Logout-and-cookies-reset",
         req!: "/logout",
         cookies_reset!: true,
 
@@ -17,6 +18,7 @@ defmodule BasicLoginLogoutScene do
       },
 
       %Scene {
+        uuid: "Login-clean",
         req!: "/login",
         fill!: [
           {"adm_user", user},
@@ -35,6 +37,7 @@ defmodule BasicLoginLogoutScene do
       },
 
       %Scene {
+        uuid: "Main-site-after-login",
         req!: "/",
 
         title?: ["Dashboard", "SilkVMS"],
