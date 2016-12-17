@@ -3,9 +3,16 @@
 
 . bin/loader
 
-eval "mix do compile, escript.build, credo"
+eval "mix do compile, escript.build"
 
 if [ ! -d "doc" ] && [ "${MIX_ENV}" = "prod" ]; then
     printf "%s\n" "Building doc/"
     eval "mix docs"
 fi
+
+if [ "${MIX_ENV}" != "prod" ]; then
+    set +e
+    eval "mix credo"
+    exit
+fi
+
