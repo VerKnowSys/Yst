@@ -1,4 +1,7 @@
 defmodule Director do
+  @moduledoc """
+  Director GenServer - entity to process scenarios.
+  """
 
   use GenServer
   require Logger

@@ -1,4 +1,8 @@
 defmodule BasicLoginLogoutScene do
+  @moduledoc """
+  Scenario to test login, logout and login cookies
+  """
+
   use Core
 
   @behaviour Scenario

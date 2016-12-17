@@ -1,4 +1,8 @@
 defmodule HeadlessScene do
+  @moduledoc """
+  Scenario for general headless browser tests.
+  """
+
   use Core
 
   @behaviour Scenario

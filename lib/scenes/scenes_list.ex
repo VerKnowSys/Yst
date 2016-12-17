@@ -1,4 +1,10 @@
 defmodule ScenesList do
+  @moduledoc """
+  This is core module that defines list of scripts of scenes
+  that will be used by default by Yst.
+
+  All scenes modules are defined under lib/scenes/*.ex
+  """
 
   @doc ~S"""
   Defines scripts - collection of all scripts defined.
