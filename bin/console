@@ -10,5 +10,5 @@ mix compile && \
 iex \
     --name "Yst-${MIX_ENV}-${UUID}" \
     --sname "Yst-${MIX_ENV}-${UUID}" \
-    --cookie "Yst-${MIX_ENV}-${UUID}" \
+    --cookie "Yst-${MIX_ENV}" \
     -S mix
