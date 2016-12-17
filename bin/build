@@ -1,5 +1,6 @@
 #!/bin/sh
 
+clear
 . bin/loader
 
 mix do \
@@ -10,9 +11,3 @@ mix do \
 if [ ! -d "doc" ]; then
     mix docs
 fi
-
-echo
-echo "Launching Dialyzer checks:"
-echo
-
-. bin/dialyzer
