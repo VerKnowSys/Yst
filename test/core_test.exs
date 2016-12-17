@@ -5,7 +5,6 @@ defmodule CoreTest do
 
   require Util
 
-  doctest Yst
   doctest Scenarios
 
 
