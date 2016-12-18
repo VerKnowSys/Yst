@@ -39,6 +39,7 @@ defmodule BasicLoginLogoutScene do
         id_not?: ["LoginForm", "Login"],
         tag?: ["fieldset", "input"],
         name_not?: ["fieldset", "input"],
+        url?: ["/login", ~r/silkvms/],
       },
 
       %Scene {

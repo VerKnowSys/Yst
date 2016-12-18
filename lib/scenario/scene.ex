@@ -90,6 +90,9 @@ defmodule Scene do
     attr?: [],                              # check element attribute value
     attr_not?: [],
 
+    url?: [],                               # Check existence of param/phrase in browser url bar
+    url_not?: [],
+
     title?: [],
     title_not?: [],
     text?: [],
