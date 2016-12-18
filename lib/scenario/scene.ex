@@ -87,6 +87,9 @@ defmodule Scene do
     # wait_before!: @default_delay_secs,       # delay in seconds
 
     # After all sync tasks are done => perform expectations check
+    attr?: [],                              # check element attribute value
+    attr_not?: [],
+
     title?: [],
     title_not?: [],
     text?: [],
