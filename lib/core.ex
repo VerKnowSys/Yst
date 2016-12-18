@@ -417,6 +417,9 @@ defmodule Core do
       end
 
 
+      @doc """
+      Sends keyboard input(s) on tested site.
+      """
       def action_keys! matchers do
         for symbol <- matchers do
           Logger.debug "Sending keys: #{inspect symbol}"
@@ -425,6 +428,9 @@ defmodule Core do
       end
 
 
+      @doc """
+      Executes JavaScript action block(s) on tested site.
+      """
       def action_js! matchers do
         for code <- matchers do
           Logger.debug "Executing JavaScript code: #{inspect code}"
