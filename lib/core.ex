@@ -175,9 +175,9 @@ defmodule Core do
                     case search_element try_html_hook, html_entity do
                       {:ok, element} ->
                         if (attribute_value element, attribute) == attr_value do
-                          Results.push {:success, scene, "Attribute: #{inspect attribute}, value: #{attr_value} was found: #{inspect html_entity}!"}
+                          Results.push {:success, scene, "Found attribute: #{inspect attribute}, value: #{inspect attr_value}!"}
                         else
-                          Results.push {:failure, scene, "Unable to find attribute: #{inspect attribute} with value: #{attr_value}!"}
+                          Results.push {:failure, scene, "No attribute: #{inspect attribute}, value: #{inspect attr_value}!"}
                         end
 
                       {:error, e} ->
