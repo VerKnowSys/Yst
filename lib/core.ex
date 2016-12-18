@@ -28,6 +28,19 @@ defmodule Core do
         :cookie?, :cookie_not?
       ]
 
+      @html_elems_link [
+        :partial_link_text,
+        :link_text
+      ]
+
+      @html_elems [
+        :xpath,
+        :name,
+        :class,
+        :id,
+        :css,
+        :tag,
+      ]
 
       @doc """
       Defines base url of tested site
