@@ -157,6 +157,46 @@ defmodule Core do
               end
 
 
+
+            {:attr, entity_list} ->
+              for {html_entity, attribute, attr_value} <- entity_list do
+                for try_html_hook <- @html_elems do
+                  if element? try_html_hook, html_entity do
+                    case search_element try_html_hook, html_entity do
+                      {:ok, element} ->
+                        if attribute_value element, attribute == attr_value do
+                          Results.push {:success, scene, "Attribute: #{inspect attribute}, value: #{attr_value} was found: #{inspect html_entity}!"}
+                        else
+                          Results.push {:failure, scene, "Unable to find attribute: #{inspect attribute} with value: #{attr_value}!"}
+                        end
+
+                      {:error, e} ->
+                        Logger.error e
+                    end
+                  end
+                end
+              end
+
+            {:attr_not, entity_list} ->
+              for {html_entity, attribute, attr_value} <- entity_list do
+                for try_html_hook <- @html_elems do
+                  if element? try_html_hook, html_entity do
+                    case search_element try_html_hook, html_entity do
+                      {:ok, element} ->
+                        if attribute_value element, attribute != attr_value do
+                          Results.push {:success, scene, "Attribute: #{inspect attribute}, value: #{attr_value} is absent as expected!"}
+                        else
+                          Results.push {:failure, scene, "Unexpected attribute: #{inspect attribute} with value: #{attr_value}!"}
+                        end
+
+                      {:error, e} ->
+                        Logger.error e
+                    end
+                  end
+                end
+              end
+
+
             {:id, entity_list} ->
               for entity <- entity_list do
                 if element? :id, entity do

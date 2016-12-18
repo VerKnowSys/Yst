@@ -51,6 +51,9 @@ defmodule BasicLoginLogoutScene do
         id_not?: ["LoginForm", "Login"],
         tag?: ["fieldset", "input"],
         name_not?: ["fieldset", "input"],
+        attr?: [
+          {"whole_queryLowerListFilter", "value", "page:1"},
+        ],
       },
 
   ]
