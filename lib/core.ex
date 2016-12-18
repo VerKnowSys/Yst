@@ -409,11 +409,28 @@ defmodule Core do
       end
 
 
+      @doc """
+      Picks checkbox, field, box, radio or select tag.
+      """
       def action_pick! matchers do
-        # TODO:
+        for {html_entity, contents} <- matchers do
+          for try_html_hook <- @html_elems do
+            if element? try_html_hook, html_entity do
+              Logger.debug "Picking element: #{inspect html_entity} of type: #{inspect try_html_hook}"
+              case search_element try_html_hook, html_entity do
+                {:ok, element} ->
+                  Logger.debug "Pick!Click!"
+                  click element
+                  Logger.debug "Pick! entity: #{try_html_hook} => #{html_entity}. Element: #{inspect element}"
+                  input_into_field element, contents # TODO: attribute_value(element, "value") == contents
+                  # TODO: selected?(element)
 
-        # selected?(element)
-
+                {:error, e} ->
+                  Logger.error e
+              end
+            end
+          end
+        end
       end
 
 
