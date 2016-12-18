@@ -556,7 +556,7 @@ defmodule Core do
 
             Logger.info "After Scene( #{scene.act}/#{acts} ) Session( #{current_session_name} ) Url( #{url}#{scene.req!} )"
             Logger.debug "A\n\
-                           scene.name: #{scene.name}\n\
+                         scene.name: #{scene.name}\n\
                             request: #{inspect scene.req!}\n\
                          page_title: #{page_title}\n\
                         current_url: #{current_url}\n\
