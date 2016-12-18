@@ -441,6 +441,7 @@ defmodule Core do
       """
       def check_expectations? scene do
         with  title <- scene.title?,    title_not <- scene.title_not?,
+              attr <- scene.attr?,      attr_not <- scene.attr_not?,
               scrpt <- scene.script?,   scrpt_not <- scene.script_not?,
               src <- scene.src?,        src_not <- scene.src_not?,
               text <- scene.text?,      text_not <- scene.text_not?,
@@ -453,6 +454,7 @@ defmodule Core do
             expect scene, [
               at_least_single_action: (at_least_single_action scene),
               title: title, title_not: title_not,
+              attr: attr, attr_not: attr_not,
               script: scrpt, script_not: scrpt_not,
               src: src, src_not: src_not,
               text: text, text_not: text_not,
