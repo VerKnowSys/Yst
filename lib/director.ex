@@ -4,7 +4,6 @@ defmodule Director do
   """
 
   use GenServer
-  use Hound.Helpers
 
   require Logger
 
@@ -18,7 +17,9 @@ defmodule Director do
 
 
   def handle_call :run, _from, _state do
+    Hound.start_session
     pr = process_scenarios
+    Hound.end_session
     {:reply, pr, pr}
   end
 
