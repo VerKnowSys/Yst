@@ -121,3 +121,25 @@ defmodule Scene do
   ]
 
 end
+
+
+defimpl String.Chars, for: Scene do
+
+  def to_string scene do
+    "Scene {" <>
+    "  name: '#{scene.name},' actions_ms: '#{scene.actions_ms},' act: '#{scene.act},'" <>
+    "  title: '#{scene.title?}', title_not: '#{scene.title_not?}'," <>
+    "  attr: #{scene.attr?}, attr_not: #{scene.attr_not?}," <>
+    "  text: #{scene.text?}, text_not: #{scene.text_not?}," <>
+    "  src: #{scene.src?}, src_not: #{scene.src_not?}," <>
+    "  script: #{scene.script?}, script_not: #{scene.script_not?}," <>
+    "  name: #{scene.name?}, name_not: #{scene.name_not?}" <>
+    "  class: #{scene.class?}, class_not: #{scene.class_not?}," <>
+    "  id: #{scene.id?}, id_not: #{scene.id_not?}," <>
+    "  css: #{scene.css?}, css_not: #{scene.css_not?}," <>
+    "  tag: #{scene.tag?}, tag_not: #{scene.tag_not?}" <>
+    "}"
+  end
+
+end
+
