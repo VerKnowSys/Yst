@@ -371,10 +371,10 @@ defmodule Core do
       @doc """
       Clicks on any element matching criteria
       """
-      def action_click! matchers, html_elems \\ [:xpath, :partial_link_text, :name, :id, :class, :tag, :css] do
+      def action_click! matchers do
         for {html_entity, contents} <- matchers do
           Logger.debug "Looking for entity: #{html_entity} to click"
-          for try_html_hook <- html_elems do
+          for try_html_hook <- @html_elems ++ @html_elems_link do
             if element? try_html_hook, html_entity do
               case search_element try_html_hook, html_entity do
                 {:ok, element} ->
@@ -393,9 +393,9 @@ defmodule Core do
       @doc """
       Fills any element matching criteria
       """
-      def action_fill! matchers, html_elems \\ [:xpath, :name, :id, :class, :tag, :css] do
+      def action_fill! matchers do
         for {html_entity, contents} <- matchers do
-          for try_html_hook <- html_elems do
+          for try_html_hook <- @html_elems do
             if element? try_html_hook, html_entity do
               Logger.debug "Element: #{inspect html_entity} of type: #{inspect try_html_hook}"
               case search_element try_html_hook, html_entity do
