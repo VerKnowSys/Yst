@@ -4,6 +4,8 @@ defmodule Director do
   """
 
   use GenServer
+  use Hound.Helpers
+
   require Logger
 
 
@@ -27,12 +29,8 @@ defmodule Director do
 
 
   defp process_scenarios do
-    Hound.start_session
-
     scscripts = ScenesList.scripts
     scscripts |> Scenarios.play
-
-    Hound.end_session
     scscripts
   end
 
