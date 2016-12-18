@@ -207,6 +207,25 @@ defmodule Core do
               end
 
 
+            {:url, entity_list} ->
+              for entity <- entity_list do
+                if content_matches? current_url, entity do
+                  Results.push {:success, scene, "URL matches expected: #{inspect entity}!"}
+                else
+                  Results.push {:failure, scene, "Expected no entry: #{inspect entity} in URL!"}
+                end
+              end
+
+            {:url_not, entity_list} ->
+              for entity <- entity_list do
+                if not content_matches? current_url, entity do
+                  Results.push {:success, scene, "Expected no entry: #{inspect entity} in URL!"}
+                else
+                  Results.push {:failure, scene, "Expected absence of: #{inspect entity} in URL!"}
+                end
+              end
+
+
             {:id, entity_list} ->
               for entity <- entity_list do
                 if element? :id, entity do
@@ -462,6 +481,7 @@ defmodule Core do
       def check_expectations? scene do
         with  title <- scene.title?,    title_not <- scene.title_not?,
               attr <- scene.attr?,      attr_not <- scene.attr_not?,
+              url <- scene.url?,        url_not <- scene.url_not?,
               scrpt <- scene.script?,   scrpt_not <- scene.script_not?,
               src <- scene.src?,        src_not <- scene.src_not?,
               text <- scene.text?,      text_not <- scene.text_not?,
@@ -475,6 +495,7 @@ defmodule Core do
               at_least_single_action: (at_least_single_action scene),
               title: title, title_not: title_not,
               attr: attr, attr_not: attr_not,
+              url: url, url_not: url_not,
               script: scrpt, script_not: scrpt_not,
               src: src, src_not: src_not,
               text: text, text_not: text_not,
