@@ -3,7 +3,7 @@
 clear
 set -e
 export MIX_ENV="${MIX_ENV:-dev}"
-
+export UUID="E64B2B13-E4D6-40F6"
 
 case "${0}" in
 
