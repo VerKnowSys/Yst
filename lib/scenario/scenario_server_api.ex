@@ -1,6 +1,7 @@
 defmodule ScenarioServerApi do
   require Logger
   use Maru.Router
+  use TransactMacro
 
 
   namespace :scenario do
@@ -14,7 +15,9 @@ defmodule ScenarioServerApi do
     end
 
     post do
-      Logger.debug "Content param: #{inspect params[:content]}"
+      Logger.debug "Content param given: #{inspect params[:content]}"
+
+      transact RecordedScenario.write! DbApi.scenario_new params[:content]
 
       conn
       |> (json %{msg: "Scenario stored. Thank You! :)"})
