@@ -1,7 +1,15 @@
-defmodule Util do
+defmodule Utils do
   @moduledoc """
-  Util module with some utilities used in Yst
+  Utils module.
   """
+
+  @doc """
+  Returns seconds elapsed since 1970
+  """
+  def timestamp do
+    :os.system_time :seconds
+  end
+
 
   types = ~w[boolean number function nil integer binary bitstring list map float atom tuple pid port reference]
 
@@ -10,4 +18,5 @@ defmodule Util do
     def typeof(x) when unquote(:"is_#{type}")(x), do: unquote(type)
 
   end
+
 end
