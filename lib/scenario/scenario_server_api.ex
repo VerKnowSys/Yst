@@ -16,7 +16,8 @@ defmodule ScenarioServerApi do
     post do
       Logger.debug "Content param: #{inspect params[:content]}"
 
-      conn |> json %{ msg: "Scenario stored. Thank You! :)" }
+      conn
+      |> (json %{msg: "Scenario stored. Thank You! :)"})
     end
   end
 end

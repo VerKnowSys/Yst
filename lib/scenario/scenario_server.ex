@@ -12,7 +12,8 @@ defmodule ScenarioServer do
 
   resources do
     get do
-      conn |> json %{ msg: "I'm scenario server :)" }
+      conn
+      |> (json %{msg: "I'm scenario server :)"})
     end
 
     mount ScenarioServerApi
