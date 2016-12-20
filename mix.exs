@@ -34,7 +34,7 @@ defmodule Yst.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    common = [:logger, :uuid, :hound]
+    common = [:logger, :uuid, :hound, :maru]
 
     prod = common ++ [:ex_doc]
     dev = common ++ [:credo, :remix, :ex_doc, :dialyxir]
@@ -66,6 +66,7 @@ defmodule Yst.Mixfile do
       {:ex_doc, "~> 0.14"},
       {:uuid, "~> 1.1"},
       {:dialyxir, "~> 0.4"},
+      {:maru, "~> 0.11"},
     ]
   end
 end
