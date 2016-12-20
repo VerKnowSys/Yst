@@ -6,7 +6,7 @@ use Mix.Config
 # Yst defaults:
 config :yst, scene_timeout: 360000
 config :yst, result_timeout: 30000
-
+config :maru, ScenarioServer, http: [port: 5999]
 
 # Hound defaults:
 config :hound, driver: "phantomjs"
