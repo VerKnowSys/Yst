@@ -6,6 +6,7 @@ defmodule Yst do
 
 
   def start_link do
+    init_amnesia
     Supervisor.start_link __MODULE__, [], name: __MODULE__
   end
 
@@ -34,8 +35,6 @@ defmodule Yst do
   def run, do: main []
   def main, do: main []
   def main _ do
-    init_amnesia
-
     case Yst.start_link do
       {:ok, _} ->
         Logger.info "Yst-Supervisor started (env: #{environment})"
