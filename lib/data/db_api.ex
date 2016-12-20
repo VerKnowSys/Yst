@@ -93,11 +93,12 @@ defmodule DbApi do
   @doc """
   Helper to create new RecordedScenario
   """
-  def scenario_new content do
+  def scenario_new content, metadata \\ "" do
     transact RecordedScenario.write %RecordedScenario{
       uuid: UUID.uuid4,
-      content: content,
       timestamp: Utils.timestamp,
+      content: content,
+      metadata: metadata,
     }
   end
 
