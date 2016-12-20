@@ -6,6 +6,8 @@ defmodule Director do
   use GenServer
 
   require Logger
+  alias IO.ANSI
+  import ANSI
 
 
   @doc """
@@ -65,18 +67,18 @@ defmodule Director do
           msg = String.rjust message, 61
           request = String.rjust scene.req!, 15
           time_ms = String.rjust "#{scene.actions_ms}ms ⌛", 9
-          act = String.rjust "#{IO.ANSI.green}#{scene.act}#{IO.ANSI.default_color}", 2
-          garrow = "#{IO.ANSI.cyan} ⇒#{IO.ANSI.default_color}"
-          Logger.info "#{IO.ANSI.green}✓#{IO.ANSI.default_color} Act#{garrow} #{act}, Name#{garrow} #{IO.ANSI.green}#{name}#{IO.ANSI.default_color},\t Msg#{garrow} #{IO.ANSI.green}#{msg}#{IO.ANSI.default_color},\tReq#{garrow} #{IO.ANSI.yellow}#{request}#{IO.ANSI.default_color},\tTime#{garrow} #{IO.ANSI.magenta}#{time_ms}#{IO.ANSI.default_color}"
+          act = String.rjust "#{green}#{scene.act}#{default_color}", 2
+          garrow = "#{cyan} ⇒#{default_color}"
+          Logger.info "#{green}✓#{default_color} Act#{garrow} #{act}, Name#{garrow} #{green}#{name}#{default_color},\t Msg#{garrow} #{green}#{msg}#{default_color},\tReq#{garrow} #{yellow}#{request}#{default_color},\tTime#{garrow} #{magenta}#{time_ms}#{default_color}"
 
         {:failure, scene, message} ->
           name = String.rjust scene.name, 25
           msg = String.rjust message, 61
           request = String.rjust scene.req!, 15
           time_ms = String.rjust "#{scene.actions_ms}ms ⌛", 9
-          act = String.rjust "#{IO.ANSI.red}#{scene.act}#{IO.ANSI.default_color}", 2
-          garrow = "#{IO.ANSI.cyan} ⇒#{IO.ANSI.default_color}"
-          Logger.error "#{IO.ANSI.red} λ#{IO.ANSI.default_color} Act#{garrow} #{act}, Name#{garrow} #{IO.ANSI.red}#{name}#{IO.ANSI.default_color},\t Msg#{garrow} #{IO.ANSI.red}#{msg}#{IO.ANSI.default_color},\tReq#{garrow} #{IO.ANSI.yellow}#{request}#{IO.ANSI.default_color},\tTime#{garrow} #{IO.ANSI.magenta}#{time_ms}#{IO.ANSI.default_color}"
+          act = String.rjust "#{red}#{scene.act}#{default_color}", 2
+          garrow = "#{cyan} ⇒#{default_color}"
+          Logger.error "#{red} λ#{default_color} Act#{garrow} #{act}, Name#{garrow} #{red}#{name}#{default_color},\t Msg#{garrow} #{red}#{msg}#{default_color},\tReq#{garrow} #{yellow}#{request}#{default_color},\tTime#{garrow} #{magenta}#{time_ms}#{default_color}"
 
         res ->
           Logger.warn "Error: Unknown entry: #{inspect res}"
