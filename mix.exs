@@ -4,7 +4,7 @@ defmodule Yst.Mixfile do
   def project do
     [
       app: :yst,
-      version: "0.4.6",
+      version: "0.6.0",
       elixir: "~> 1.3",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
@@ -12,7 +12,7 @@ defmodule Yst.Mixfile do
       escript: escript,
       # Docs
       name: "YSt",
-      source_url: "https://github.com/centrahq/yst",
+      source_url: "https://github.com/young-skilled/yst",
       docs: [
         main: "YS integration test environment",
         extras: ["README.md"]
