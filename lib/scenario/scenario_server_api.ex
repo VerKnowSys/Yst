@@ -15,7 +15,7 @@ defmodule ScenarioServerApi do
     end
 
     post do
-      Logger.debug "Content param given: #{inspect params[:content]}"
+      Logger.debug "Got content: #{inspect params[:content]}"
 
       transact RecordedScenario.write! DbApi.scenario_new params[:content]
 

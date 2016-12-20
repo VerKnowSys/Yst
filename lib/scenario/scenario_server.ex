@@ -13,7 +13,7 @@ defmodule ScenarioServer do
   resources do
     get do
       conn
-      |> (json %{msg: "I'm scenario server :)"})
+      |> (json %{msg: "POST /scenario with 'content' html body param"})
     end
 
     mount ScenarioServerApi
