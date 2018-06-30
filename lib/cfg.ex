@@ -14,8 +14,8 @@ defmodule Cfg do
 
 
   def env, do: System.get_env "MIX_ENV"
-  def project_dir, do: (System.get_env "HOME") <> data_dir_base <> env
-  def mnesia_dumps_dir, do: (System.get_env "HOME") <> data_dir_base <> ".mnesia-dumps-#{env}/"
+  def project_dir, do: (System.get_env "HOME") <> data_dir_base() <> env()
+  def mnesia_dumps_dir, do: (System.get_env "HOME") <> data_dir_base() <> ".mnesia-dumps-#{env()}/"
 
 
   @doc """

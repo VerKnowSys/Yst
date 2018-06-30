@@ -7,7 +7,7 @@ defmodule CoreTest do
 
 
   test "Option should work correctly with some types" do
-    assert Some.v == %None{}
+    assert Some.v() == %None{}
     assert Some.v([]) == %None{}
     assert Some.v({}) == %None{}
     assert Some.v(%{}) == %None{}
@@ -27,14 +27,14 @@ defmodule CoreTest do
   test "Option should correctly unwrap" do
     value = Some.v Keyword.new [some: "more", time: "for"]
     assert value == %Some{v: [some: "more", time: "for"], vtype: "list"}
-    assert Some.unwrap Some.v == %None{}
-    assert Some.unwrap Some.v 12345 == 12345
+    assert Some.unwrap Some.v() == %None{}
+    assert Some.unwrap Some.v(12345) == 12345
 
     value_wrong = [even: "now"]
     assert 1 == value_wrong |> (Some.unwrap_or_else 1)
     assert 3 == {:anything, :else} |> (Some.unwrap_or_else 3)
     assert {:anything, :else} == (Some.v {:anything, :else}) |> (Some.unwrap_or_else 3)
-    assert [some: "more", time: "for"] == value |> Some.unwrap
+    assert [some: "more", time: "for"] == value |> Some.unwrap()
     assert [some: "more", time: "for"] == value |> (Some.unwrap_or_else :NOWAI)
   end
 

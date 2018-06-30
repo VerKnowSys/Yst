@@ -63,7 +63,7 @@ defmodule Scene do
 
   defstruct [
 
-    name: UUID.uuid4,                       # by default set some unique name
+    name: UUID.uuid4(),                       # by default set some unique name
     act: 0,                                 # act number
     actions_ms: 0,                          # time spent performing scene actions
 

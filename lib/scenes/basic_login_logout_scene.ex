@@ -26,8 +26,8 @@ defmodule BasicLoginLogoutScene do
         name: "Login-clean",
         req!: "/login",
         fill!: [
-          {"adm_user", user},
-          {"adm_pass", pass},
+          {"adm_user", user()},
+          {"adm_pass", pass()},
         ],
         keys!: [:enter],
         screenshot!: true,

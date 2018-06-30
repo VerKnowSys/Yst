@@ -113,7 +113,7 @@ defmodule Core do
 
             {:title, entity_list} ->
               for entity <- entity_list do
-                if content_matches? page_title, entity do
+                if content_matches? page_title(), entity do
                   Results.push {:success, scene, "Title contains element: #{inspect entity}!"}
                 else
                   Results.push {:failure, scene, "Title lacks element: #{inspect entity}!"}
@@ -122,7 +122,7 @@ defmodule Core do
 
             {:title_not, entity_list} ->
               for entity <- entity_list do
-                if content_matches? page_title, entity do
+                if content_matches? page_title(), entity do
                   Results.push {:failure, scene, "Title contains element: #{inspect entity}!"}
                 else
                   Results.push {:success, scene, "Title lacks element: #{inspect entity}!"}
@@ -132,7 +132,7 @@ defmodule Core do
 
             {:src, entity_list} ->
               for entity <- entity_list do
-                if content_matches? page_source, entity do
+                if content_matches? page_source(), entity do
                   Results.push {:success, scene, "Elements present in page source: #{inspect entity}!"}
                 else
                   Results.push {:failure, scene, "Elements absent in page source: #{inspect entity}!"}
@@ -141,7 +141,7 @@ defmodule Core do
 
             {:src_not, entity_list} ->
               for entity <- entity_list do
-                if content_matches? page_source, entity do
+                if content_matches? page_source(), entity do
                   Results.push {:failure, scene, "Elements present in page source: #{inspect entity}!"}
                 else
                   Results.push {:success, scene, "Elements absent in page source: #{inspect entity}!"}
@@ -151,7 +151,7 @@ defmodule Core do
 
             {:text, entity_list} ->
               for entity <- entity_list do
-                if content_matches? visible_page_text, entity do
+                if content_matches? visible_page_text(), entity do
                   Results.push {:success, scene, "Elements present in page text: #{inspect entity}!"}
                 else
                   Results.push {:failure, scene, "Elements absent in page text: #{inspect entity}!"}
@@ -160,7 +160,7 @@ defmodule Core do
 
             {:text_not, entity_list} ->
               for entity <- entity_list do
-                if content_matches? visible_page_text, entity do
+                if content_matches? visible_page_text(), entity do
                   Results.push {:failure, scene, "Elements present in page text: #{inspect entity}!"}
                 else
                   Results.push {:success, scene, "Elements absent in page text: #{inspect entity}!"}
@@ -209,7 +209,7 @@ defmodule Core do
 
             {:url, entity_list} ->
               for entity <- entity_list do
-                if content_matches? current_url, entity do
+                if content_matches? current_url(), entity do
                   Results.push {:success, scene, "URL matches expected: #{inspect entity}!"}
                 else
                   Results.push {:failure, scene, "Expected no entry: #{inspect entity} in URL!"}
@@ -218,7 +218,7 @@ defmodule Core do
 
             {:url_not, entity_list} ->
               for entity <- entity_list do
-                if not content_matches? current_url, entity do
+                if not content_matches? current_url(), entity do
                   Results.push {:success, scene, "Expected no entry: #{inspect entity} in URL!"}
                 else
                   Results.push {:failure, scene, "Expected absence of: #{inspect entity} in URL!"}
@@ -517,7 +517,7 @@ defmodule Core do
         acts = length script
         Logger.info "Playing script of #{acts} acts."
 
-        for {scene, act} <- script |> Enum.with_index do
+        for {scene, act} <- script |> Enum.with_index() do
           # NOTE: fill act number
           scene = %Scene{scene | act: act + 1}
 
@@ -533,8 +533,8 @@ defmodule Core do
               change_session_to scene.name
               Logger.debug "Using session: #{scene.name}"
             else
-              change_to_default_session
               Logger.debug "Using default session"
+              change_to_default_session()
             end
 
             if scene.cookies_reset! do
@@ -543,27 +543,27 @@ defmodule Core do
             end
 
             # Get driver info
-            {:ok, drver} = Hound.driver_info
+            {:ok, drver} = Hound.driver_info()
 
-            navigate_to "#{url}#{scene.req!}"
+            navigate_to "#{url()}#{scene.req!}"
 
             if scene.wait_after! > 0 do
               Logger.debug "Sleeping for: #{scene.wait_after!} seconds."
               :timer.sleep scene.wait_after!
             end
 
-            session_info = Session.session_info Hound.current_session_id
+            session_info = Session.session_info Hound.current_session_id()
 
             Logger.info "After Scene( #{scene.act}/#{acts} ) Session( #{current_session_name} ) Url( #{url}#{scene.req!} )"
             Logger.debug "A\n\
                          scene.name: #{scene.name}\n\
                             request: #{inspect scene.req!}\n\
-                         page_title: #{page_title}\n\
-                        current_url: #{current_url}\n\
+                         page_title: #{page_title()}\n\
+                        current_url: #{current_url()}\n\
                             cookies: #{inspect Cookie.cookies}\n\
                          drver_info: #{inspect drver}\n\
                        session_info: #{inspect session_info}\n\
-                       all_sessions: #{Enum.count(Session.active_sessions)}"
+                       all_sessions: #{Enum.count(Session.active_sessions())}"
 
             # fill!
             action_fill! scene.fill!
@@ -585,7 +585,7 @@ defmodule Core do
               # accept! > dismiss!
               if scene.accept! do
                 try do
-                  accept_dialog
+                  accept_dialog()
                   Logger.debug "Dialog accepted."
                 rescue
                   _ ->
@@ -594,7 +594,7 @@ defmodule Core do
               else
                 if scene.dismiss! do
                   try do
-                    dismiss_dialog
+                    dismiss_dialog()
                     Logger.debug "Dialog dismissed."
                   rescue
                     _ ->
