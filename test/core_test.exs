@@ -3,7 +3,7 @@ defmodule CoreTest do
 
   require Logger
 
-  require Util
+  require Utils
 
 
   test "Option should work correctly with some types" do
