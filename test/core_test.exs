@@ -28,7 +28,7 @@ defmodule CoreTest do
     value = Some.v Keyword.new [some: "more", time: "for"]
     assert value == %Some{v: [some: "more", time: "for"], vtype: "list"}
     assert Some.unwrap(Some.v()) == %None{}
-    assert Some.unwrap(Some.v(12345)) == 12345
+    assert Some.unwrap(Some.v(12_345)) == 12_345
 
     value_wrong = [even: "now"]
     assert 1 == (value_wrong |> (Some.unwrap_or_else 1))
