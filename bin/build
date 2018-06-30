@@ -3,7 +3,9 @@
 
 . bin/loader
 
-eval "mix do compile, escript.build"
+_build_cmd="mix do compile, escript.build"
+eval "${_build_cmd}" || \
+    eval "bin/update && ${_build_cmd}"
 
 if [ ! -d "doc" ] && [ "${MIX_ENV}" = "prod" ]; then
     printf "%s\n" "Building doc/"
