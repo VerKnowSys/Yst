@@ -8,6 +8,6 @@ fi
 
 # Default mode - no params given:
 if [ -z "${1}" ]; then
-    printf "%s\n" "Wiping out: _build/ and doc/"
-    rm -rf "./_build" "./doc" "./yst"
+    printf "%s\n" "Wiping out: _build/, deps/ and doc/"
+    rm -rf "./_build" "./doc" "./yst" "./deps"
 fi
