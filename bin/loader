@@ -44,4 +44,6 @@ fi
 
 . ./.env
 
-
+if [ ! -d "deps/" ]; then
+    eval "bin/update"
+fi
