@@ -61,12 +61,12 @@ defmodule Yst.Mixfile do
   defp deps do
     [
       {:hound, "~> 1.0", override: true},
-      {:credo, "~> 0.5"},
-      {:remix, "~> 0.0.1"},
+      {:credo, "~> 0.9"},
+      {:remix, "~> 0.0.2"},
       {:ex_doc, "~> 0.14"},
       {:uuid, "~> 1.1"},
-      {:dialyxir, "~> 0.4"},
-      {:maru, "~> 0.11"},
+      {:dialyxir, "~> 0.5"},
+      {:maru, "~> 0.13"},
       {:amnesia, github: "meh/amnesia"},
       {:ranch, "~> 1.5"},
       {:cowboy, "~> 2.4"}
