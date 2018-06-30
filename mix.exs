@@ -4,17 +4,17 @@ defmodule Yst.Mixfile do
   def project do
     [
       app: :yst,
-      version: "0.6.0",
-      elixir: "~> 1.3",
-      build_embedded: Mix.env == :prod,
-      start_permanent: Mix.env == :prod,
-      deps: deps,
-      escript: escript,
+      version: "0.6.1",
+      elixir: "~> 1.5",
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      deps: deps(),
+      escript: escript(),
       # Docs
       name: "YSt",
-      source_url: "https://github.com/young-skilled/yst",
+      source_url: "https://github.com/VerKnowSys/yst",
       docs: [
-        main: "YS integration test environment",
+        main: "Integration test automator",
         extras: ["README.md"]
       ]
     ]
@@ -34,10 +34,10 @@ defmodule Yst.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    common = [:logger, :uuid, :hound, :maru, :amnesia]
+    common = [:logger, :uuid, :hound, :maru, :amnesia, :idna, :mimerl, :certifi, :metrics, :hackney, :ssl_verify_fun, :cowboy]
 
     prod = common ++ [:ex_doc]
-    dev = common ++ [:credo, :remix, :ex_doc, :dialyxir]
+    dev = common ++ [:remix, :ex_doc, :dialyxir, :credo, :ranch]
     test = common
 
     apps = case Mix.env do
@@ -60,7 +60,7 @@ defmodule Yst.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:hound, "~> 1.0"},
+      {:hound, "~> 1.0", override: true},
       {:credo, "~> 0.5"},
       {:remix, "~> 0.0.1"},
       {:ex_doc, "~> 0.14"},
@@ -68,6 +68,8 @@ defmodule Yst.Mixfile do
       {:dialyxir, "~> 0.4"},
       {:maru, "~> 0.11"},
       {:amnesia, github: "meh/amnesia"},
+      {:ranch, "~> 1.5"},
+      {:cowboy, "~> 2.4"}
     ]
   end
 end
