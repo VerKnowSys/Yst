@@ -54,12 +54,12 @@ Currently the PoC code logins to Silk backend playground and performs some read 
 
     Example results (YS_PASS is NOT set):
 
-    ![output1](http://s.verknowsys.com/5784efcc180134f5b1399027b5dd356e.png)
+![output1](http://s.verknowsys.com/5784efcc180134f5b1399027b5dd356e.png)
 
 
     Example results (YS_PASS is set):
 
-    ![output2](http://s.verknowsys.com/ce0552cde39f3f9baad91ed788c7413e.png)
+![output2](http://s.verknowsys.com/ce0552cde39f3f9baad91ed788c7413e.png)
 
 
   4. Currently tests do internal testing. To test scenarios, go back to `Yst.run` part. (For details about internal tests look here: [yst_test.exs](https://github.com/centrahq/yst/blob/master/test/yst_test.exs)):
