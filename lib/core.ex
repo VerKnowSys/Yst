@@ -69,16 +69,16 @@ defmodule Core do
 
       ## Examples
 
-          iex> "abc123 a123 AaBbCc123" |> Scenarios.content_matches? ~r/abc123/
+          iex> "abc123 a123 AaBbCc123" |> Scenarios.content_matches?(~r/abc123/)
           true
 
-          iex> "a123 AaBbCc123" |> Scenarios.content_matches? "AaBbCc"
+          iex> "a123 AaBbCc123" |> Scenarios.content_matches?("AaBbCc")
           true
 
-          iex> "a123 AaBbCc123" |> Scenarios.content_matches? "aAbBcC"
+          iex> "a123 AaBbCc123" |> Scenarios.content_matches?("aAbBcC")
           false
 
-          iex> "a123 AaBbCc123" |> Scenarios.content_matches? ~r/.*Cc\d+/
+          iex> "a123 AaBbCc123" |> Scenarios.content_matches?(~r/.*Cc\d+/)
           true
 
       """
@@ -355,11 +355,11 @@ defmodule Core do
 
       ## Examples
 
-          iex> BasicLoginLogoutScene.script |> (Enum.take 1) |> List.first |>Scenarios.at_least_single_action
+          iex> BasicLoginLogoutScene.script() |> (Enum.take 1) |> List.first() |> Scenarios.at_least_single_action()
           true
 
-          iex> Scenarios.at_least_single_action Scenarios.script
-          false
+          iex> Scenarios.at_least_single_action Scenarios.script()
+          true
 
       """
       @spec at_least_single_action(scene :: Scene.t, list :: list) :: boolean
@@ -516,14 +516,14 @@ defmodule Core do
         acts = length script
         Logger.info "Playing script of #{acts} acts."
 
-        for {scene, act} <- script |> Enum.with_index() do
+        for {scene, act} <- (script |> Enum.with_index()) do
           # NOTE: fill act number
           scene = %Scene{scene | act: act + 1}
 
           # NOTE: count time spent on actions:
           {scene_actions_process_time, _} = Timer.tc fn ->
             if scene.window! do
-              Logger.info "Setting Phantom window size to: #{scene.window!}"
+              Logger.info "Setting Phantom window size to: #{inspect scene.window!}"
               set_window_size current_window_handle(), scene.window![:width], scene.window![:height]
             end
 
