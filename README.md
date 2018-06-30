@@ -67,3 +67,7 @@ Currently the PoC code logins to Silk backend playground and performs some read 
     ```bash
     bin/test
     ```
+
+## License
+
+BSD/MIT
