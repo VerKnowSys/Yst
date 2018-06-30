@@ -1,4 +1,8 @@
 defmodule ScenarioServer do
+  @moduledoc """
+  Simple Http Backend to receive remote scenes recorded with Xpath-cpompatible format.
+  """
+
   use Maru.Router
 
   before do

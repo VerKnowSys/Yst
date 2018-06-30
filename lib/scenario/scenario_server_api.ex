@@ -1,4 +1,8 @@
 defmodule ScenarioServerApi do
+  @moduledoc """
+  Simple Http API to receive remote scenes recorded with Xpath-cpompatible format.
+  """
+
   require Logger
   use Maru.Router
   use TransactMacro
