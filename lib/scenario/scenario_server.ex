@@ -24,14 +24,14 @@ defmodule ScenarioServer do
 
   rescue_from :all do
     conn
-    |> (put_status 500)
-    |> (json %{ msg: "Internal failure. Blame dmilith :)", error: true })
+      |> (put_status 500)
+      |> (json %{msg: "Internal failure. Blame dmilith :)", error: true})
   end
 
   defp custom_error(conn, exception) do
     conn
-    |> (put_status 500)
-    |> (json %{ msg: "#{exception.message}", error: true })
+      |> (put_status 500)
+      |> (json %{msg: "#{exception}", error: true})
   end
 
 end

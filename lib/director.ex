@@ -19,21 +19,21 @@ defmodule Director do
 
 
   def handle_call :run, _from, _state do
-    Hound.start_session
-    pr = process_scenarios
-    Hound.end_session
+    Hound.start_session()
+    pr = process_scenarios()
+    Hound.end_session()
     {:reply, pr, pr}
   end
 
   def handle_call :result, _from, _state do
-    ps = process_results
+    ps = process_results()
     {:reply, ps, ps}
   end
 
 
   defp process_scenarios do
-    scscripts = ScenesList.scripts
-    scscripts |> Scenarios.play
+    scscripts = ScenesList.scripts()
+    scscripts |> Scenarios.play()
     scscripts
   end
 
@@ -59,7 +59,7 @@ defmodule Director do
     Logger.info "-----------------------------------------------------------------------------------------------------------------------------------------------------------------"
 
     Logger.info "Scenario results:"
-    for res <- Results.show do
+    for res <- Results.show() do
       case res do
 
         {:success, scene, message} ->
