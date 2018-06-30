@@ -7,13 +7,11 @@ defmodule Scenario do
   of Scenes to play by Director.
 
   """
-  use Behaviour
-
 
   @doc """
   Defines script to be played by tested application
   """
-  defcallback script :: [Scene.t]
+  @callback script :: [Scene.t]
 
 
 end
