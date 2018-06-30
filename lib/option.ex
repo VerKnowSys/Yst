@@ -34,7 +34,6 @@ defmodule Some do
   def v(%Some{}), do: None.v
   def v input do
     in_type = Utils.typeof input
-    Logger.debug "Some: #{inspect input} of type: #{in_type}"
     %Some{
       v: input,
       vtype: in_type,
@@ -46,15 +45,12 @@ defmodule Some do
   def unwrap some do
     try do
       %Some{v: value} = some
-      Logger.debug "Unwrapped value: #{inspect value}"
       value
     rescue
       MatchError ->
-        Logger.debug "Failed to match Some-thing!"
         some
 
-      value ->
-        Logger.debug "caught #{value}"
+      _ ->
         some
     end
   end
@@ -64,11 +60,9 @@ defmodule Some do
   def unwrap_or_else some, elseblock do
     try do
       %Some{v: value} = some
-      Logger.debug "Unwrapped value: #{inspect value}"
       value
     rescue
-      any ->
-        Logger.debug "Deliberately silenced error: #{inspect any}"
+      _ ->
         case elseblock do
           %Some{v: value, vtype: _} -> value
           val -> val

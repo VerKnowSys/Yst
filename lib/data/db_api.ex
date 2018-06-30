@@ -31,15 +31,15 @@ defmodule DbApi do
     for dir <- [Cfg.mnesia_dumps_dir(), Cfg.project_dir()] do
       File.mkdir_p dir
     end
-    create_amnesia_schema
-    Amnesia.start
-    Logger.debug "Schema dump:\n#{Amnesia.Schema.print}"
+    create_amnesia_schema()
+    Amnesia.start()
+    # Logger.debug "Schema dump:\n#{Amnesia.Schema.print()}"
 
-    result = Model.create disk: [node]
-    Logger.debug "Created amnesia node: #{inspect result}"
-    Logger.debug "-----------------------------------------"
-    Logger.debug "#{inspect Amnesia.info}"
-    Logger.debug "-----------------------------------------"
+    result = Model.create disk: [node()]
+    Logger.info "Created amnesia node: #{inspect result}"
+    Logger.info "-----------------------------------------"
+    Logger.info "#{inspect Amnesia.info}"
+    Logger.info "-----------------------------------------"
   end
 
 

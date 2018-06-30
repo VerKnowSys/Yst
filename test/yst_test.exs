@@ -40,13 +40,13 @@ defmodule YstTest do
   test "test if results queue is filled" do
     case Results.start_link do
       {:ok, pid} ->
-        Logger.info "Results queue started (#{inspect pid})"
+        Logger.info "Results queue started (#{pid})"
 
       {:error, {:already_started, pid}} ->
-        Logger.debug "Results queue already started with pid: #{inspect pid}"
+        Logger.warn "Results queue already started for pid: #{pid}"
 
       {:error, er} ->
-        Logger.error "Error happened: #{inspect er}"
+        Logger.error "Error happened: #{er}"
     end
 
     scenes = HeadlessScene.script ++ BasicLoginLogoutScene.script

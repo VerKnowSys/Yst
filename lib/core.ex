@@ -99,7 +99,7 @@ defmodule Core do
       Check expectations
       """
       def expect scene, expectations do
-        filtered = Enum.filter expectations, fn {_, value} -> value != [] end
+        filtered = expectations |> Enum.filter(fn {_, value} -> value != [] end)
         for expectation <- filtered do
           case expectation do
 
@@ -363,8 +363,6 @@ defmodule Core do
 
       """
       @spec at_least_single_action(scene :: Scene.t, list :: list) :: boolean
-      def at_least_single_action(_, []), do: false
-      def at_least_single_action([], _), do: false
       def at_least_single_action(scene, list \\ @checks_list) do
         case list do
           [] ->
@@ -377,7 +375,7 @@ defmodule Core do
                 at_least_single_action scene, tail
 
               checks ->
-                Logger.debug "At least some check: #{inspect head}, defined with: #{inspect checks}"
+                # Logger.debug "At least some check: #{inspect head}, defined with: #{inspect checks}"
                 true
             end
         end
@@ -389,12 +387,12 @@ defmodule Core do
       """
       def action_click! matchers do
         for {html_entity, contents} <- matchers do
-          Logger.debug "Looking for entity: #{html_entity} to click"
+          # Logger.debug "Looking for entity: #{html_entity} to click"
           for try_html_hook <- @html_elems ++ @html_elems_link do
             if element? try_html_hook, html_entity do
               case search_element try_html_hook, html_entity do
                 {:ok, element} ->
-                  Logger.debug "Click! entity: #{try_html_hook} => #{html_entity}. Click-Element: #{inspect element}"
+                  # Logger.debug "Click! entity: #{try_html_hook} => #{html_entity}. Click-Element: #{inspect element}"
                   click element
 
                 {:error, e} ->
@@ -413,10 +411,10 @@ defmodule Core do
         for {html_entity, contents} <- matchers do
           for try_html_hook <- @html_elems do
             if element? try_html_hook, html_entity do
-              Logger.debug "Element: #{inspect html_entity} of type: #{inspect try_html_hook}"
+              # Logger.debug "Element: #{inspect html_entity} of type: #{inspect try_html_hook}"
               case search_element try_html_hook, html_entity do
                 {:ok, element} ->
-                  Logger.debug "Fill! entity: #{try_html_hook} => #{html_entity}. Element: #{inspect element}"
+                  # Logger.debug "Fill! entity: #{try_html_hook} => #{html_entity}. Element: #{inspect element}"
                   fill_field element, contents
 
                 {:error, e} ->
@@ -435,13 +433,14 @@ defmodule Core do
         for {html_entity, contents} <- matchers do
           for try_html_hook <- @html_elems do
             if element? try_html_hook, html_entity do
-              Logger.debug "Picking element: #{inspect html_entity} of type: #{inspect try_html_hook}"
+              # Logger.debug "Picking element: #{inspect html_entity} of type: #{inspect try_html_hook}"
               case search_element try_html_hook, html_entity do
                 {:ok, element} ->
-                  Logger.debug "Pick!Click!"
+                  Logger.info "Pick entity: #{try_html_hook} => #{html_entity}. Element: #{inspect element}"
                   click element
-                  Logger.debug "Pick! entity: #{try_html_hook} => #{html_entity}. Element: #{inspect element}"
-                  input_into_field element, contents # TODO: attribute_value(element, "value") == contents
+                  input_into_field element, contents
+
+                  # TODO: attribute_value(element, "value") == contents
                   # TODO: selected?(element)
 
                 {:error, e} ->
@@ -458,7 +457,7 @@ defmodule Core do
       """
       def action_keys! matchers do
         for symbol <- matchers do
-          Logger.debug "Sending keys: #{inspect symbol}"
+          Logger.info "Sending keys: #{symbol}"
           send_keys symbol
         end
       end
@@ -469,7 +468,7 @@ defmodule Core do
       """
       def action_js! matchers do
         for code <- matchers do
-          Logger.debug "Executing JavaScript code: #{inspect code}"
+          Logger.info "Executing JavaScript code: #{code}"
           execute_script "#{code}"
         end
       end
@@ -524,22 +523,22 @@ defmodule Core do
           # NOTE: count time spent on actions:
           {scene_actions_process_time, _} = Timer.tc fn ->
             if scene.window! do
-              Logger.debug "Setting window size to: #{inspect scene.window!}"
-              set_window_size current_window_handle, scene.window![:width], scene.window![:height]
+              Logger.info "Setting Phantom window size to: #{scene.window!}"
+              set_window_size current_window_handle(), scene.window![:width], scene.window![:height]
             end
 
             # Process pre-request options
             if scene.session! do
               change_session_to scene.name
-              Logger.debug "Using session: #{scene.name}"
+              Logger.info "Changed session to scene: #{scene.name}"
             else
-              Logger.debug "Using default session"
               change_to_default_session()
+              Logger.debug "Changed session to default"
             end
 
             if scene.cookies_reset! do
-              delete_cookies
-              Logger.debug "Done cookies reset"
+              delete_cookies()
+              Logger.debug "Done cookies wipeout"
             end
 
             # Get driver info
@@ -548,14 +547,14 @@ defmodule Core do
             navigate_to "#{url()}#{scene.req!}"
 
             if scene.wait_after! > 0 do
-              Logger.debug "Sleeping for: #{scene.wait_after!} seconds."
+              Logger.info "Sleeping for: #{scene.wait_after!} seconds."
               :timer.sleep scene.wait_after!
             end
 
             session_info = Session.session_info Hound.current_session_id()
 
-            Logger.info "After Scene( #{scene.act}/#{acts} ) Session( #{current_session_name} ) Url( #{url}#{scene.req!} )"
-            Logger.debug "A\n\
+            Logger.info "After Scene( #{scene.act}/#{acts} ) Session( #{current_session_name()} ) Url( #{url()}#{scene.req!} )"
+            Logger.warn "A\n\
                          scene.name: #{scene.name}\n\
                             request: #{inspect scene.req!}\n\
                          page_title: #{page_title()}\n\
@@ -578,7 +577,7 @@ defmodule Core do
             if scene.js? do
               action_js! scene.js!
             else
-              Logger.debug "JavaScript disabled for scene: #{scene.name}"
+              Logger.info "JavaScript disabled for scene: #{scene.name}"
             end
 
             if session_info[:handlesAlerts] do
@@ -611,7 +610,7 @@ defmodule Core do
 
             # Good time to make a shot!
             if scene.screenshot! do
-              Logger.debug "Screenshot: scene.name: #{scene.name}"
+              Logger.info "Screenshot: scene.name: #{scene.name}"
               Screenshot.take_screenshot "screenshots/sceneid-#{scene.name}.png"
             end
           end
