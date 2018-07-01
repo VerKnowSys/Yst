@@ -66,8 +66,7 @@ defmodule YstTest do
 
     for {result, scene, message} <- Results.show() do
       Logger.info "REZULT: #{inspect result}"
-      # TODO: fix test - all testing scenarios should finish with success:
-      #  assert result == :success, "Each test result has to be successful!"
+      assert result == :success, "Each test result has to be successful!"
 
       case message do
         "" ->
