@@ -8,6 +8,7 @@ defmodule Scenario do
 
   """
 
+
   @doc """
   Defines script to be played by tested application
   """
@@ -24,5 +25,9 @@ defmodule Scenarios do
   """
   use Core
 
+
+  @spec script :: [Scene.t]
   def script, do: []
+
+
 end
