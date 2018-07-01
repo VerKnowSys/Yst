@@ -18,6 +18,11 @@ defmodule Director do
   end
 
 
+  def init(args) do
+    {:ok, args}
+  end
+
+
   def handle_call :run, _from, _state do
     Hound.start_session()
     pr = process_scenarios()
@@ -58,27 +63,27 @@ defmodule Director do
   defp process_results do
     Logger.info "-----------------------------------------------------------------------------------------------------------------------------------------------------------------"
 
-    Logger.info "Scenario results:"
+    Logger.info "Results:"
     for res <- Results.show() do
       case res do
 
         {:success, scene, message} ->
-          name = String.rjust scene.name, 25
-          msg = String.rjust message, 61
-          request = String.rjust scene.req!, 15
-          time_ms = String.rjust "#{scene.actions_ms}ms ⌛", 9
-          act = String.rjust "#{green}#{scene.act}#{default_color}", 2
-          garrow = "#{cyan} ⇒#{default_color}"
-          Logger.info "#{green}✓#{default_color} Act#{garrow} #{act}, Name#{garrow} #{green}#{name}#{default_color},\t Msg#{garrow} #{green}#{msg}#{default_color},\tReq#{garrow} #{yellow}#{request}#{default_color},\tTime#{garrow} #{magenta}#{time_ms}#{default_color}"
+          name = String.pad_leading scene.name, 25
+          msg = String.pad_leading message, 61
+          request = String.pad_leading scene.req!, 15
+          time_ms = String.pad_leading "#{scene.actions_ms}ms ⌛", 9
+          act = String.pad_leading "#{green()}#{scene.act}#{default_color()}", 2
+          garrow = "#{cyan()} ⇒#{default_color()}"
+          Logger.info fn -> "#{green()}✓#{default_color()} Act#{garrow} #{act}, Name#{garrow} #{green()}#{name}#{default_color()},\t Msg#{garrow} #{green()}#{msg}#{default_color()},\tReq#{garrow} #{yellow()}#{request}#{default_color()},\tTime#{garrow} #{magenta()}#{time_ms}#{default_color()}" end
 
         {:failure, scene, message} ->
-          name = String.rjust scene.name, 25
-          msg = String.rjust message, 61
-          request = String.rjust scene.req!, 15
-          time_ms = String.rjust "#{scene.actions_ms}ms ⌛", 9
-          act = String.rjust "#{red}#{scene.act}#{default_color}", 2
-          garrow = "#{cyan} ⇒#{default_color}"
-          Logger.error "#{red} λ#{default_color} Act#{garrow} #{act}, Name#{garrow} #{red}#{name}#{default_color},\t Msg#{garrow} #{red}#{msg}#{default_color},\tReq#{garrow} #{yellow}#{request}#{default_color},\tTime#{garrow} #{magenta}#{time_ms}#{default_color}"
+          name = String.pad_leading scene.name, 25
+          msg = String.pad_leading message, 61
+          request = String.pad_leading scene.req!, 15
+          time_ms = String.pad_leading "#{scene.actions_ms}ms ⌛", 9
+          act = String.pad_leading "#{red()}#{scene.act}#{default_color()}", 2
+          garrow = "#{cyan()} ⇒#{default_color()}"
+          Logger.error fn -> "#{red()} λ#{default_color()} Act#{garrow} #{act}, Name#{garrow} #{red()}#{name}#{default_color()},\t Msg#{garrow} #{red()}#{msg}#{default_color()},\tReq#{garrow} #{yellow()}#{request}#{default_color()},\tTime#{garrow} #{magenta()}#{time_ms}#{default_color()}" end
 
         res ->
           Logger.warn "Error: Unknown entry: #{inspect res}"
