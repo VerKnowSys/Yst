@@ -30,4 +30,14 @@ defmodule Scenarios do
   def script, do: []
 
 
+  @doc """
+  Allow overriding only functions with corresponding arities
+  """
+  defoverridable [
+    script: 0,
+    play: 1,
+    expect: 2,
+  ]
+
+
 end
