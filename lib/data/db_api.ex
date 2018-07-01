@@ -63,7 +63,7 @@ defmodule DbApi do
 
   defp destroy_schema do
     Logger.warn "Stopping and destroying Amnesia schema"
-    Amnesia.stop
+    Amnesia.stop()
     Amnesia.Schema.destroy()
   end
 
