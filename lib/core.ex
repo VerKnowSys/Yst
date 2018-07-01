@@ -554,15 +554,16 @@ defmodule Core do
             session_info = Session.session_info Hound.current_session_id()
 
             Logger.info "After Scene( #{scene.act}/#{acts} ) Session( #{current_session_name()} ) Url( #{url()}#{scene.req!} )"
-            Logger.warn "A\n\
-                         scene.name: #{scene.name}\n\
-                            request: #{inspect scene.req!}\n\
-                         page_title: #{page_title()}\n\
-                        current_url: #{current_url()}\n\
-                            cookies: #{inspect Cookie.cookies}\n\
-                         drver_info: #{inspect drver}\n\
-                       session_info: #{inspect session_info}\n\
-                       all_sessions: #{Enum.count(Session.active_sessions())}"
+            Logger.debug fn -> "A\n\
+               scene.name: #{scene.name}\n\
+                  request: #{inspect scene.req!}\n\
+               page_title: #{page_title()}\n\
+              current_url: #{current_url()}\n\
+                  cookies: #{inspect Cookie.cookies}\n\
+               drver_info: #{inspect drver}\n\
+             session_info: #{inspect session_info}\n\
+             all_sessions: #{Enum.count(Session.active_sessions())}"
+            end
 
             # fill!
             action_fill! scene.fill!
@@ -619,9 +620,7 @@ defmodule Core do
           us_to_ms = div scene_actions_process_time, 1000
           scene = %Scene{scene | actions_ms: us_to_ms}
 
-          ###########
-          #   Fill Results queue
-          #########################
+          # Fill Results queue
           check_expectations? scene
         end
 
