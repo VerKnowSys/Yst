@@ -4,8 +4,6 @@ defmodule Core do
   to be injected to modules with Scenario behaviour
   """
 
-  @callback url :: String.t
-
 
   defmacro __using__(_opts) do
     quote do
@@ -37,11 +35,6 @@ defmodule Core do
 
       use CoreMacro
 
-
-      @doc """
-      Allow overriding only functions with corresponding arities
-      """
-      defoverridable [url: 0, user: 0, pass: 0, play: 1]
 
     end
   end
