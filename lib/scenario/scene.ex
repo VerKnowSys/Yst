@@ -24,8 +24,8 @@ defmodule Scene do
   @enforce_keys [:req!]
 
   @default_delay_secs 0
-  @default_user_agent :chrome_desktop
-  @default_browser :chrome
+  # @default_user_agent :chrome_desktop
+  # @default_browser :chrome
   @default_window [width: 1920, height: 1080]
 
 

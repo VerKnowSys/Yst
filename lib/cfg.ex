@@ -46,7 +46,7 @@ defmodule Cfg do
 
   @doc false
   def set_default_mnesia_dir data_dir do
-    :application.set_env :mnesia, :dir, to_char_list data_dir
+    :application.set_env :mnesia, :dir, Kernel.to_charlist data_dir
   end
 
 end
