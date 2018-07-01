@@ -33,13 +33,13 @@ defmodule DbApi do
     end
     create_amnesia_schema()
     Amnesia.start()
-    # Logger.debug "Schema dump:\n#{Amnesia.Schema.print()}"
+    Logger.debug fn -> "Schema dump:\n#{Amnesia.Schema.print()}" end
 
     result = Model.create disk: [node()]
+    Logger.info "-----------------------------------------"
     Logger.info "Created amnesia node: #{inspect result}"
     Logger.info "-----------------------------------------"
-    Logger.info "#{inspect Amnesia.info}"
-    Logger.info "-----------------------------------------"
+    Logger.debug fn -> inspect Amnesia.info() end
   end
 
 

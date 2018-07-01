@@ -375,7 +375,7 @@ defmodule Core do
                 at_least_single_action scene, tail
 
               checks ->
-                # Logger.debug "At least some check: #{inspect head}, defined with: #{inspect checks}"
+                Logger.debug fn -> "At least some check: #{inspect head}, defined with: #{inspect checks}" end
                 true
             end
         end
@@ -387,12 +387,12 @@ defmodule Core do
       """
       def action_click! matchers do
         for {html_entity, contents} <- matchers do
-          # Logger.debug "Looking for entity: #{html_entity} to click"
+          Logger.debug fn -> "Looking for entity: #{html_entity} to click" end
           for try_html_hook <- @html_elems ++ @html_elems_link do
             if element? try_html_hook, html_entity do
               case search_element try_html_hook, html_entity do
                 {:ok, element} ->
-                  # Logger.debug "Click! entity: #{try_html_hook} => #{html_entity}. Click-Element: #{inspect element}"
+                  Logger.debug fn -> "Click! entity: #{try_html_hook} => #{html_entity}. Click-Element: #{inspect element}" end
                   click element
 
                 {:error, e} ->
@@ -411,10 +411,10 @@ defmodule Core do
         for {html_entity, contents} <- matchers do
           for try_html_hook <- @html_elems do
             if element? try_html_hook, html_entity do
-              # Logger.debug "Element: #{inspect html_entity} of type: #{inspect try_html_hook}"
+              Logger.debug fn -> "Element: #{inspect html_entity} of type: #{inspect try_html_hook}" end
               case search_element try_html_hook, html_entity do
                 {:ok, element} ->
-                  # Logger.debug "Fill! entity: #{try_html_hook} => #{html_entity}. Element: #{inspect element}"
+                  Logger.debug fn -> "Fill! entity: #{try_html_hook} => #{html_entity}. Element: #{inspect element}" end
                   fill_field element, contents
 
                 {:error, e} ->
@@ -433,10 +433,10 @@ defmodule Core do
         for {html_entity, contents} <- matchers do
           for try_html_hook <- @html_elems do
             if element? try_html_hook, html_entity do
-              # Logger.debug "Picking element: #{inspect html_entity} of type: #{inspect try_html_hook}"
+              Logger.debug fn -> "Picking element: #{inspect html_entity} of type: #{inspect try_html_hook}" end
               case search_element try_html_hook, html_entity do
                 {:ok, element} ->
-                  Logger.info "Pick entity: #{try_html_hook} => #{html_entity}. Element: #{inspect element}"
+                  Logger.debug fn -> "Pick entity: #{try_html_hook} => #{html_entity}. Element: #{inspect element}" end
                   click element
                   input_into_field element, contents
 
@@ -457,7 +457,7 @@ defmodule Core do
       """
       def action_keys! matchers do
         for symbol <- matchers do
-          Logger.info "Sending keys: #{symbol}"
+          Logger.debug fn -> "Sending keys: #{symbol}" end
           send_keys symbol
         end
       end
@@ -468,7 +468,7 @@ defmodule Core do
       """
       def action_js! matchers do
         for code <- matchers do
-          Logger.info "Executing JavaScript code: #{code}"
+          Logger.debug fn -> "Executing JavaScript code: #{code}" end
           execute_script "#{code}"
         end
       end
@@ -523,22 +523,22 @@ defmodule Core do
           # NOTE: count time spent on actions:
           {scene_actions_process_time, _} = Timer.tc fn ->
             if scene.window! do
-              Logger.info "Setting Phantom window size to: #{inspect scene.window!}"
+              Logger.debug fn -> "Setting Phantom window size to: #{inspect scene.window!}" end
               set_window_size current_window_handle(), scene.window![:width], scene.window![:height]
             end
 
             # Process pre-request options
             if scene.session! do
               change_session_to scene.name
-              Logger.info "Changed session to scene: #{scene.name}"
+              Logger.debug fn -> "Changed session to scene: #{scene.name}" end
             else
               change_to_default_session()
-              Logger.debug "Changed session to default"
+              Logger.debug fn -> "Changed session to default" end
             end
 
             if scene.cookies_reset! do
               delete_cookies()
-              Logger.debug "Done cookies wipeout"
+              Logger.debug fn -> "Done cookies wipeout" end
             end
 
             # Get driver info
@@ -547,7 +547,7 @@ defmodule Core do
             navigate_to "#{url()}#{scene.req!}"
 
             if scene.wait_after! > 0 do
-              Logger.info "Sleeping for: #{scene.wait_after!} seconds."
+              Logger.debug fn -> "Sleeping for: #{scene.wait_after!} seconds." end
               :timer.sleep scene.wait_after!
             end
 
@@ -586,7 +586,7 @@ defmodule Core do
               if scene.accept! do
                 try do
                   accept_dialog()
-                  Logger.debug "Dialog accepted."
+                  Logger.debug fn -> "Dialog accepted." end
                 rescue
                   _ ->
                     Logger.warn "Accepting dialog failed."
@@ -595,7 +595,7 @@ defmodule Core do
                 if scene.dismiss! do
                   try do
                     dismiss_dialog()
-                    Logger.debug "Dialog dismissed."
+                    Logger.debug fn -> "Dialog dismissed." end
                   rescue
                     _ ->
                       Logger.warn "Dismissing dialog failed."
@@ -603,7 +603,7 @@ defmodule Core do
                 end
               end
             else
-              Logger.debug "handlesAlerts property is disabled with this browser session."
+              Logger.debug fn -> "handlesAlerts property is disabled with this browser session." end
             end
 
             # keys!
@@ -611,7 +611,7 @@ defmodule Core do
 
             # Good time to make a shot!
             if scene.screenshot! do
-              Logger.info "Screenshot: scene.name: #{scene.name}"
+              Logger.info fn -> "Screenshot: scene.name: #{scene.name}" end
               Screenshot.take_screenshot "screenshots/sceneid-#{scene.name}.png"
             end
           end
