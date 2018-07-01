@@ -11,13 +11,13 @@ defmodule ScenesList do
 
   ## Examples
 
-      iex> ScenesList.scripts |> (Enum.filter fn k -> String.contains? k[:name], "cookies-reset" end) != []
+      iex> ScenesList.scripts() |> (Enum.filter fn k -> String.contains? k[:name], "cookies-reset" end) != []
       true
 
-      iex> ScenesList.scripts |> Enum.count >= 5
+      iex> ScenesList.scripts() |> Enum.count >= 5
       true
 
-      iex> ScenesList.scripts == []
+      iex> ScenesList.scripts() == []
       false
 
   """
