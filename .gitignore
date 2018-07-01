@@ -20,3 +20,7 @@ erl_crash.dump
 *.beam
 /.disk-cache
 /.env
+/bin/Darwin/phantomjs
+/bin/Linux/phantomjs
+/screenshots
+/yst
