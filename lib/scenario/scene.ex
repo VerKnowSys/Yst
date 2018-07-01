@@ -17,48 +17,15 @@ defmodule Scene do
 
   Each check should be specified only once.
   """
-  @behaviour Access
+  use SceneAccessMacro
 
   @type t :: Scene.t
-
   @enforce_keys [:req!]
-
   @default_delay_secs 0
-  # @default_user_agent :chrome_desktop
-  # @default_browser :chrome
   @default_window [width: 1920, height: 1080]
 
-
-  @doc false
-  def get keywords, key, default do
-    res = Map.get keywords, key, []
-    case res do
-      {'EXIT', {:badarg, _}} -> default
-      _ -> res
-    end
-  end
-
-
-  @doc false
-  def get_and_update list, key, fun do
-    Map.get_and_update list, key, fun
-  end
-
-
-  @doc false
-  def pop keywords, key do
-    Map.pop keywords, key
-  end
-
-
-  @doc false
-  def fetch keywords, key do
-    res = Map.get keywords, key, []
-    case res do
-      {'EXIT', {:badarg, _}} -> :error
-      _ -> {:ok, res}
-    end
-  end
+  # @default_user_agent :chrome_desktop
+  # @default_browser :chrome
 
 
   defstruct [
@@ -90,6 +57,9 @@ defmodule Scene do
     attr?: [],                              # check element attribute value
     attr_not?: [],
 
+    cookie?: [],                            # expect to find listed cookies
+    cookie_not?: [],                        # expect not to find listed cookies
+
     url?: [],                               # Check existence of param/phrase in browser url bar
     url_not?: [],
 
@@ -114,10 +84,6 @@ defmodule Scene do
     tag_not?: [],
     name?: [],
     name_not?: [],
-    # attr?: [],                                # Tuple of argument and expected argument value content
-    # attr_not?: [],
-    # cookie?: [],                            # expect to find listed cookies
-    # cookie_not?: [],                        # expect not to find listed cookies
 
     cookies?: true,                         # Enabled cookies?
     js?: true                               # Enabled javascript?
@@ -126,23 +92,23 @@ defmodule Scene do
 end
 
 
-defimpl String.Chars, for: Scene do
+# defimpl String.Chars, for: Scene do
 
-  def to_string scene do
-    "Scene {" <>
-    "  name: '#{scene.name},' actions_ms: '#{scene.actions_ms},' act: '#{scene.act},'" <>
-    "  title: '#{scene.title?}', title_not: '#{scene.title_not?}'," <>
-    "  attr: #{scene.attr?}, attr_not: #{scene.attr_not?}," <>
-    "  text: #{scene.text?}, text_not: #{scene.text_not?}," <>
-    "  src: #{scene.src?}, src_not: #{scene.src_not?}," <>
-    "  script: #{scene.script?}, script_not: #{scene.script_not?}," <>
-    "  name: #{scene.name?}, name_not: #{scene.name_not?}" <>
-    "  class: #{scene.class?}, class_not: #{scene.class_not?}," <>
-    "  id: #{scene.id?}, id_not: #{scene.id_not?}," <>
-    "  css: #{scene.css?}, css_not: #{scene.css_not?}," <>
-    "  tag: #{scene.tag?}, tag_not: #{scene.tag_not?}" <>
-    "}"
-  end
+#   def to_string scene do
+#     "Scene {" <>
+#     "  name: '#{scene.name},' actions_ms: '#{scene.actions_ms},' act: '#{scene.act},'" <>
+#     "  title: '#{scene.title?}', title_not: '#{scene.title_not?}'," <>
+#     "  attr: #{scene.attr?}, attr_not: #{scene.attr_not?}," <>
+#     "  text: #{scene.text?}, text_not: #{scene.text_not?}," <>
+#     "  src: #{scene.src?}, src_not: #{scene.src_not?}," <>
+#     "  script: #{scene.script?}, script_not: #{scene.script_not?}," <>
+#     "  name: #{scene.name?}, name_not: #{scene.name_not?}" <>
+#     "  class: #{scene.class?}, class_not: #{scene.class_not?}," <>
+#     "  id: #{scene.id?}, id_not: #{scene.id_not?}," <>
+#     "  css: #{scene.css?}, css_not: #{scene.css_not?}," <>
+#     "  tag: #{scene.tag?}, tag_not: #{scene.tag_not?}" <>
+#     "}"
+#   end
 
-end
+# end
 
