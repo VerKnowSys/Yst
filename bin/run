@@ -2,5 +2,6 @@
 
 . bin/loader
 . bin/build
+. bin/load_phantom
 
 ./yst
