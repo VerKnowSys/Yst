@@ -13,5 +13,5 @@ config :hound, driver: "phantomjs"
 
 
 # Logger defaults:
-config :logger, level: :debug, truncate: 2048
+config :logger, level: :info, truncate: 2048
 config :logger, :console, format: "$time|$levelpad$message\n"

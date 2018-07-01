@@ -1,8 +1,8 @@
 defmodule Yst do
   @moduledoc "YoungSkilled OST"
 
-  use Supervisor
   require Logger
+  use Supervisor
 
 
   def start_link do
@@ -11,7 +11,20 @@ defmodule Yst do
   end
 
 
+  def setup_log_level do
+    # NOTE: Setup logger level per env::
+    case Cfg.env() do
+      :dev ->
+        Cfg.log_level :debug
+      _ ->
+        Cfg.log_level :info
+    end
+  end
+
+
   def init [] do
+    setup_log_level()
+
     children = [
       worker(Results, []),
       worker(Director, [])

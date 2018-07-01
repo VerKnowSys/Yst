@@ -40,7 +40,7 @@ defmodule Yst.Mixfile do
     dev = common ++ [:remix, :ex_doc, :dialyxir, :credo, :ranch]
     test = common
 
-    apps = case Mix.env do
+    apps = case Mix.env() do
       :prod -> prod
       :test -> test
       _     -> dev

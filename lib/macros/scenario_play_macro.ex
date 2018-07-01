@@ -59,14 +59,14 @@ defmodule ScenarioPlayMacro do
 
             session_info = Session.session_info Hound.current_session_id()
             Logger.debug fn -> "Scene(λ):\n\
-               scene.name: #{scene.name}\n\
-                  request: #{inspect scene.req!}\n\
-               page_title: #{page_title()}\n\
-              current_url: #{current_url()}\n\
-                  cookies: #{inspect Cookie.cookies}\n\
-               drver_info: #{inspect drver}\n\
-             session_info: #{inspect session_info}\n\
-             all_sessions: #{Enum.count(Session.active_sessions())}"
+       scene.name: #{scene.name}\n\
+          request: #{inspect scene.req!}\n\
+       page_title: #{page_title()}\n\
+      current_url: #{current_url()}\n\
+          cookies: #{inspect Cookie.cookies}\n\
+       drver_info: #{inspect drver}\n\
+     session_info: #{inspect session_info}\n\
+     all_sessions: #{Enum.count(Session.active_sessions())}"
             end
             Logger.info "AfterScene( #{scene.act}/#{acts} ) Session( #{current_session_name()} ) Url( #{url()}#{scene.req!} )"
 
