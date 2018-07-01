@@ -15,10 +15,10 @@ defmodule BasicLoginLogoutScene do
         req!: "/logout",
         cookies_reset!: true,
 
-        text?: [~r/Usernam/, ~r/Pa.*word/, "Pass"],
+        # text?: [~r/Usernam/, ~r/Pa.*word/, "Pass"],
         text_not?: [~r/tr.*wr.*pr/, ~r/PaZ.*word/, "Pss"],
-        id?: ["LoginForm", "Login"],
-        tag?: ["fieldset", "input"],
+        # id?: ["LoginForm", "Login"],
+        # tag?: ["fieldset", "input"],
         name_not?: ["fieldset", "input"],
       },
 
@@ -32,25 +32,25 @@ defmodule BasicLoginLogoutScene do
         keys!: [:enter],
         screenshot!: true,
 
-        title?: ["Dashboard", "SilkVMS"],
+        # title?: ["Cen"],
         title_not?: ["Belzebub", "Zdzisio"],
         text_not?: ["Username", "Password"],
-        class?: ["title", "fieldset"],
+        # class?: ["title", "fieldset"],
         id_not?: ["LoginForm", "Login"],
-        tag?: ["fieldset", "input"],
+        # tag?: ["fieldset", "input"],
         name_not?: ["fieldset", "input"],
-        url?: ["/login", ~r/silkvms/],
+        url_not?: [~r/silkvms/],
       },
 
       %Scene {
         name: "Main-site-after-login",
         req!: "/",
 
-        title?: ["Dashboard", "SilkVMS"],
+        # title?: ["Cen"],
         text_not?: ["Username", "Password"],
-        class?: ["title", "fieldset"],
+        # class?: ["title", "fieldset"],
         id_not?: ["LoginForm", "Login"],
-        tag?: ["fieldset", "input"],
+        # tag?: ["fieldset", "input"],
         name_not?: ["fieldset", "input"],
         attr?: [
           {"whole_queryLowerListFilter", "value", "page:1"},
