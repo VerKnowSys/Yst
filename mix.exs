@@ -4,8 +4,8 @@ defmodule Yst.Mixfile do
   def project do
     [
       app: :yst,
-      version: "0.6.3",
-      elixir: "~> 1.5",
+      version: "0.7.0",
+      elixir: "~> 1.7",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -34,7 +34,7 @@ defmodule Yst.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    common = [:logger, :uuid, :hound, :maru, :amnesia, :idna, :mimerl, :certifi, :metrics, :hackney, :ssl_verify_fun, :cowboy]
+    common = [:logger, :uuid, :hound, :maru, :amnesia, :idna, :mimerl, :certifi, :metrics, :hackney, :ssl_verify_fun, :cowboy, :exquisite]
 
     prod = common ++ [:ex_doc]
     dev = common ++ [:remix, :ex_doc, :dialyxir, :credo, :ranch]
@@ -67,7 +67,8 @@ defmodule Yst.Mixfile do
       {:uuid, "~> 1.1"},
       {:dialyxir, "~> 0.5"},
       {:maru, "~> 0.13"},
-      {:amnesia, github: "meh/amnesia"},
+      {:amnesia, github: "meh/amnesia", override: true},
+      {:exquisite, github: "meh/exquisite", override: true},
       {:ranch, "~> 1.5"},
       {:cowboy, "~> 2.4"}
     ]
