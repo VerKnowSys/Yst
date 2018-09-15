@@ -7,6 +7,12 @@ defmodule Results do
 
 
   @doc false
+  def init(args) do
+    {:ok, args}
+  end
+
+
+  @doc false
   def start_link do
     GenServer.start_link @name, [], name: @name
   end
