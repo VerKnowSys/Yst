@@ -13,8 +13,15 @@ defdatabase Model do
 
   """
 
-  deftable RecordedScenario, [:uuid, :content, :metadata, :timestamp], type: :set do
-    @type t :: %RecordedScenario{uuid: String.t, content: String.t, metadata: String.t, timestamp: String.t}
+  deftable RecordedScenario,
+    [:uuid, :content, :metadata, :timestamp],
+    type: :ordered_set do
+      @type t :: %RecordedScenario{
+        uuid: String.t,
+        content: String.t,
+        metadata: String.t,
+        timestamp: String.t
+      }
   end
 
 end
