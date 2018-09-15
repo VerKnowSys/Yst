@@ -67,8 +67,8 @@ defmodule Yst.Mixfile do
       {:uuid, "~> 1.1"},
       {:dialyxir, "~> 0.5"},
       {:maru, "~> 0.13"},
-      {:amnesia, github: "meh/amnesia", override: true},
-      {:exquisite, github: "meh/exquisite", override: true},
+      {:amnesia, github: "meh/amnesia", branch: "master", override: true},
+      {:exquisite, github: "meh/exquisite", branch: "master", override: true},
       {:ranch, "~> 1.5"},
       {:cowboy, "~> 2.4"}
     ]
