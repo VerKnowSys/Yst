@@ -36,8 +36,8 @@ defmodule Yst.Mixfile do
   def application do
     common = [:logger, :uuid, :hound, :maru, :amnesia, :idna, :mimerl, :certifi, :metrics, :hackney, :ssl_verify_fun, :cowboy, :exquisite]
 
-    prod = common ++ [:ex_doc]
-    dev = common ++ [:remix, :ex_doc, :dialyxir, :credo, :ranch]
+    prod = common # ++ [:ex_doc]
+    dev = common ++ [:remix, :dialyxir, :credo, :ranch] # :ex_doc,
     test = common
 
     apps = case Mix.env() do
@@ -63,7 +63,7 @@ defmodule Yst.Mixfile do
       {:hound, "~> 1.0", override: true},
       {:credo, "~> 0.9"},
       {:remix, "~> 0.0.2"},
-      {:ex_doc, "~> 0.14"},
+      # {:ex_doc, "~> 0.14"},
       {:uuid, "~> 1.1"},
       {:dialyxir, "~> 0.5"},
       {:maru, "~> 0.13"},
