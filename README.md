@@ -14,7 +14,7 @@ Currently the PoC code logins to Silk backend playground and performs some read 
 ## Requirements
 
   0. macOS 10.11+ or Linux
-  1. Elixir 1.3+
+  1. Elixir 1.7+
   2. Erlang OTP 19+
   3. tmux (phantomjs is spawned under tmux session by default)
 
@@ -23,31 +23,31 @@ Currently the PoC code logins to Silk backend playground and performs some read 
 
   0. Yst reads environment variables from .env file located in this repository.
 
-    ```bash
-    YS_URL    # Default url of tested site
-    YS_LOGIN  # Login used to get to the Silk panel
-    YS_PASS   # Password used to get to the Silk panel
-    ```
+```bash
+YS_URL    # Default url of tested site
+YS_LOGIN  # Login used to get to the Silk panel
+YS_PASS   # Password used to get to the Silk panel
+```
 
   1. Edit your .env file and put missing value of `YS_PASS` there.
 
   2. Run production escript (:prod env):
 
-    ```bash
-    bin/run
-    ```
+```bash
+bin/run
+```
 
   3. Run under iex REPL (:dev env:
 
-    ```bash
-    bin/console
-    ```
+```bash
+bin/console
+```
 
     Then just:
 
-    ```elixir
-    Yst.run
-    ```
+```elixir
+Yst.run
+```
 
     to start main supervisor and launch checks.
 
@@ -64,9 +64,9 @@ Currently the PoC code logins to Silk backend playground and performs some read 
 
   4. Currently tests do internal testing. To test scenarios, go back to `Yst.run` part. (For details about internal tests look here: [yst_test.exs](https://github.com/centrahq/yst/blob/master/test/yst_test.exs)):
 
-    ```bash
-    bin/test
-    ```
+```bash
+bin/test
+```
 
 ## License
 
